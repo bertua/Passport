@@ -8,9 +8,9 @@ public class frmMain extends javax.swing.JFrame {
 
     public frmMain() {
         initComponents();
-        pnlPassword pnl = new pnlPassword("Google", "Flarom", "123", "#2285E1");
+        pnlPassword pnl = new pnlPassword();
         pnlPassword pnl2 = new pnlPassword("Google", "Flarom", "123", "#EB3324");
-        pnlPassword pnl3 = new pnlPassword("Google", "Flarom", "123", "#ffffff");
+        pnlPassword pnl3 = new pnlPassword("Google", "Flarom", "123", "#ffff00");
         pnlPasswordsContainer.add(pnl);
         pnlPasswordsContainer.add(pnl2);
         pnlPasswordsContainer.add(pnl3);
@@ -159,7 +159,7 @@ public class frmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        dlgPasswordEditor dlg = new dlgPasswordEditor();
+        dlgPasswordEditor dlg = new dlgPasswordEditor(this);
         dlg.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
