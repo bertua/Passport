@@ -1,12 +1,14 @@
 package br.com.flarom.passport;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
 public class pnlPassword extends javax.swing.JPanel {
@@ -190,6 +192,35 @@ public class pnlPassword extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    //<editor-fold defaultstate="collapsed" desc="Crypto">     
+    private static final String ALGORITHM = "AES";
+
+    public static SecretKey generateKey() throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
+        keyGen.init(128);
+        return keyGen.generateKey();
+    }
+    
+    public static String encrypt(String text, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encryptedText = cipher.doFinal(text.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedText);
+    }
+    
+     public static String decrypt(String encryptedText, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decryptedText = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
+        return new String(decryptedText);
+    }
+    //</editor-fold>
+
+     
+    //<editor-fold defaultstate="collapsed" desc="database">
+     
+    //</editor-fold>
+     
     private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
         StringSelection stringSelection = new StringSelection(password);
 
@@ -199,14 +230,6 @@ public class pnlPassword extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCopyActionPerformed
 
     private void btnOptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptionsActionPerformed
-        cmnOptions.setBackground(btnOptions.getBackground());
-        for (Component component : cmnOptions.getComponents()) {
-            if (component instanceof JMenuItem) {
-                JMenuItem menuItem = (JMenuItem) component;
-                menuItem.setForeground(btnOptions.getForeground());
-            }
-        }
-        
         cmnOptions.show(btnOptions, btnOptions.getWidth(), -1);
     }//GEN-LAST:event_btnOptionsActionPerformed
 
@@ -225,24 +248,26 @@ public class pnlPassword extends javax.swing.JPanel {
     }//GEN-LAST:event_btnViewActionPerformed
 
     private void mnuColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuColorActionPerformed
-        dlgColor dlg = new dlgColor((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar)); 
+        dlgColor dlg = new dlgColor((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
         Color newColor = dlg.getColor();
-        
-        if (newColor == null) return;
-        
+
+        if (newColor == null) {
+            return;
+        }
+
         this.color = newColor;
         updateColor();
     }//GEN-LAST:event_mnuColorActionPerformed
 
-    public void updateColor(){
+    public void updateColor() {
         pnlSidebar.setBackground(this.color);
         btnOptions.setBackground(this.color);
         btnCopy.setBackground(this.color);
         btnView.setBackground(this.color);
-        
+
         double luminance = (0.299 * this.color.getRed() + 0.587 * this.color.getGreen() + 0.114 * this.color.getBlue()) / 255;
         Color textColor = luminance > 0.5 ? Color.BLACK : Color.WHITE;
-        
+
         btnOptions.setForeground(textColor);
         btnCopy.setForeground(textColor);
         btnView.setForeground(textColor);

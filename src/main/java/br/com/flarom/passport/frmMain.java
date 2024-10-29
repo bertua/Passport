@@ -29,7 +29,7 @@ public class frmMain extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         btnSettings = new javax.swing.JButton();
         pnlPasswordsContainer = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        pnlPlaceholder = new javax.swing.JPanel();
         lblPlaceholderTitle = new javax.swing.JLabel();
         lblPlaceholderDescription = new javax.swing.JLabel();
         btnPlaceholderNew = new javax.swing.JButton();
@@ -89,11 +89,16 @@ public class frmMain extends javax.swing.JFrame {
         jToolBar1.add(btnSettings);
 
         pnlPasswordsContainer.setMinimumSize(new java.awt.Dimension(0, 0));
+        pnlPasswordsContainer.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                pnlPasswordsContainerComponentAdded(evt);
+            }
+        });
         pnlPasswordsContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jPanel2.setBackground(java.awt.Color.white);
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
-        jPanel2.setPreferredSize(new java.awt.Dimension(286, 123));
+        pnlPlaceholder.setBackground(java.awt.Color.white);
+        pnlPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        pnlPlaceholder.setPreferredSize(new java.awt.Dimension(286, 123));
 
         lblPlaceholderTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblPlaceholderTitle.setText("No secrets here");
@@ -110,21 +115,21 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlPlaceholderLayout = new javax.swing.GroupLayout(pnlPlaceholder);
+        pnlPlaceholder.setLayout(pnlPlaceholderLayout);
+        pnlPlaceholderLayout.setHorizontalGroup(
+            pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPlaceholderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPlaceholderTitle)
                     .addComponent(lblPlaceholderDescription)
                     .addComponent(btnPlaceholderNew))
                 .addContainerGap(110, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pnlPlaceholderLayout.setVerticalGroup(
+            pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPlaceholderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblPlaceholderTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -134,7 +139,7 @@ public class frmMain extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pnlPasswordsContainer.add(jPanel2);
+        pnlPasswordsContainer.add(pnlPlaceholder);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -163,6 +168,12 @@ public class frmMain extends javax.swing.JFrame {
         dlg.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
+    private void pnlPasswordsContainerComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_pnlPasswordsContainerComponentAdded
+        if (pnlPasswordsContainer.getComponentCount() >= 2) {
+            pnlPasswordsContainer.remove(pnlPlaceholder);
+        }
+    }//GEN-LAST:event_pnlPasswordsContainerComponentAdded
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
@@ -175,7 +186,7 @@ public class frmMain extends javax.swing.JFrame {
                 new frmMain().setVisible(true);
             }
         });
-        
+
         Flyway.configure()
                 .dataSource("jdbc:sqlite:appPsswrd.db", "", "")
                 .load()
@@ -191,10 +202,10 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblPlaceholderDescription;
     private javax.swing.JLabel lblPlaceholderTitle;
     private javax.swing.JPanel pnlPasswordsContainer;
+    private javax.swing.JPanel pnlPlaceholder;
     // End of variables declaration//GEN-END:variables
 }

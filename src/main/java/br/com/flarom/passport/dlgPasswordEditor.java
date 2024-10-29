@@ -1,5 +1,7 @@
 package br.com.flarom.passport;
 
+import java.security.SecureRandom;
+
 public class dlgPasswordEditor extends javax.swing.JDialog {
 
     private boolean confirmed = false;
@@ -20,13 +22,14 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         pnlGenerateRandom = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
+        cbxLower = new javax.swing.JCheckBox();
+        cbxUpper = new javax.swing.JCheckBox();
+        cbxNumbr = new javax.swing.JCheckBox();
+        cbxSpecl = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jSlider1 = new javax.swing.JSlider();
+        sldPassLenght = new javax.swing.JSlider();
+        btnGenerate = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btnOk = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
@@ -45,25 +48,36 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         pnlGenerateRandom.setBackground(java.awt.Color.white);
         pnlGenerateRandom.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
 
-        jCheckBox1.setText("a-z");
-        jCheckBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxLower.setSelected(true);
+        cbxLower.setText("a-z");
+        cbxLower.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jCheckBox2.setText("A-Z");
-        jCheckBox2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxUpper.setSelected(true);
+        cbxUpper.setText("A-Z");
+        cbxUpper.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jCheckBox3.setText("0-9");
-        jCheckBox3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxNumbr.setSelected(true);
+        cbxNumbr.setText("0-9");
+        cbxNumbr.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jCheckBox4.setText("!@#");
-        jCheckBox4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxSpecl.setText("!@#");
+        cbxSpecl.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel5.setText("Characters:");
 
         jLabel6.setText("Lenght:");
 
-        jSlider1.setMaximum(50);
-        jSlider1.setMinimum(1);
-        jSlider1.setValue(16);
+        sldPassLenght.setMaximum(50);
+        sldPassLenght.setMinimum(1);
+        sldPassLenght.setValue(10);
+
+        btnGenerate.setText("Generate");
+        btnGenerate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGenerate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateRandomPass(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlGenerateRandomLayout = new javax.swing.GroupLayout(pnlGenerateRandom);
         pnlGenerateRandom.setLayout(pnlGenerateRandomLayout);
@@ -72,20 +86,22 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
             .addGroup(pnlGenerateRandomLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlGenerateRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                    .addComponent(sldPassLenght, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                     .addGroup(pnlGenerateRandomLayout.createSequentialGroup()
                         .addGroup(pnlGenerateRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addGroup(pnlGenerateRandomLayout.createSequentialGroup()
-                                .addComponent(jCheckBox1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBox2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBox3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBox4)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel6))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlGenerateRandomLayout.createSequentialGroup()
+                        .addComponent(cbxLower)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxUpper)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxNumbr)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxSpecl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGenerate)))
                 .addContainerGap())
         );
         pnlGenerateRandomLayout.setVerticalGroup(
@@ -95,15 +111,17 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlGenerateRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox4))
+                    .addComponent(cbxLower)
+                    .addComponent(cbxUpper)
+                    .addComponent(cbxNumbr)
+                    .addComponent(cbxSpecl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addComponent(sldPassLenght, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGenerate)
+                .addContainerGap())
         );
 
         jLabel4.setText("Generate random");
@@ -175,7 +193,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlGenerateRandom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
                     .addComponent(btnCancel))
@@ -201,6 +219,44 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         showing = !showing;
     }//GEN-LAST:event_btnViewPasswordActionPerformed
 
+    private void updateRandomPass(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateRandomPass
+        int lenght = sldPassLenght.getValue();
+        boolean useLowerCase = cbxLower.isSelected();
+        boolean useUpperCase = cbxUpper.isSelected();
+        boolean useNumbers = cbxNumbr.isSelected();
+        boolean useSpecial = cbxSpecl.isSelected();
+        
+        String pass = getRandomPassword(lenght, useLowerCase, useUpperCase, useNumbers, useSpecial);
+        
+        if(pass == null) return;
+        
+        txtPassword.setText(pass);
+    }//GEN-LAST:event_updateRandomPass
+
+    private static final SecureRandom random = new SecureRandom();
+    
+    private String getRandomPassword(int length, boolean useLowerCase, boolean useUpperCase, boolean useNumbers, boolean useSpecial) {
+        StringBuilder passwordPool = new StringBuilder();
+        
+        if (useLowerCase) passwordPool.append("abcdefghijklmnopqrstuvwxyz");
+        if (useUpperCase) passwordPool.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        if (useNumbers) passwordPool.append("1234567890");
+        if (useSpecial) passwordPool.append("!@#$%&*-_");
+
+        if (passwordPool.length() == 0) {
+            return null;
+        }
+
+        StringBuilder password = new StringBuilder(length);
+        
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(passwordPool.length());
+            password.append(passwordPool.charAt(index));
+        }
+
+        return password.toString();
+    }
+    
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -233,20 +289,21 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnGenerate;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnViewPassword;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox cbxLower;
+    private javax.swing.JCheckBox cbxNumbr;
+    private javax.swing.JCheckBox cbxSpecl;
+    private javax.swing.JCheckBox cbxUpper;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JSlider jSlider1;
     private javax.swing.JPanel pnlGenerateRandom;
+    private javax.swing.JSlider sldPassLenght;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtServiceName;
     private javax.swing.JTextField txtUsername;
