@@ -1,4 +1,3 @@
-
 package br.com.flarom.passport.classes;
 
 import java.sql.Connection;
