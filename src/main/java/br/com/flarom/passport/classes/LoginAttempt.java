@@ -54,7 +54,7 @@ public class LoginAttempt {
     }
     //</editor-fold>
 
-    public void create() {
+    public void Create() {
         String sql = "INSERT INTO login_attempts (id_user, event, successful) VALUES (?, ?, ?)";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -68,7 +68,7 @@ public class LoginAttempt {
     }
 
     // shearch for an exact login attempt
-    public static LoginAttempt findById(int id_attempt) {
+    public static LoginAttempt Read(int id_attempt) {
         String sql = "SELECT * FROM login_attempts WHERE id_attempt = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -89,54 +89,8 @@ public class LoginAttempt {
         return null;
     }
 
-    // list all login attempts in a day
-    public static ArrayList<LoginAttempt> findByDate(Timestamp date) {
-        ArrayList<LoginAttempt> attempts = new ArrayList<>();
-        String sql = "SELECT * FROM login_attempts WHERE DATE(event) = DATE(?)";
-        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setTimestamp(1, date);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                attempts.add(new LoginAttempt(
-                        rs.getInt("id_attempt"),
-                        rs.getInt("id_user"),
-                        rs.getTimestamp("event"),
-                        rs.getBoolean("successful")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return attempts;
-    }
-
-    // list all login attempts in a exact moment
-    public static ArrayList<LoginAttempt> findByTimestamp(Timestamp event) {
-        ArrayList<LoginAttempt> attempts = new ArrayList<>();
-        String sql = "SELECT * FROM login_attempts WHERE event = ?";
-        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setTimestamp(1, event);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                attempts.add(new LoginAttempt(
-                        rs.getInt("id_attempt"),
-                        rs.getInt("id_user"),
-                        rs.getTimestamp("event"),
-                        rs.getBoolean("successful")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return attempts;
-    }
-
     // list all login attempts made by a user
-    public static ArrayList<LoginAttempt> findByUser(int id_user) {
+    public static ArrayList<LoginAttempt> ListFromUser(int id_user) {
         ArrayList<LoginAttempt> attempts = new ArrayList<>();
         String sql = "SELECT * FROM login_attempts WHERE id_user = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -159,7 +113,7 @@ public class LoginAttempt {
     }
 
     // list all login attempts made by a user in a day
-    public static ArrayList<LoginAttempt> findByUserOnDate(int id_user, Timestamp date) {
+    public static ArrayList<LoginAttempt> ListFromUserOnDate(int id_user, Timestamp date) {
         ArrayList<LoginAttempt> attempts = new ArrayList<>();
         String sql = "SELECT * FROM login_attempts WHERE id_user = ? AND DATE(event) = DATE(?)";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -183,7 +137,7 @@ public class LoginAttempt {
     }
 
     // list all login attempts made by a user in a exact moment
-    public static ArrayList<LoginAttempt> findByUserOnTimestamp(int id_user, Timestamp event) {
+    public static ArrayList<LoginAttempt> ListFromUserOnTimestamp(int id_user, Timestamp event) {
         ArrayList<LoginAttempt> attempts = new ArrayList<>();
         String sql = "SELECT * FROM login_attempts WHERE id_user = ? AND event = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {

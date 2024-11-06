@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class User {
 
@@ -67,7 +68,11 @@ public class User {
     }
     // </editor-fold>
 
-    public void create() throws Exception {
+    public void Create() throws Exception {
+        if (isUsernameOrEmailTaken(username, email)) {
+            throw new Exception("Username or email already taken");
+        }
+
         String sql = "INSERT INTO users (username, nickname, email, password) VALUES (?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -81,32 +86,20 @@ public class User {
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 this.id_user = rs.getInt(1);
-                
-                createDefaultCategory();
+                CreateDefaultCategory();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // automaticaly creates a "Uncategorized" category for this user,
-    // so the user can save passwords with this category
-    private void createDefaultCategory() {
-        String sql = "INSERT INTO categories (id_user, name, color) VALUES (?, 'Uncategorized', '#2285E1')";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, this.id_user);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void Update() throws Exception {
+        if (isUsernameOrEmailTaken(username, email, id_user)) {
+            throw new Exception("Username or email already taken");
         }
-    }
 
-    public void update() throws Exception {
         String sql = "UPDATE users SET username = ?, nickname = ?, email = ?, password = ? WHERE id_user = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, username);
             stmt.setString(2, nickname);
             stmt.setString(3, email);
@@ -118,10 +111,9 @@ public class User {
         }
     }
 
-    public void delete() {
+    public void Delete() {
         String sql = "DELETE FROM users WHERE id_user = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, id_user);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -129,13 +121,91 @@ public class User {
         }
     }
 
-    public static User findById(int id_user) {
+    private boolean isUsernameOrEmailTaken(String username, String email) {
+        String sql = "SELECT 1 FROM users WHERE username = ? OR email = ?";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean isUsernameOrEmailTaken(String username, String email, int userId) {
+        String sql = "SELECT 1 FROM users WHERE (username = ? OR email = ?) AND id_user != ?";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            stmt.setInt(3, userId);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void CreateDefaultCategory() {
+        String sql = "INSERT INTO categories (id_user, name, color) VALUES (?, 'Uncategorized', '#2285E1')";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, this.id_user);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static User Read(int id_user) {
         String sql = "SELECT * FROM users WHERE id_user = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, id_user);
             ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("id_user"),
+                        rs.getString("username"),
+                        rs.getString("nickname"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    public static ArrayList<User> ListUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                users.add(new User(
+                        rs.getInt("id_user"),
+                        rs.getString("username"),
+                        rs.getString("nickname"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public static User Login(String identificator, String password) throws Exception {
+        String sql = "SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ?";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, identificator);
+            stmt.setString(2, identificator);
+            stmt.setString(3, MiscTools.encryptPassword(password, MiscTools.generateKey()));
+            ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new User(
                         rs.getInt("id_user"),

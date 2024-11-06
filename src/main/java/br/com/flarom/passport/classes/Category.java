@@ -4,12 +4,14 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Category {
+
     private int id_category;
     private int id_user;
     private String name;
     private String color;
 
-    public Category() {}
+    public Category() {
+    }
 
     public Category(int id_category, int id_user, String name, String color) {
         this.id_category = id_category;
@@ -54,8 +56,7 @@ public class Category {
 
     public void Create() {
         String sql = "INSERT INTO categories (id_user, name, color) VALUES (?, ?, ?)";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id_user);
             stmt.setString(2, name);
@@ -68,8 +69,7 @@ public class Category {
 
     public void Update() {
         String sql = "UPDATE categories SET name = ?, color = ? WHERE id_category = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, name);
             stmt.setString(2, color);
@@ -82,8 +82,7 @@ public class Category {
 
     public void Delete() {
         String sql = "DELETE FROM categories WHERE id_category = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id_category);
             stmt.executeUpdate();
@@ -92,22 +91,41 @@ public class Category {
         }
     }
 
-    // list all categories owned by a user
-    public static ArrayList<Category> FindByUser(int id_user) {
+    public static Category Read(int id_category) {
+        String sql = "SELECT * FROM categories WHERE id_category = ?";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id_category);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Category(
+                        rs.getInt("id_category"),
+                        rs.getInt("id_user"),
+                        rs.getString("name"),
+                        rs.getString("color")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ArrayList<Category> ListFromUser(int id_user) {
         ArrayList<Category> categories = new ArrayList<>();
         String sql = "SELECT * FROM categories WHERE id_user = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id_user);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 categories.add(new Category(
-                    rs.getInt("id_category"),
-                    rs.getInt("id_user"),
-                    rs.getString("name"),
-                    rs.getString("color")
+                        rs.getInt("id_category"),
+                        rs.getInt("id_user"),
+                        rs.getString("name"),
+                        rs.getString("color")
                 ));
             }
         } catch (SQLException e) {

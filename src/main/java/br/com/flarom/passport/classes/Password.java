@@ -118,7 +118,7 @@ public class Password {
     }
     //</editor-fold>
 
-    public void create() throws Exception {
+    public void Create() throws Exception {
         String sql = "INSERT INTO passwords (id_user, id_category, service_name, user_name, password, create_date, edit_date, view_date, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -137,7 +137,7 @@ public class Password {
         }
     }
 
-    public void update() throws Exception {
+    public void Update() throws Exception {
         String sql = "UPDATE passwords SET id_category = ?, service_name = ?, user_name = ?, password = ?, edit_date = ?, view_date = ?, color = ? WHERE id_password = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -155,7 +155,7 @@ public class Password {
         }
     }
 
-    public void delete() {
+    public void Delete() {
         String sql = "DELETE FROM passwords WHERE id_password = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -166,7 +166,7 @@ public class Password {
         }
     }
 
-    public static Password findById(int id_password) throws Exception {
+    public static Password Read(int id_password) throws Exception {
         String sql = "SELECT * FROM passwords WHERE id_password = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -193,8 +193,7 @@ public class Password {
         return null;
     }
 
-    // list all passwords with maching categories
-    public static ArrayList<Password> findByCategory(int id_category) throws Exception {
+    public static ArrayList<Password> ListFromCategory(int id_category) throws Exception {
         String sql = "SELECT * FROM passwords WHERE id_category = ?";
         ArrayList<Password> passwords = new ArrayList<>();
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -222,8 +221,7 @@ public class Password {
         return passwords;
     }
 
-    // list all passwords an user owns
-    public static ArrayList<Password> findByUser(int id_user) throws Exception {
+    public static ArrayList<Password> ListFromUser(int id_user) throws Exception {
         String sql = "SELECT * FROM passwords WHERE id_user = ?";
         ArrayList<Password> passwords = new ArrayList<>();
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
