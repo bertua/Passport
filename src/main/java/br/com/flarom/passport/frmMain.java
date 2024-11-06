@@ -1,5 +1,6 @@
 package br.com.flarom.passport;
 
+import br.com.flarom.passport.LandingPage.dlgLanding;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import javax.swing.UIManager;
@@ -9,15 +10,10 @@ public class frmMain extends javax.swing.JFrame {
 
     public frmMain() {
         initComponents();
-        pnlPassword pnl = new pnlPassword("Github", "Flarom", "47483", "#042c69");
-        pnlPassword pnl2 = new pnlPassword("Google", "Flarom", "123", "#FFFFFF");
-        pnlPassword pnl3 = new pnlPassword("Steam", "Flarom", "123", "#0772ba");
-        pnlPassword pnl4 = new pnlPassword("ChatGPT", "Flarom", "48329", "#6da397");
-        pnlPassword pnl5 = new pnlPassword("ChatGPT", "Flarom", "48329", "#6da397");
-        pnlPasswordsContainer.add(pnl);
-        pnlPasswordsContainer.add(pnl2);
-        pnlPasswordsContainer.add(pnl3);
-        pnlPasswordsContainer.add(pnl4);
+
+        dlgLanding dl = new dlgLanding(this);
+        dl.setVisible(true);
+        
         updateScrollBar();
     }
 
@@ -25,6 +21,13 @@ public class frmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mnuNew = new javax.swing.JPopupMenu();
+        mnuTitle = new javax.swing.JMenuItem();
+        separator = new javax.swing.JPopupMenu.Separator();
+        mnuNewPassword = new javax.swing.JMenuItem();
+        mnuNewCreditCard = new javax.swing.JMenuItem();
+        mnuNewNote = new javax.swing.JMenuItem();
+        mnuNewCategory = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         btnAdd = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 200));
@@ -40,6 +43,32 @@ public class frmMain extends javax.swing.JFrame {
         lblPlaceholderDescription = new javax.swing.JLabel();
         btnPlaceholderNew = new javax.swing.JButton();
 
+        mnuTitle.setText("Create new");
+        mnuTitle.setEnabled(false);
+        mnuNew.add(mnuTitle);
+        mnuNew.add(separator);
+
+        mnuNewPassword.setText("Password");
+        mnuNewPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNewPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        mnuNew.add(mnuNewPassword);
+
+        mnuNewCreditCard.setText("Credit card");
+        mnuNewCreditCard.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNew.add(mnuNewCreditCard);
+
+        mnuNewNote.setText("Text note");
+        mnuNewNote.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNew.add(mnuNewNote);
+
+        mnuNewCategory.setText("Category");
+        mnuNewCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNew.add(mnuNewCategory);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Passport");
         setMinimumSize(new java.awt.Dimension(364, 0));
@@ -50,14 +79,14 @@ public class frmMain extends javax.swing.JFrame {
         btnAdd.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnAdd.setMnemonic('n');
         btnAdd.setText("");
-        btnAdd.setToolTipText("New password");
+        btnAdd.setToolTipText("Create new");
         btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAdd.setFocusable(false);
         btnAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnAddMousePressed(evt);
             }
         });
         jToolBar1.add(btnAdd);
@@ -208,6 +237,10 @@ public class frmMain extends javax.swing.JFrame {
         String searchTerm = dlg.Show("Search", "Enter what are you looking for bellow:", "\ue11a", "Search");
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void btnAddMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMousePressed
+        mnuNew.show(btnAdd, btnAdd.getLocation().x + btnAdd.getWidth(), btnAdd.getLocation().y);
+    }//GEN-LAST:event_btnAddMousePressed
+
     private void updateScrollBar() {
         int buttonHeight = 123;
         int buttonWidth = 286;
@@ -263,7 +296,14 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblPlaceholderDescription;
     private javax.swing.JLabel lblPlaceholderTitle;
+    private javax.swing.JPopupMenu mnuNew;
+    private javax.swing.JMenuItem mnuNewCategory;
+    private javax.swing.JMenuItem mnuNewCreditCard;
+    private javax.swing.JMenuItem mnuNewNote;
+    private javax.swing.JMenuItem mnuNewPassword;
+    private javax.swing.JMenuItem mnuTitle;
     private javax.swing.JPanel pnlPasswordsContainer;
     private javax.swing.JPanel pnlPlaceholder;
+    private javax.swing.JSeparator separator;
     // End of variables declaration//GEN-END:variables
 }
