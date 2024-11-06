@@ -1,6 +1,11 @@
 package br.com.flarom.passport.classes;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class CreditCard {
     private int id_credit_card;
@@ -26,6 +31,7 @@ public class CreditCard {
         this.view_date = view_date;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getters and setters">
     public int getId_credit_card() {
         return id_credit_card;
     }
@@ -89,6 +95,90 @@ public class CreditCard {
     public void setView_date(Timestamp view_date) {
         this.view_date = view_date;
     }
-    
-    
+    //</editor-fold>
+
+    public void Create() throws Exception {
+        String sql = "INSERT INTO credit_cards (id_user, number, cvv, expiration_date, holder, create_date, view_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setInt(1, id_user);
+            stmt.setString(2, MiscTools.encryptPassword(number, MiscTools.generateKey()));
+            stmt.setString(3, MiscTools.encryptPassword(cvv, MiscTools.generateKey()));
+            stmt.setString(4, expiration_date);
+            stmt.setString(5, holder);
+            stmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+            stmt.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                this.id_credit_card = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void Delete() {
+        String sql = "DELETE FROM credit_cards WHERE id_credit_card = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id_credit_card);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static CreditCard Read(int id_credit_card) throws Exception {
+        String sql = "SELECT * FROM credit_cards WHERE id_credit_card = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id_credit_card);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new CreditCard(
+                    rs.getInt("id_credit_card"),
+                    rs.getInt("id_user"),
+                    MiscTools.decryptPassword(rs.getString("number"), MiscTools.generateKey()),
+                    MiscTools.decryptPassword(rs.getString("cvv"), MiscTools.generateKey()),
+                    rs.getString("expiration_date"),
+                    rs.getString("holder"),
+                    rs.getTimestamp("create_date"),
+                    rs.getTimestamp("view_date")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static ArrayList<CreditCard> ListFromUser(int id_user) throws Exception {
+        ArrayList<CreditCard> creditCards = new ArrayList<>();
+        String sql = "SELECT * FROM credit_cards WHERE id_user = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id_user);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                creditCards.add(new CreditCard(
+                    rs.getInt("id_credit_card"),
+                    rs.getInt("id_user"),
+                    MiscTools.decryptPassword(rs.getString("number"), MiscTools.generateKey()),
+                    MiscTools.decryptPassword(rs.getString("cvv"), MiscTools.generateKey()),
+                    rs.getString("expiration_date"),
+                    rs.getString("holder"),
+                    rs.getTimestamp("create_date"),
+                    rs.getTimestamp("view_date")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return creditCards;
+    }
 }
