@@ -126,7 +126,7 @@ public class Password {
             stmt.setInt(2, id_category);
             stmt.setString(3, service_name);
             stmt.setString(4, user_name);
-            stmt.setString(5, MiscTools.encryptPassword(password, MiscTools.generateKey()));
+            stmt.setString(5, MiscTools.encryptPassword(password));
             stmt.setTimestamp(6, create_date);
             stmt.setTimestamp(7, edit_date);
             stmt.setTimestamp(8, view_date);
@@ -144,7 +144,7 @@ public class Password {
             stmt.setInt(1, id_category);
             stmt.setString(2, service_name);
             stmt.setString(3, user_name);
-            stmt.setString(4, MiscTools.encryptPassword(password, MiscTools.generateKey()));
+            stmt.setString(4, MiscTools.encryptPassword(password));
             stmt.setTimestamp(5, edit_date);
             stmt.setTimestamp(6, view_date);
             stmt.setString(7, color);
@@ -180,7 +180,7 @@ public class Password {
                         rs.getInt("id_category"),
                         rs.getString("service_name"),
                         rs.getString("user_name"),
-                        MiscTools.decryptPassword(rs.getString("password"), MiscTools.generateKey()),
+                        MiscTools.decryptPassword(rs.getString("password")),
                         rs.getTimestamp("create_date"),
                         rs.getTimestamp("edit_date"),
                         rs.getTimestamp("view_date"),
@@ -208,7 +208,7 @@ public class Password {
                         rs.getInt("id_category"),
                         rs.getString("service_name"),
                         rs.getString("user_name"),
-                        MiscTools.decryptPassword(rs.getString("password"), MiscTools.generateKey()),
+                        MiscTools.decryptPassword(rs.getString("password")),
                         rs.getTimestamp("create_date"),
                         rs.getTimestamp("edit_date"),
                         rs.getTimestamp("view_date"),
@@ -236,7 +236,7 @@ public class Password {
                         rs.getInt("id_category"),
                         rs.getString("service_name"),
                         rs.getString("user_name"),
-                        MiscTools.decryptPassword(rs.getString("password"), MiscTools.generateKey()),
+                        MiscTools.decryptPassword(rs.getString("password")),
                         rs.getTimestamp("create_date"),
                         rs.getTimestamp("edit_date"),
                         rs.getTimestamp("view_date"),

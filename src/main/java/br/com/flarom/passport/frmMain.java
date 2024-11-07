@@ -1,20 +1,52 @@
 package br.com.flarom.passport;
 
-import br.com.flarom.passport.LandingPage.dlgLanding;
+import br.com.flarom.passport.LandingPage.dlgLogin;
+import br.com.flarom.passport.classes.Password;
+import br.com.flarom.passport.classes.User;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 import org.flywaydb.core.Flyway;
 
 public class frmMain extends javax.swing.JFrame {
 
+    private User loggedUser;
+
     public frmMain() {
         initComponents();
 
-        dlgLanding dl = new dlgLanding(this);
-        dl.setVisible(true);
-        
+        dlgLogin dl = new dlgLogin(this);
+        User u = dl.LogIn();
+
+        if (u == null) {
+            System.exit(0);
+        }
+
+        loggedUser = u;
+
+        loadPasswords();
+
         updateScrollBar();
+    }
+
+    private void loadPasswords() {
+        try {
+            ArrayList<Password> userPasswords = Password.ListFromUser(loggedUser.getId_user());
+            
+            for(Password p :userPasswords){
+                pnlPassword pass = new pnlPassword(p);
+                
+                pnlPasswordsContainer.add(pass);
+                
+                updateScrollBar();
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -229,7 +261,7 @@ public class frmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlPasswordsContainerComponentAdded
 
     private void pnlPasswordsContainerAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_pnlPasswordsContainerAncestorResized
-       updateScrollBar();
+        updateScrollBar();
     }//GEN-LAST:event_pnlPasswordsContainerAncestorResized
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -262,8 +294,7 @@ public class frmMain extends javax.swing.JFrame {
         pnlPasswordsContainer.revalidate();
         pnlPasswordsContainer.repaint();
     }
-    
-    
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());

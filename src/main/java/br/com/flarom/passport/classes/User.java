@@ -18,6 +18,13 @@ public class User {
 
     }
 
+    public User(String username, String nickname, String email, String password) {
+        this.username = username;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+    }
+    
     public User(int id_user, String username, String nickname, String email, String password) {
         this.id_user = id_user;
         this.username = username;
@@ -69,7 +76,7 @@ public class User {
     // </editor-fold>
 
     public void Create() throws Exception {
-        if (isUsernameOrEmailTaken(username, email)) {
+        if (isDataTaken(username, email)) {
             throw new Exception("Username or email already taken");
         }
 
@@ -80,7 +87,7 @@ public class User {
             stmt.setString(1, username);
             stmt.setString(2, nickname);
             stmt.setString(3, email);
-            stmt.setString(4, MiscTools.encryptPassword(password, MiscTools.generateKey()));
+            stmt.setString(4, MiscTools.encryptPassword(password));
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -103,7 +110,7 @@ public class User {
             stmt.setString(1, username);
             stmt.setString(2, nickname);
             stmt.setString(3, email);
-            stmt.setString(4, MiscTools.encryptPassword(password, MiscTools.generateKey()));
+            stmt.setString(4, MiscTools.encryptPassword(password));
             stmt.setInt(5, id_user);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -121,7 +128,7 @@ public class User {
         }
     }
 
-    private boolean isUsernameOrEmailTaken(String username, String email) {
+    public static boolean isDataTaken(String username, String email) {
         String sql = "SELECT 1 FROM users WHERE username = ? OR email = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
@@ -204,7 +211,7 @@ public class User {
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, identificator);
             stmt.setString(2, identificator);
-            stmt.setString(3, MiscTools.encryptPassword(password, MiscTools.generateKey()));
+            stmt.setString(3, MiscTools.encryptPassword(password));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new User(

@@ -103,8 +103,8 @@ public class CreditCard {
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, id_user);
-            stmt.setString(2, MiscTools.encryptPassword(number, MiscTools.generateKey()));
-            stmt.setString(3, MiscTools.encryptPassword(cvv, MiscTools.generateKey()));
+            stmt.setString(2, MiscTools.encryptPassword(number));
+            stmt.setString(3, MiscTools.encryptPassword(cvv));
             stmt.setString(4, expiration_date);
             stmt.setString(5, holder);
             stmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
@@ -142,8 +142,8 @@ public class CreditCard {
                 return new CreditCard(
                     rs.getInt("id_credit_card"),
                     rs.getInt("id_user"),
-                    MiscTools.decryptPassword(rs.getString("number"), MiscTools.generateKey()),
-                    MiscTools.decryptPassword(rs.getString("cvv"), MiscTools.generateKey()),
+                    MiscTools.decryptPassword(rs.getString("number")),
+                    MiscTools.decryptPassword(rs.getString("cvv")),
                     rs.getString("expiration_date"),
                     rs.getString("holder"),
                     rs.getTimestamp("create_date"),
@@ -168,8 +168,8 @@ public class CreditCard {
                 creditCards.add(new CreditCard(
                     rs.getInt("id_credit_card"),
                     rs.getInt("id_user"),
-                    MiscTools.decryptPassword(rs.getString("number"), MiscTools.generateKey()),
-                    MiscTools.decryptPassword(rs.getString("cvv"), MiscTools.generateKey()),
+                    MiscTools.decryptPassword(rs.getString("number")),
+                    MiscTools.decryptPassword(rs.getString("cvv")),
                     rs.getString("expiration_date"),
                     rs.getString("holder"),
                     rs.getTimestamp("create_date"),

@@ -1,5 +1,7 @@
 package br.com.flarom.passport;
 
+import br.com.flarom.passport.classes.MiscTools;
+import br.com.flarom.passport.classes.Password;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -13,7 +15,7 @@ import javax.swing.SwingUtilities;
 
 public class pnlPassword extends javax.swing.JPanel {
 
-    private Integer id;
+    private int id_password;
     private String serviceName;
     private String userName;
     private String password;
@@ -21,6 +23,25 @@ public class pnlPassword extends javax.swing.JPanel {
 
     public pnlPassword() {
         this(null, null, null, "#000000");
+    }
+
+    public pnlPassword(Password p) {
+        this.id_password = p.getId_password();
+        this.serviceName = p.getService_name();
+        this.userName = p.getUser_name();
+        this.color = Color.decode(p.getColor());
+        
+        try {
+            this.password = MiscTools.decryptPassword(p.getPassword());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        lblServiceName.setText(this.serviceName);
+        lblUsername.setText(this.userName);
+        lblPassword.setText(this.password);
+        
+        updateColor();
     }
 
     public pnlPassword(String serviceName, String userName, String password, String colorHex) {
@@ -205,15 +226,15 @@ public class pnlPassword extends javax.swing.JPanel {
         keyGen.init(128);
         return keyGen.generateKey();
     }
-    
+
     public static String encrypt(String text, SecretKey key) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedText = cipher.doFinal(text.getBytes());
         return Base64.getEncoder().encodeToString(encryptedText);
     }
-    
-     public static String decrypt(String encryptedText, SecretKey key) throws Exception {
+
+    public static String decrypt(String encryptedText, SecretKey key) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] decryptedText = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
@@ -222,9 +243,8 @@ public class pnlPassword extends javax.swing.JPanel {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="database">
-    
     //</editor-fold>
-     
+
     private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
         StringSelection stringSelection = new StringSelection(password);
 
@@ -260,7 +280,8 @@ public class pnlPassword extends javax.swing.JPanel {
     }//GEN-LAST:event_mnuColorActionPerformed
 
     private void btnOptionsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOptionsMousePressed
-        if(!cmnOptions.isVisible()) cmnOptions.show(btnOptions, btnOptions.getWidth(), -1);
+        if (!cmnOptions.isVisible())
+            cmnOptions.show(btnOptions, btnOptions.getWidth(), -1);
     }//GEN-LAST:event_btnOptionsMousePressed
 
     public void updateColor() {
