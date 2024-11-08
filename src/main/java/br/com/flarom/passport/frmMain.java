@@ -1,8 +1,12 @@
 package br.com.flarom.passport;
 
-import br.com.flarom.passport.LandingPage.dlgLogin;
-import br.com.flarom.passport.classes.Password;
-import br.com.flarom.passport.classes.User;
+import br.com.flarom.passport.Objects.pnlPassword;
+import br.com.flarom.passport.Dialogs.dlgCategories;
+import br.com.flarom.passport.MiscDialogs.dlgTextInput;
+import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
+import br.com.flarom.passport.LogonDialogs.dlgLogin;
+import br.com.flarom.passport.Objects.Password;
+import br.com.flarom.passport.Objects.User;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -81,7 +85,7 @@ public class frmMain extends javax.swing.JFrame {
         mnuNew.add(separator);
 
         mnuNewPassword.setText("Password");
-        mnuNewPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNewPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mnuNewPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -90,15 +94,15 @@ public class frmMain extends javax.swing.JFrame {
         mnuNew.add(mnuNewPassword);
 
         mnuNewCreditCard.setText("Credit card");
-        mnuNewCreditCard.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNewCreditCard.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mnuNew.add(mnuNewCreditCard);
 
         mnuNewNote.setText("Text note");
-        mnuNewNote.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNewNote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mnuNew.add(mnuNewNote);
 
         mnuNewCategory.setText("Category");
-        mnuNewCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNewCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mnuNewCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuNewCategoryActionPerformed(evt);
@@ -108,7 +112,7 @@ public class frmMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Passport");
-        setMinimumSize(new java.awt.Dimension(364, 0));
+        setMinimumSize(new java.awt.Dimension(364, 250));
 
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setRollover(true);
@@ -117,7 +121,7 @@ public class frmMain extends javax.swing.JFrame {
         btnAdd.setMnemonic('n');
         btnAdd.setText("");
         btnAdd.setToolTipText("Create new");
-        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAdd.setFocusable(false);
         btnAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -133,7 +137,7 @@ public class frmMain extends javax.swing.JFrame {
         btnFilter.setMnemonic('f');
         btnFilter.setText("");
         btnFilter.setToolTipText("Filter");
-        btnFilter.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFilter.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnFilter.setFocusable(false);
         btnFilter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFilter.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -144,7 +148,7 @@ public class frmMain extends javax.swing.JFrame {
         btnSearch.setMnemonic('s');
         btnSearch.setText("");
         btnSearch.setToolTipText("Search");
-        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSearch.setFocusable(false);
         btnSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSearch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -160,7 +164,7 @@ public class frmMain extends javax.swing.JFrame {
         btnSettings.setMnemonic('p');
         btnSettings.setText("");
         btnSettings.setToolTipText("Settings");
-        btnSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSettings.setFocusable(false);
         btnSettings.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSettings.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -196,7 +200,7 @@ public class frmMain extends javax.swing.JFrame {
         btnPlaceholderNew.setBackground(new java.awt.Color(34, 133, 225));
         btnPlaceholderNew.setForeground(java.awt.Color.white);
         btnPlaceholderNew.setText("New password");
-        btnPlaceholderNew.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPlaceholderNew.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPlaceholderNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -270,7 +274,7 @@ public class frmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlPasswordsContainerAncestorResized
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        dlgInput dlg = new dlgInput(this);
+        dlgTextInput dlg = new dlgTextInput(this);
         String searchTerm = dlg.Show("Search", "Enter what are you looking for bellow:", "\ue11a", "Search");
     }//GEN-LAST:event_btnSearchActionPerformed
 
