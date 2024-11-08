@@ -13,6 +13,12 @@ public class Category {
     public Category() {
     }
 
+    public Category(int id_user, String name, String color) {
+        this.id_user = id_user;
+        this.name = name;
+        this.color = color;
+    }
+
     public Category(int id_category, int id_user, String name, String color) {
         this.id_category = id_category;
         this.id_user = id_user;
@@ -82,12 +88,35 @@ public class Category {
 
     public void Delete() {
         String sql = "DELETE FROM categories WHERE id_category = ?";
-        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String sqlp = "UPDATE passwords SET id_category = NULL WHERE id_category = ?";
 
-            stmt.setInt(1, id_category);
-            stmt.executeUpdate();
+        try (Connection conn = Database.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement stmtp = conn.prepareStatement(sqlp)) {
+                stmtp.setInt(1, id_category);
+                stmtp.executeUpdate();
+            }
+
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, id_category);
+                stmt.executeUpdate();
+            }
+
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try (Connection conn = Database.getConnection()) {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+        } finally {
+            try (Connection conn = Database.getConnection()) {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

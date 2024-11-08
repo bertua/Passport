@@ -8,11 +8,17 @@ import java.util.ArrayList;
 
 public class User {
 
+    public static User getLoggedUser() {
+        return loggedUser;
+    }
+
     private int id_user;
     private String username;
     private String nickname;
     private String email;
     private String password;
+    
+    private static User loggedUser;
 
     public User() {
 
@@ -93,7 +99,6 @@ public class User {
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 this.id_user = rs.getInt(1);
-                CreateDefaultCategory();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,7 +106,7 @@ public class User {
     }
 
     public void Update() throws Exception {
-        if (isUsernameOrEmailTaken(username, email, id_user)) {
+        if (isDataTaken(username, email, id_user)) {
             throw new Exception("Username or email already taken");
         }
 
@@ -141,7 +146,7 @@ public class User {
         return false;
     }
 
-    private boolean isUsernameOrEmailTaken(String username, String email, int userId) {
+    private boolean isDataTaken(String username, String email, int userId) {
         String sql = "SELECT 1 FROM users WHERE (username = ? OR email = ?) AND id_user != ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
@@ -153,17 +158,6 @@ public class User {
             e.printStackTrace();
         }
         return false;
-    }
-
-    private void CreateDefaultCategory() {
-        String sql = "INSERT INTO categories (id_user, name, color) VALUES (?, 'Uncategorized', '#2285E1')";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, this.id_user);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public static User Read(int id_user) {
@@ -214,13 +208,15 @@ public class User {
             stmt.setString(3, MiscTools.encryptPassword(password));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new User(
+                loggedUser = new User(
                         rs.getInt("id_user"),
                         rs.getString("username"),
                         rs.getString("nickname"),
                         rs.getString("email"),
                         rs.getString("password")
                 );
+                
+                return loggedUser;
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package br.com.flarom.passport.classes;
 
+import java.awt.Color;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
@@ -59,7 +60,6 @@ public class MiscTools {
 
     public static String encryptPassword(String text) throws Exception {
         SecretKeySpec aesKey = generateAESKey(defaultpassword);
-        System.out.println(text);
 
         byte[] iv = new byte[IV_SIZE];
         Arrays.fill(iv, (byte) 0);
@@ -89,4 +89,18 @@ public class MiscTools {
         return new String(decryptedText, "UTF-8");
     }
 
+    public static Color stringToColor(String colorString) {
+        if (colorString != null && colorString.startsWith("#") && colorString.length() == 7) {
+            try {
+                int rgb = Integer.parseInt(colorString.substring(1), 16);
+                return new Color(rgb);
+            } catch (NumberFormatException e) {
+                System.err.println("Error converting string to color: " + e.getMessage());
+                return null;
+            }
+        } else {
+            System.err.println("Invalid color format: " + colorString);
+            return null;
+        }
+    }
 }

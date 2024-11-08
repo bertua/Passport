@@ -1,16 +1,35 @@
 package br.com.flarom.passport;
 
+import br.com.flarom.passport.classes.Category;
+import br.com.flarom.passport.classes.User;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 public class dlgPasswordEditor extends javax.swing.JDialog {
 
     private boolean confirmed = false;
+    private java.awt.Frame parent;
     
     public dlgPasswordEditor(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        this.parent = parent;
+        
+        refreshCategories();
     }
 
+    private ArrayList<Category> userCategories = new ArrayList<Category>();
+    private void refreshCategories(){
+        userCategories.clear();
+        cbxCategories.removeAllItems();
+        
+        ArrayList<Category> categories = Category.ListFromUser(User.getLoggedUser().getId_user());
+        for(Category cat : categories){
+            userCategories.add(cat);
+            cbxCategories.addItem(cat.getName());
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -35,8 +54,8 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         btnCancel = new javax.swing.JButton();
         btnViewPassword = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        btnViewPassword1 = new javax.swing.JButton();
+        cbxCategories = new javax.swing.JComboBox<>();
+        btnAddCategory = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Password editor");
@@ -150,14 +169,14 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
 
         jLabel8.setText("Category:");
 
-        btnViewPassword1.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 16)); // NOI18N
-        btnViewPassword1.setText("");
-        btnViewPassword1.setToolTipText("Show password");
-        btnViewPassword1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnViewPassword1.setPreferredSize(new java.awt.Dimension(22, 22));
-        btnViewPassword1.addActionListener(new java.awt.event.ActionListener() {
+        btnAddCategory.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 16)); // NOI18N
+        btnAddCategory.setText("");
+        btnAddCategory.setToolTipText("Show password");
+        btnAddCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAddCategory.setPreferredSize(new java.awt.Dimension(22, 22));
+        btnAddCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewPassword1ActionPerformed(evt);
+                btnAddCategoryActionPerformed(evt);
             }
         });
 
@@ -176,9 +195,9 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnViewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbxCategories, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnViewPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCancel)
@@ -219,8 +238,8 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnViewPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxCategories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
@@ -232,17 +251,16 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private boolean isOk = false;
     public void Create(){
         this.setVisible(true);
-        if(isOk){
+        if(confirmed){
             dispose();
         }
     }
     
     public void Edit(int id){
         this.setVisible(true);
-        if(isOk){
+        if(confirmed){
             dispose();
         }
     }
@@ -275,9 +293,11 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         txtPassword.setText(pass);
     }//GEN-LAST:event_updateRandomPass
 
-    private void btnViewPassword1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPassword1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewPassword1ActionPerformed
+    private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
+        dlgCategories ct = new dlgCategories(this.parent);
+        ct.setVisible(true);
+        refreshCategories();
+    }//GEN-LAST:event_btnAddCategoryActionPerformed
 
     private static final SecureRandom random = new SecureRandom();
     
@@ -334,16 +354,16 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddCategory;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnGenerate;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnViewPassword;
-    private javax.swing.JButton btnViewPassword1;
+    private javax.swing.JComboBox<String> cbxCategories;
     private javax.swing.JCheckBox cbxLower;
     private javax.swing.JCheckBox cbxNumbr;
     private javax.swing.JCheckBox cbxSpecl;
     private javax.swing.JCheckBox cbxUpper;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

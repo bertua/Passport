@@ -25,7 +25,7 @@ public class frmMain extends javax.swing.JFrame {
             System.exit(0);
         }
 
-        loggedUser = u;
+        loggedUser = User.getLoggedUser();
 
         loadPasswords();
 
@@ -99,6 +99,11 @@ public class frmMain extends javax.swing.JFrame {
 
         mnuNewCategory.setText("Category");
         mnuNewCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mnuNewCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuNewCategoryActionPerformed(evt);
+            }
+        });
         mnuNew.add(mnuNewCategory);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -273,6 +278,11 @@ public class frmMain extends javax.swing.JFrame {
         mnuNew.show(btnAdd, btnAdd.getLocation().x + btnAdd.getWidth(), btnAdd.getLocation().y);
     }//GEN-LAST:event_btnAddMousePressed
 
+    private void mnuNewCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuNewCategoryActionPerformed
+        dlgCategories ce = new dlgCategories(this);
+        ce.setVisible(true);
+    }//GEN-LAST:event_mnuNewCategoryActionPerformed
+
     private void updateScrollBar() {
         int buttonHeight = 123;
         int buttonWidth = 286;
@@ -335,6 +345,6 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuTitle;
     private javax.swing.JPanel pnlPasswordsContainer;
     private javax.swing.JPanel pnlPlaceholder;
-    private javax.swing.JSeparator separator;
+    private javax.swing.JPopupMenu.Separator separator;
     // End of variables declaration//GEN-END:variables
 }
