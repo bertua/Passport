@@ -1,11 +1,16 @@
 package br.com.flarom.passport.MiscDialogs;
 
+import br.com.flarom.passport.Helpers.KeyboardHelper;
+
 public class dlgTextInput extends javax.swing.JDialog {
 
     public dlgTextInput(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
-        getRootPane().setDefaultButton(btnOk);
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setConfirmButton(btnOk);
+        kh.setCancelButton(btnCancel);
     }
 
     private boolean confirmed = false;
@@ -36,6 +41,7 @@ public class dlgTextInput extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(398, 113));
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);

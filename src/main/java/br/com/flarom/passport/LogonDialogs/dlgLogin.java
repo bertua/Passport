@@ -1,8 +1,7 @@
 package br.com.flarom.passport.LogonDialogs;
 
-import br.com.flarom.passport.Objects.LoginAttempt;
+import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.User;
-import java.sql.Timestamp;
 import javax.swing.JOptionPane;
 
 public class dlgLogin extends javax.swing.JDialog {
@@ -13,6 +12,11 @@ public class dlgLogin extends javax.swing.JDialog {
         super(parent, true);
         this.parent = parent;
         initComponents();
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setCloseOnEscape(this);
+        kh.setConfirmButton(btnLogin);
+        
         getRootPane().setDefaultButton(btnLogin);
     }
 
@@ -67,7 +71,7 @@ public class dlgLogin extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Login");
 
-        jPanel1.setBackground(java.awt.Color.white);
+        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
 
         jLabel1.setText("Username:");
@@ -115,7 +119,7 @@ public class dlgLogin extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnViewPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnViewPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                     .addComponent(txtPassword))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -169,11 +173,7 @@ public class dlgLogin extends javax.swing.JDialog {
 
             try {
                 User u = User.Login(identifier, password);
-                                
-                if (u == null) {
-                    JOptionPane.showMessageDialog(parent, "Unknown account");
-                }
-                
+
                 return u;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -182,13 +182,26 @@ public class dlgLogin extends javax.swing.JDialog {
 
         return null;
     }
-
+    
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
         dlgSignup su = new dlgSignup(this.parent);
         su.CreateAccount();
     }//GEN-LAST:event_btnSignUpActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        String identifier = txtIdentifier.getText();
+        String password = txtPassword.getText();
+        try {
+            User u = User.Login(identifier, password);
+
+            if (u == null) {
+                JOptionPane.showMessageDialog(parent, "Incorrect username or password");
+                return;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         confirmed = true;
         dispose();
     }//GEN-LAST:event_btnLoginActionPerformed

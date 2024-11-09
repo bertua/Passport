@@ -1,5 +1,6 @@
 package br.com.flarom.passport.Dialogs;
 
+import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.Category;
 import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
 import br.com.flarom.passport.Objects.User;
@@ -11,6 +12,10 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     public dlgCategoryEditor(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setConfirmButton(btnOk);
+        kh.setCloseOnEscape(this);
     }
 
     private boolean confirmed = false;
@@ -18,7 +23,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     public Category Create() {
         lblTitle.setText("New category");
         
-        this.show();
+        this.setVisible(true);
 
         if (confirmed) {
             Color col = pnlColor.getBackground();
@@ -37,7 +42,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
         txtName.setText(oldCategory.getName());
         pnlColor.setBackground(stringToColor(oldCategory.getColor()));
         
-        this.show();
+        this.setVisible(true);
 
         if (confirmed) {
             Color col = pnlColor.getBackground();
@@ -64,7 +69,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
         btnChoseColor = new javax.swing.JButton();
         pnlColor = new javax.swing.JPanel();
         btnOk = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(412, 224));
@@ -72,7 +77,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
         lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTitle.setText("New category");
 
-        jPanel1.setBackground(java.awt.Color.white);
+        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
 
         jLabel2.setText("Name:");
@@ -133,7 +138,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnChoseColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlColor, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                    .addComponent(pnlColor, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -147,8 +152,13 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setText("Cancelar");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnCancel.setText("Cancelar");
+        btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -163,7 +173,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 234, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(btnCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOk)))
                 .addContainerGap())
@@ -178,7 +188,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
-                    .addComponent(jButton2))
+                    .addComponent(btnCancel))
                 .addContainerGap())
         );
 
@@ -196,6 +206,11 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
         pnlColor.setBackground(newColor);
     }//GEN-LAST:event_btnChoseColorActionPerformed
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        confirmed = false;
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -212,9 +227,9 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnChoseColor;
     private javax.swing.JButton btnOk;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

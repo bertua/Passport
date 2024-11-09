@@ -4,14 +4,17 @@ import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Dialogs.dlgCategories;
 import br.com.flarom.passport.MiscDialogs.dlgTextInput;
 import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
+import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.LogonDialogs.dlgLogin;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import org.flywaydb.core.Flyway;
 
@@ -22,32 +25,45 @@ public class frmMain extends javax.swing.JFrame {
     public frmMain() {
         initComponents();
 
-        dlgLogin dl = new dlgLogin(this);
-        User u = dl.LogIn();
-
-        if (u == null) {
-            System.exit(0);
-        }
-
-        loggedUser = User.getLoggedUser();
+        login();
 
         loadPasswords();
 
         updateScrollBar();
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setShortcutButton(btnAdd, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+        kh.setShortcutButton(btnSearch, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+    }
+
+    private void login() {
+        dlgLogin dl = new dlgLogin(this);
+        User u = dl.LogIn();
+
+        if (u == null) System.exit(0);
+
+        loggedUser = User.getLoggedUser();
     }
 
     private void loadPasswords() {
+        pnlPasswordsContainer.removeAll();
+        
         try {
             ArrayList<Password> userPasswords = Password.ListFromUser(loggedUser.getId_user());
-            
-            for(Password p :userPasswords){
-                pnlPassword pass = new pnlPassword(p);
+
+            for (Password p : userPasswords) {
+                String service_name = p.getService_name();
+                String user_name = p.getUser_name();
+                String password = p.getPassword();
+                String color = p.getColor();
                 
+                pnlPassword pass = new pnlPassword(service_name, user_name, password, color);
+
                 pnlPasswordsContainer.add(pass);
-                
+
                 updateScrollBar();
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -120,7 +136,7 @@ public class frmMain extends javax.swing.JFrame {
         btnAdd.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnAdd.setMnemonic('n');
         btnAdd.setText("");
-        btnAdd.setToolTipText("Create new");
+        btnAdd.setToolTipText("Create new (Ctrl+N)");
         btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAdd.setFocusable(false);
         btnAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -128,6 +144,11 @@ public class frmMain extends javax.swing.JFrame {
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnAddMousePressed(evt);
+            }
+        });
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed1(evt);
             }
         });
         jToolBar1.add(btnAdd);
@@ -147,7 +168,7 @@ public class frmMain extends javax.swing.JFrame {
         btnSearch.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnSearch.setMnemonic('s');
         btnSearch.setText("");
-        btnSearch.setToolTipText("Search");
+        btnSearch.setToolTipText("Search (Ctrl+F)");
         btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSearch.setFocusable(false);
         btnSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -188,7 +209,7 @@ public class frmMain extends javax.swing.JFrame {
         });
         pnlPasswordsContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        pnlPlaceholder.setBackground(java.awt.Color.white);
+        pnlPlaceholder.setBackground(new java.awt.Color(251, 251, 251));
         pnlPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
         pnlPlaceholder.setPreferredSize(new java.awt.Dimension(286, 123));
 
@@ -260,6 +281,7 @@ public class frmMain extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         dlgPasswordEditor dlg = new dlgPasswordEditor(this);
         dlg.Create();
+        loadPasswords();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void pnlPasswordsContainerComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_pnlPasswordsContainerComponentAdded
@@ -286,6 +308,10 @@ public class frmMain extends javax.swing.JFrame {
         dlgCategories ce = new dlgCategories(this);
         ce.setVisible(true);
     }//GEN-LAST:event_mnuNewCategoryActionPerformed
+
+    private void btnAddActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed1
+        mnuNew.show(btnAdd, btnAdd.getLocation().x + btnAdd.getWidth(), btnAdd.getLocation().y);
+    }//GEN-LAST:event_btnAddActionPerformed1
 
     private void updateScrollBar() {
         int buttonHeight = 123;

@@ -1,5 +1,6 @@
 package br.com.flarom.passport.LogonDialogs;
 
+import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.User;
 import javax.swing.JOptionPane;
 
@@ -8,6 +9,10 @@ public class dlgSignup extends javax.swing.JDialog {
     public dlgSignup(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setCloseOnEscape(this);
+        kh.setConfirmButton(btnOk);
     }
 
     private boolean confirmed = false;
@@ -66,7 +71,7 @@ public class dlgSignup extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Sign up");
 
-        jPanel1.setBackground(java.awt.Color.white);
+        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
 
         jLabel2.setText("Name:");

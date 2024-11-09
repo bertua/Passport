@@ -1,6 +1,7 @@
 package br.com.flarom.passport.Dialogs;
 
 import br.com.flarom.passport.Dialogs.dlgCategoryEditor;
+import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.Category;
 import br.com.flarom.passport.Objects.User;
 import java.util.ArrayList;
@@ -19,8 +20,10 @@ public class dlgCategories extends javax.swing.JDialog {
         initComponents();
         
         this.parent = parent;
-        
         loggedUser = User.getLoggedUser();
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setCloseOnEscape(this);
         
         refresh();
     }
@@ -56,6 +59,7 @@ public class dlgCategories extends javax.swing.JDialog {
         setTitle("My categories");
         setMinimumSize(new java.awt.Dimension(400, 306));
 
+        lstCategories.setBackground(new java.awt.Color(251, 251, 251));
         lstCategories.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(lstCategories);
 

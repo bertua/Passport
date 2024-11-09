@@ -1,8 +1,6 @@
 package br.com.flarom.passport.Objects;
 
 import br.com.flarom.passport.MiscDialogs.dlgColorInput;
-import br.com.flarom.passport.Helpers.MiscHelper;
-import br.com.flarom.passport.Objects.Password;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -16,7 +14,6 @@ import javax.swing.SwingUtilities;
 
 public class pnlPassword extends javax.swing.JPanel {
 
-    private int id_password;
     private String serviceName;
     private String userName;
     private String password;
@@ -24,25 +21,6 @@ public class pnlPassword extends javax.swing.JPanel {
 
     public pnlPassword() {
         this(null, null, null, "#000000");
-    }
-
-    public pnlPassword(Password p) {
-        this.id_password = p.getId_password();
-        this.serviceName = p.getService_name();
-        this.userName = p.getUser_name();
-        this.color = Color.decode(p.getColor());
-        
-        try {
-            this.password = MiscHelper.decryptPassword(p.getPassword());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        lblServiceName.setText(this.serviceName);
-        lblUsername.setText(this.userName);
-        lblPassword.setText(this.password);
-        
-        updateColor();
     }
 
     public pnlPassword(String serviceName, String userName, String password, String colorHex) {
@@ -112,7 +90,7 @@ public class pnlPassword extends javax.swing.JPanel {
         mnuDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         cmnOptions.add(mnuDelete);
 
-        setBackground(java.awt.Color.white);
+        setBackground(new java.awt.Color(251, 251, 251));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
         setMaximumSize(new java.awt.Dimension(286, 123));
         setMinimumSize(new java.awt.Dimension(286, 123));
@@ -178,18 +156,18 @@ public class pnlPassword extends javax.swing.JPanel {
         );
 
         lblServiceName.setEditable(false);
-        lblServiceName.setBackground(java.awt.Color.white);
+        lblServiceName.setBackground(new java.awt.Color(251, 251, 251));
         lblServiceName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblServiceName.setText("Service name");
         lblServiceName.setBorder(null);
 
         lblUsername.setEditable(false);
-        lblUsername.setBackground(java.awt.Color.white);
+        lblUsername.setBackground(new java.awt.Color(251, 251, 251));
         lblUsername.setText("Username");
         lblUsername.setBorder(null);
 
         lblPassword.setEditable(false);
-        lblPassword.setBackground(java.awt.Color.white);
+        lblPassword.setBackground(new java.awt.Color(251, 251, 251));
         lblPassword.setText("Password");
         lblPassword.setBorder(null);
 

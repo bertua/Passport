@@ -24,6 +24,18 @@ public class Password {
     public Password() {
     }
 
+    public Password(int id_user, int id_category, String service_name, String user_name, String password, Timestamp create_date, Timestamp edit_date, Timestamp view_date, String color) {
+        this.id_user = id_user;
+        this.id_category = id_category;
+        this.service_name = service_name;
+        this.user_name = user_name;
+        this.password = password;
+        this.create_date = create_date;
+        this.edit_date = edit_date;
+        this.view_date = view_date;
+        this.color = color;
+    }
+    
     public Password(int id_password, int id_user, int id_category, String service_name, String user_name, String password, Timestamp create_date, Timestamp edit_date, Timestamp view_date, String color) {
         this.id_password = id_password;
         this.id_user = id_user;
