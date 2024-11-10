@@ -108,7 +108,7 @@ public class dlgColorInput extends javax.swing.JDialog {
         pnlColors = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Color palette");
+        setTitle("Color palette - Passport");
         setMinimumSize(new java.awt.Dimension(346, 426));
         setModal(true);
 

@@ -1,39 +1,32 @@
 package br.com.flarom.passport.Objects;
 
+import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
+import static br.com.flarom.passport.Helpers.MiscHelper.colorToString;
+import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
 import br.com.flarom.passport.MiscDialogs.dlgColorInput;
+import br.com.flarom.passport.MiscDialogs.dlgTextInput;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.util.Base64;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class pnlPassword extends javax.swing.JPanel {
 
-    private String serviceName;
-    private String userName;
-    private String password;
     private Color color;
+    private Password password;
 
-    public pnlPassword() {
-        this(null, null, null, "#000000");
-    }
-
-    public pnlPassword(String serviceName, String userName, String password, String colorHex) {
-        this.serviceName = serviceName;
-        this.userName = userName;
-        this.password = password;
-        this.color = Color.decode(colorHex);
+    public pnlPassword(Password p) {
+        this.password = p;
 
         initComponents();
 
-        lblServiceName.setText(this.serviceName);
-        lblUsername.setText(this.userName);
-        lblPassword.setText(this.password);
+        lblServiceName.setText(p.getService_name());
+        lblUsername.setText(p.getUser_name());
+        lblPassword.setText(p.getPassword());
+        color = stringToColor(p.getColor());
 
         updateColor();
     }
@@ -79,6 +72,11 @@ public class pnlPassword extends javax.swing.JPanel {
 
         mnuEdit.setText("Edit");
         mnuEdit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        mnuEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuEditActionPerformed(evt);
+            }
+        });
         cmnOptions.add(mnuEdit);
 
         mnuProperties.setText("Properties");
@@ -86,8 +84,14 @@ public class pnlPassword extends javax.swing.JPanel {
         cmnOptions.add(mnuProperties);
         cmnOptions.add(jSeparator1);
 
+        mnuDelete.setForeground(new java.awt.Color(220, 53, 69));
         mnuDelete.setText("Delete");
         mnuDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        mnuDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDeleteActionPerformed(evt);
+            }
+        });
         cmnOptions.add(mnuDelete);
 
         setBackground(new java.awt.Color(251, 251, 251));
@@ -197,35 +201,12 @@ public class pnlPassword extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    //<editor-fold defaultstate="collapsed" desc="Crypto">     
-    private static final String ALGORITHM = "AES";
-
-    public static SecretKey generateKey() throws Exception {
-        KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
-        keyGen.init(128);
-        return keyGen.generateKey();
+    public Password getPassword() {
+        return this.password;
     }
-
-    public static String encrypt(String text, SecretKey key) throws Exception {
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedText = cipher.doFinal(text.getBytes());
-        return Base64.getEncoder().encodeToString(encryptedText);
-    }
-
-    public static String decrypt(String encryptedText, SecretKey key) throws Exception {
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decryptedText = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
-        return new String(decryptedText);
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="database">
-    //</editor-fold>
 
     private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
-        StringSelection stringSelection = new StringSelection(password);
+        StringSelection stringSelection = new StringSelection(password.getPassword());
 
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
@@ -256,12 +237,41 @@ public class pnlPassword extends javax.swing.JPanel {
 
         this.color = newColor;
         updateColor();
+
+        try {
+            password.setColor(colorToString(newColor));
+            password.Update();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_mnuColorActionPerformed
 
     private void btnOptionsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOptionsMousePressed
         if (!cmnOptions.isVisible())
             cmnOptions.show(btnOptions, btnOptions.getWidth(), -1);
     }//GEN-LAST:event_btnOptionsMousePressed
+
+    private void mnuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDeleteActionPerformed
+        dlgTextInput ti = new dlgTextInput((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
+        String confirmPassword = ti.Show("Delete " + password.getService_name(), "Insert your password to confirm deletion", "", "Delete");
+
+        if (confirmPassword == null) {
+            return;
+        }
+
+        if (confirmPassword.equals(password.getPassword())) {
+            password.Delete();
+            Container c = this.getParent();
+            c.remove(this);
+            c.revalidate();
+            c.repaint();
+        }
+    }//GEN-LAST:event_mnuDeleteActionPerformed
+
+    private void mnuEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEditActionPerformed
+        dlgPasswordEditor pe = new dlgPasswordEditor((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
+        pe.Edit(password);
+    }//GEN-LAST:event_mnuEditActionPerformed
 
     public void updateColor() {
         pnlSidebar.setBackground(this.color);

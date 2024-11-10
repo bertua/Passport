@@ -3,15 +3,19 @@ package br.com.flarom.passport.Dialogs;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.Category;
 import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
+import br.com.flarom.passport.MiscDialogs.dlgColorInput;
 import br.com.flarom.passport.Objects.User;
 import java.awt.Color;
-import javax.swing.JColorChooser;
 
 public class dlgCategoryEditor extends javax.swing.JDialog {
 
+    private java.awt.Frame parent;
+    
     public dlgCategoryEditor(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        
+        this.parent = parent;
         
         KeyboardHelper kh = new KeyboardHelper(rootPane);
         kh.setConfirmButton(btnOk);
@@ -21,12 +25,13 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     private boolean confirmed = false;
 
     public Category Create() {
+        setTitle("New category - Passport");
         lblTitle.setText("New category");
         
         this.setVisible(true);
 
         if (confirmed) {
-            Color col = pnlColor.getBackground();
+            Color col = lblColor.getForeground();
             String hexColor = String.format("#%02X%02X%02X", col.getRed(), col.getGreen(), col.getBlue());
 
             Category c = new Category(User.getLoggedUser().getId_user(), txtName.getText(), hexColor);
@@ -38,14 +43,15 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     }
     
     public Category Update(Category oldCategory){
+        setTitle("Edit category - Passport");
         lblTitle.setText("Edit category");
         txtName.setText(oldCategory.getName());
-        pnlColor.setBackground(stringToColor(oldCategory.getColor()));
+        lblColor.setForeground(stringToColor(oldCategory.getColor()));
         
         this.setVisible(true);
 
         if (confirmed) {
-            Color col = pnlColor.getBackground();
+            Color col = lblColor.getForeground();
             String hexColor = String.format("#%02X%02X%02X", col.getRed(), col.getGreen(), col.getBlue());
 
             oldCategory.setName(txtName.getText());
@@ -67,11 +73,12 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
         txtName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnChoseColor = new javax.swing.JButton();
-        pnlColor = new javax.swing.JPanel();
+        lblColor = new javax.swing.JLabel();
         btnOk = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("New category - Passport");
         setMinimumSize(new java.awt.Dimension(412, 224));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -92,20 +99,9 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
             }
         });
 
-        pnlColor.setBackground(new java.awt.Color(34, 133, 225));
-        pnlColor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
-        pnlColor.setPreferredSize(new java.awt.Dimension(22, 22));
-
-        javax.swing.GroupLayout pnlColorLayout = new javax.swing.GroupLayout(pnlColor);
-        pnlColor.setLayout(pnlColorLayout);
-        pnlColorLayout.setHorizontalGroup(
-            pnlColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
-        pnlColorLayout.setVerticalGroup(
-            pnlColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        lblColor.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
+        lblColor.setForeground(new java.awt.Color(34, 133, 225));
+        lblColor.setText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -114,13 +110,14 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtName)
+                    .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(pnlColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(lblColor)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnChoseColor)))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -138,7 +135,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnChoseColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlColor, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                    .addComponent(lblColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -202,8 +199,12 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnChoseColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChoseColorActionPerformed
-        Color newColor = JColorChooser.showDialog(null, "Choose a color", pnlColor.getBackground());
-        pnlColor.setBackground(newColor);
+        dlgColorInput ci = new dlgColorInput(this.parent);
+        Color newColor =  ci.getColor();
+        
+        if(newColor == null) return;
+        
+        lblColor.setForeground(newColor);
     }//GEN-LAST:event_btnChoseColorActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -233,8 +234,8 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblColor;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JPanel pnlColor;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }

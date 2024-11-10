@@ -60,7 +60,7 @@ public class dlgSignup extends javax.swing.JDialog {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Create a new account");
+        setTitle("Sign up - Passport");
         setMinimumSize(new java.awt.Dimension(410, 461));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -74,15 +74,15 @@ public class dlgSignup extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(251, 251, 251));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
 
-        jLabel2.setText("Name:");
+        jLabel2.setText("Display name:");
 
         jLabel3.setText("Username:");
 
-        jLabel4.setText("E-Mail:");
+        jLabel4.setText("Email:");
 
         jLabel5.setText("Password:");
 
-        jLabel6.setText("Confirm:");
+        jLabel6.setText("Confirm password:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

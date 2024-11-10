@@ -103,4 +103,12 @@ public class MiscHelper {
             return null;
         }
     }
+
+    public static String colorToString(Color color) {
+        if (color == null) {
+            return null;
+        }
+        int rgb = color.getRGB() & 0xFFFFFF;
+        return String.format("#%06X", rgb);
+    }
 }

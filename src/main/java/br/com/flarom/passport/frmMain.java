@@ -6,14 +6,21 @@ import br.com.flarom.passport.MiscDialogs.dlgTextInput;
 import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.LogonDialogs.dlgLogin;
+import br.com.flarom.passport.Objects.Category;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import org.flywaydb.core.Flyway;
@@ -28,58 +35,120 @@ public class frmMain extends javax.swing.JFrame {
         login();
 
         loadPasswords();
+        loadCategories();
 
         updateScrollBar();
-        
+
         KeyboardHelper kh = new KeyboardHelper(rootPane);
         kh.setShortcutButton(btnAdd, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         kh.setShortcutButton(btnSearch, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+        kh.setShortcutButton(btnFilter, KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK));
+        kh.setShortcutButton(btnSettings, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     }
 
     private void login() {
         dlgLogin dl = new dlgLogin(this);
         User u = dl.LogIn();
 
-        if (u == null) System.exit(0);
+        if (u == null) {
+            System.exit(0);
+        }
 
         loggedUser = User.getLoggedUser();
     }
 
     private void loadPasswords() {
-        pnlPasswordsContainer.removeAll();
-        
+        pnlPasswords.removeAll();
+
         try {
             ArrayList<Password> userPasswords = Password.ListFromUser(loggedUser.getId_user());
 
             for (Password p : userPasswords) {
-                String service_name = p.getService_name();
-                String user_name = p.getUser_name();
-                String password = p.getPassword();
-                String color = p.getColor();
-                
-                pnlPassword pass = new pnlPassword(service_name, user_name, password, color);
+                pnlPassword pass = new pnlPassword(p);
 
-                pnlPasswordsContainer.add(pass);
-
-                updateScrollBar();
+                pnlPasswords.add(pass);
             }
 
+            updateScrollBar();
+
+            if (pnlPasswords.getComponentCount() == 0) {
+                pnlPasswords.add(pnlPlaceholder);
+                updateScrollBar();
+            }
         } catch (Exception ex) {
-            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
+    }
+
+    private void loadCategories() {
+        popTag.removeAll();
+
+        popTag.add(mnuTitle2);
+        popTag.add(separator2);
+        popTag.add(mnuRemoveTag);
+
+        try {
+            ArrayList<Category> userCategories = Category.ListFromUser(loggedUser.getId_user());
+
+            for (Category c : userCategories) {
+                JMenuItem mnuCategory = new JMenuItem(c.getName());
+                Color catColor = Color.decode(c.getColor());
+
+                ImageIcon icon = getCategoryIcon(catColor);
+                mnuCategory.setIcon(icon);
+
+                mnuCategory.addActionListener(new ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        Filter(c.getName());
+                    }
+                });
+
+                popTag.add(mnuCategory);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        popTag.add(separator3);
+        popTag.add(mnuManageTags);
+    }
+
+    private ImageIcon getCategoryIcon(Color color) {
+        int diameter = 9;
+        BufferedImage img = new BufferedImage(diameter + 2, diameter + 2, BufferedImage.TYPE_INT_ARGB); // Expand size for border
+        Graphics2D g = img.createGraphics();
+
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Draw border
+        g.setColor(new Color(0, 0, 0));
+        g.fillOval(0, 0, diameter + 1, diameter + 1);
+
+        // Draw inner circle
+        g.setColor(color);
+        g.fillOval(1, 1, diameter - 1, diameter - 1);
+
+        g.dispose();
+
+        return new ImageIcon(img);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mnuNew = new javax.swing.JPopupMenu();
+        popNew = new javax.swing.JPopupMenu();
         mnuTitle = new javax.swing.JMenuItem();
         separator = new javax.swing.JPopupMenu.Separator();
         mnuNewPassword = new javax.swing.JMenuItem();
-        mnuNewCreditCard = new javax.swing.JMenuItem();
         mnuNewNote = new javax.swing.JMenuItem();
-        mnuNewCategory = new javax.swing.JMenuItem();
+        mnuNewCreditCard = new javax.swing.JMenuItem();
+        popTag = new javax.swing.JPopupMenu();
+        mnuTitle2 = new javax.swing.JMenuItem();
+        separator2 = new javax.swing.JPopupMenu.Separator();
+        mnuRemoveTag = new javax.swing.JMenuItem();
+        separator3 = new javax.swing.JPopupMenu.Separator();
+        mnuManageTags = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         btnAdd = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 200));
@@ -89,7 +158,7 @@ public class frmMain extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         btnSettings = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        pnlPasswordsContainer = new javax.swing.JPanel();
+        pnlPasswords = new javax.swing.JPanel();
         pnlPlaceholder = new javax.swing.JPanel();
         lblPlaceholderTitle = new javax.swing.JLabel();
         lblPlaceholderDescription = new javax.swing.JLabel();
@@ -97,8 +166,8 @@ public class frmMain extends javax.swing.JFrame {
 
         mnuTitle.setText("Create new");
         mnuTitle.setEnabled(false);
-        mnuNew.add(mnuTitle);
-        mnuNew.add(separator);
+        popNew.add(mnuTitle);
+        popNew.add(separator);
 
         mnuNewPassword.setText("Password");
         mnuNewPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -107,24 +176,38 @@ public class frmMain extends javax.swing.JFrame {
                 btnAddActionPerformed(evt);
             }
         });
-        mnuNew.add(mnuNewPassword);
-
-        mnuNewCreditCard.setText("Credit card");
-        mnuNewCreditCard.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        mnuNew.add(mnuNewCreditCard);
+        popNew.add(mnuNewPassword);
 
         mnuNewNote.setText("Text note");
         mnuNewNote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        mnuNew.add(mnuNewNote);
+        popNew.add(mnuNewNote);
 
-        mnuNewCategory.setText("Category");
-        mnuNewCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        mnuNewCategory.addActionListener(new java.awt.event.ActionListener() {
+        mnuNewCreditCard.setText("Credit card");
+        mnuNewCreditCard.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        popNew.add(mnuNewCreditCard);
+
+        mnuTitle2.setText("Tags");
+        mnuTitle2.setEnabled(false);
+        popTag.add(mnuTitle2);
+        popTag.add(separator2);
+
+        mnuRemoveTag.setText("Show all");
+        mnuRemoveTag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuNewCategoryActionPerformed(evt);
+                mnuRemoveTagActionPerformed(evt);
             }
         });
-        mnuNew.add(mnuNewCategory);
+        popTag.add(mnuRemoveTag);
+        popTag.add(separator3);
+
+        mnuManageTags.setText("Manage tags");
+        mnuManageTags.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        mnuManageTags.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuManageTagsActionPerformed(evt);
+            }
+        });
+        popTag.add(mnuManageTags);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Passport");
@@ -156,12 +239,22 @@ public class frmMain extends javax.swing.JFrame {
 
         btnFilter.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnFilter.setMnemonic('f');
-        btnFilter.setText("");
-        btnFilter.setToolTipText("Filter");
+        btnFilter.setText("");
+        btnFilter.setToolTipText("Tags (Ctrl+T)");
         btnFilter.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnFilter.setFocusable(false);
         btnFilter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFilter.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFilter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnFilterMousePressed(evt);
+            }
+        });
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnFilter);
         jToolBar1.add(filler3);
 
@@ -184,30 +277,30 @@ public class frmMain extends javax.swing.JFrame {
         btnSettings.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnSettings.setMnemonic('p');
         btnSettings.setText("");
-        btnSettings.setToolTipText("Settings");
+        btnSettings.setToolTipText("Settings (F1)");
         btnSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSettings.setFocusable(false);
         btnSettings.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSettings.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSettingsActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnSettings);
 
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        pnlPasswordsContainer.setMinimumSize(new java.awt.Dimension(0, 0));
-        pnlPasswordsContainer.addContainerListener(new java.awt.event.ContainerAdapter() {
-            public void componentAdded(java.awt.event.ContainerEvent evt) {
-                pnlPasswordsContainerComponentAdded(evt);
-            }
-        });
-        pnlPasswordsContainer.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
+        pnlPasswords.setMinimumSize(new java.awt.Dimension(0, 0));
+        pnlPasswords.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
             }
             public void ancestorResized(java.awt.event.HierarchyEvent evt) {
-                pnlPasswordsContainerAncestorResized(evt);
+                pnlPasswordsAncestorResized(evt);
             }
         });
-        pnlPasswordsContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        pnlPasswords.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
 
         pnlPlaceholder.setBackground(new java.awt.Color(251, 251, 251));
         pnlPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
@@ -220,11 +313,11 @@ public class frmMain extends javax.swing.JFrame {
 
         btnPlaceholderNew.setBackground(new java.awt.Color(34, 133, 225));
         btnPlaceholderNew.setForeground(java.awt.Color.white);
-        btnPlaceholderNew.setText("New password");
+        btnPlaceholderNew.setText("Start now");
         btnPlaceholderNew.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPlaceholderNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnPlaceholderNewActionPerformed(evt);
             }
         });
 
@@ -252,9 +345,9 @@ public class frmMain extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pnlPasswordsContainer.add(pnlPlaceholder);
+        pnlPasswords.add(pnlPlaceholder);
 
-        jScrollPane1.setViewportView(pnlPasswordsContainer);
+        jScrollPane1.setViewportView(pnlPasswords);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -264,14 +357,14 @@ public class frmMain extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -284,34 +377,99 @@ public class frmMain extends javax.swing.JFrame {
         loadPasswords();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void pnlPasswordsContainerComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_pnlPasswordsContainerComponentAdded
-        if (pnlPasswordsContainer.getComponentCount() >= 2) {
-            pnlPasswordsContainer.remove(pnlPlaceholder);
-            updateScrollBar();
-        }
-    }//GEN-LAST:event_pnlPasswordsContainerComponentAdded
-
-    private void pnlPasswordsContainerAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_pnlPasswordsContainerAncestorResized
+    private void pnlPasswordsAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_pnlPasswordsAncestorResized
         updateScrollBar();
-    }//GEN-LAST:event_pnlPasswordsContainerAncestorResized
+    }//GEN-LAST:event_pnlPasswordsAncestorResized
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         dlgTextInput dlg = new dlgTextInput(this);
         String searchTerm = dlg.Show("Search", "Enter what are you looking for bellow:", "\ue11a", "Search");
+
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            setTitle("Passport");
+            for (Component c : pnlPasswords.getComponents()) {
+                c.setVisible(true);
+            }
+            return;
+        }
+
+        setTitle("Search results for \"" + searchTerm + "\" - Passport");
+
+        for (Component c : pnlPasswords.getComponents()) {
+            if (c instanceof pnlPassword) {
+                pnlPassword passwordPanel = (pnlPassword) c;
+                Password p = passwordPanel.getPassword();
+
+                if (p.getService_name().toLowerCase().startsWith(searchTerm.toLowerCase())
+                        || p.getUser_name().toLowerCase().startsWith(searchTerm.toLowerCase())) {
+                    c.setVisible(true);
+                } else {
+                    c.setVisible(false);
+                }
+            }
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void Filter(String category) {
+        if (category == null || category.trim().isEmpty()) {
+            setTitle("Passport");
+            for (Component c : pnlPasswords.getComponents()) {
+                c.setVisible(true);
+            }
+            return;
+        }
+
+        setTitle("Filter results for \"" + category + "\" - Passport");
+
+        for (Component c : pnlPasswords.getComponents()) {
+            if (c instanceof pnlPassword) {
+                pnlPassword passwordPanel = (pnlPassword) c;
+                Password p = passwordPanel.getPassword();
+                Category cat = Category.Read(p.getId_category());
+
+                if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
+                    c.setVisible(true);
+                } else {
+                    c.setVisible(false);
+                }
+            }
+        }
+    }
+
     private void btnAddMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMousePressed
-        mnuNew.show(btnAdd, btnAdd.getLocation().x + btnAdd.getWidth(), btnAdd.getLocation().y);
+        popNew.show(btnAdd, jToolBar1.getLocation().x + jToolBar1.getWidth(), btnAdd.getLocation().y);
     }//GEN-LAST:event_btnAddMousePressed
 
-    private void mnuNewCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuNewCategoryActionPerformed
+    private void mnuManageTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuManageTagsActionPerformed
         dlgCategories ce = new dlgCategories(this);
         ce.setVisible(true);
-    }//GEN-LAST:event_mnuNewCategoryActionPerformed
+        loadCategories();
+    }//GEN-LAST:event_mnuManageTagsActionPerformed
 
     private void btnAddActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed1
-        mnuNew.show(btnAdd, btnAdd.getLocation().x + btnAdd.getWidth(), btnAdd.getLocation().y);
+        popNew.show(btnAdd, jToolBar1.getLocation().x + jToolBar1.getWidth(), btnAdd.getLocation().y);
     }//GEN-LAST:event_btnAddActionPerformed1
+
+    private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
+        frmSettings s = new frmSettings();
+        s.setVisible(true);
+    }//GEN-LAST:event_btnSettingsActionPerformed
+
+    private void btnPlaceholderNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceholderNewActionPerformed
+        popNew.show(pnlPasswords, btnPlaceholderNew.getLocation().x, btnPlaceholderNew.getLocation().y);
+    }//GEN-LAST:event_btnPlaceholderNewActionPerformed
+
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        popTag.show(jToolBar1, jToolBar1.getLocation().x + jToolBar1.getWidth(), btnFilter.getLocation().y);
+    }//GEN-LAST:event_btnFilterActionPerformed
+
+    private void btnFilterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFilterMousePressed
+        popTag.show(jToolBar1, jToolBar1.getLocation().x + jToolBar1.getWidth(), btnFilter.getLocation().y);
+    }//GEN-LAST:event_btnFilterMousePressed
+
+    private void mnuRemoveTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRemoveTagActionPerformed
+        Filter(null);
+    }//GEN-LAST:event_mnuRemoveTagActionPerformed
 
     private void updateScrollBar() {
         int buttonHeight = 123;
@@ -319,20 +477,20 @@ public class frmMain extends javax.swing.JFrame {
         int spacing = 5;
         int lineHeight = buttonHeight + spacing;
 
-        int availableWidth = pnlPasswordsContainer.getWidth();
+        int availableWidth = pnlPasswords.getWidth();
 
         int buttonsPerLine = availableWidth / (buttonWidth + spacing);
 
-        int totalButtons = pnlPasswordsContainer.getComponentCount();
+        int totalButtons = pnlPasswords.getComponentCount();
 
         int rows = (int) Math.ceil((double) totalButtons / buttonsPerLine);
 
         int preferredHeight = rows * lineHeight;
 
-        pnlPasswordsContainer.setPreferredSize(new Dimension(pnlPasswordsContainer.getPreferredSize().width, preferredHeight));
+        pnlPasswords.setPreferredSize(new Dimension(pnlPasswords.getPreferredSize().width, preferredHeight));
 
-        pnlPasswordsContainer.revalidate();
-        pnlPasswordsContainer.repaint();
+        pnlPasswords.revalidate();
+        pnlPasswords.repaint();
     }
 
     public static void main(String args[]) {
@@ -367,14 +525,19 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblPlaceholderDescription;
     private javax.swing.JLabel lblPlaceholderTitle;
-    private javax.swing.JPopupMenu mnuNew;
-    private javax.swing.JMenuItem mnuNewCategory;
+    private javax.swing.JMenuItem mnuManageTags;
     private javax.swing.JMenuItem mnuNewCreditCard;
     private javax.swing.JMenuItem mnuNewNote;
     private javax.swing.JMenuItem mnuNewPassword;
+    private javax.swing.JMenuItem mnuRemoveTag;
     private javax.swing.JMenuItem mnuTitle;
-    private javax.swing.JPanel pnlPasswordsContainer;
+    private javax.swing.JMenuItem mnuTitle2;
+    private javax.swing.JPanel pnlPasswords;
     private javax.swing.JPanel pnlPlaceholder;
+    private javax.swing.JPopupMenu popNew;
+    private javax.swing.JPopupMenu popTag;
     private javax.swing.JPopupMenu.Separator separator;
+    private javax.swing.JSeparator separator2;
+    private javax.swing.JSeparator separator3;
     // End of variables declaration//GEN-END:variables
 }
