@@ -57,22 +57,25 @@ public class dlgCategories extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Categories - Passport");
+        setTitle("Tags - Passport");
         setMinimumSize(new java.awt.Dimension(400, 306));
 
         jLabel1.setFont(new java.awt.Font("SegoeUI", 0, 18)); // NOI18N
-        jLabel1.setText("Categories");
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Tags");
 
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        jPanel1.setBackground(new java.awt.Color(43, 43, 43));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
-        lstCategories.setBackground(new java.awt.Color(251, 251, 251));
+        lstCategories.setBackground(new java.awt.Color(43, 43, 43));
         lstCategories.setBorder(null);
         lstCategories.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lstCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(lstCategories);
 
+        btnAdd.setBackground(new java.awt.Color(70, 206, 252));
         btnAdd.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
+        btnAdd.setForeground(java.awt.Color.black);
         btnAdd.setText("");
         btnAdd.setToolTipText("Add");
         btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -186,8 +189,10 @@ public class dlgCategories extends javax.swing.JDialog {
         
         Category cat = userCategories.get(lstCategories.getSelectedIndex());
         
-        int confirmed = JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Deleting", JOptionPane.YES_NO_OPTION);
-        if(confirmed == JOptionPane.NO_OPTION) return;
+        int count = Category.Count(cat.getId_category());
+        
+        int confirmed = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to delete " + cat.getName() +"?\nYou have " + count + " items using this tag", "Deleting", JOptionPane.YES_NO_OPTION);
+        if(confirmed != JOptionPane.YES_OPTION) return;
         
         cat.Delete();
         refresh();

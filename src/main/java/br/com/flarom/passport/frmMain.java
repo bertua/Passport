@@ -9,20 +9,25 @@ import br.com.flarom.passport.LogonDialogs.dlgLogin;
 import br.com.flarom.passport.Objects.Category;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
-import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.flywaydb.core.Flyway;
 
 public class frmMain extends javax.swing.JFrame {
@@ -48,6 +53,7 @@ public class frmMain extends javax.swing.JFrame {
 
     private void login() {
         dlgLogin dl = new dlgLogin(this);
+
         User u = dl.LogIn();
 
         if (u == null) {
@@ -85,13 +91,12 @@ public class frmMain extends javax.swing.JFrame {
 
         popTag.add(mnuTitle2);
         popTag.add(separator2);
-        popTag.add(mnuRemoveTag);
 
         try {
             ArrayList<Category> userCategories = Category.ListFromUser(loggedUser.getId_user());
 
             for (Category c : userCategories) {
-                JMenuItem mnuCategory = new JMenuItem(c.getName());
+                JMenuItem mnuCategory = new JMenuItem(c.getName() + " (" + Category.Count(c.getId_category()) + ")");
                 Color catColor = Color.decode(c.getColor());
 
                 ImageIcon icon = getCategoryIcon(catColor);
@@ -109,24 +114,22 @@ public class frmMain extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
+        popTag.add(mnuRemoveTag);
+        mnuRemoveTag.setIcon(getCategoryIcon(Color.white));
         popTag.add(separator3);
         popTag.add(mnuManageTags);
     }
 
     private ImageIcon getCategoryIcon(Color color) {
         int diameter = 9;
-        BufferedImage img = new BufferedImage(diameter + 2, diameter + 2, BufferedImage.TYPE_INT_ARGB); // Expand size for border
+        BufferedImage img = new BufferedImage(diameter + 2, diameter + 2, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Draw border
-        g.setColor(new Color(0, 0, 0));
+        GradientPaint gradient = new GradientPaint(0, 0, color.brighter(), diameter, diameter, color.darker());
+        g.setPaint(gradient);
         g.fillOval(0, 0, diameter + 1, diameter + 1);
-
-        // Draw inner circle
-        g.setColor(color);
-        g.fillOval(1, 1, diameter - 1, diameter - 1);
 
         g.dispose();
 
@@ -151,9 +154,9 @@ public class frmMain extends javax.swing.JFrame {
         mnuManageTags = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         btnAdd = new javax.swing.JButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 200));
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
         btnFilter = new javax.swing.JButton();
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 200));
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
         btnSearch = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         btnSettings = new javax.swing.JButton();
@@ -191,7 +194,7 @@ public class frmMain extends javax.swing.JFrame {
         popTag.add(mnuTitle2);
         popTag.add(separator2);
 
-        mnuRemoveTag.setText("Show all");
+        mnuRemoveTag.setText("Everything");
         mnuRemoveTag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuRemoveTagActionPerformed(evt);
@@ -217,6 +220,7 @@ public class frmMain extends javax.swing.JFrame {
         jToolBar1.setRollover(true);
 
         btnAdd.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
+        btnAdd.setForeground(java.awt.Color.white);
         btnAdd.setMnemonic('n');
         btnAdd.setText("");
         btnAdd.setToolTipText("Create new (Ctrl+N)");
@@ -235,9 +239,10 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnAdd);
-        jToolBar1.add(filler2);
+        jToolBar1.add(filler4);
 
         btnFilter.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
+        btnFilter.setForeground(java.awt.Color.white);
         btnFilter.setMnemonic('f');
         btnFilter.setText("");
         btnFilter.setToolTipText("Tags (Ctrl+T)");
@@ -256,9 +261,10 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnFilter);
-        jToolBar1.add(filler3);
+        jToolBar1.add(filler5);
 
         btnSearch.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
+        btnSearch.setForeground(java.awt.Color.white);
         btnSearch.setMnemonic('s');
         btnSearch.setText("");
         btnSearch.setToolTipText("Search (Ctrl+F)");
@@ -275,6 +281,7 @@ public class frmMain extends javax.swing.JFrame {
         jToolBar1.add(filler1);
 
         btnSettings.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
+        btnSettings.setForeground(java.awt.Color.white);
         btnSettings.setMnemonic('p');
         btnSettings.setText("");
         btnSettings.setToolTipText("Settings (F1)");
@@ -300,19 +307,21 @@ public class frmMain extends javax.swing.JFrame {
                 pnlPasswordsAncestorResized(evt);
             }
         });
-        pnlPasswords.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
+        pnlPasswords.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 7, 7));
 
-        pnlPlaceholder.setBackground(new java.awt.Color(251, 251, 251));
-        pnlPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        pnlPlaceholder.setBackground(new java.awt.Color(43, 43, 43));
+        pnlPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
         pnlPlaceholder.setPreferredSize(new java.awt.Dimension(286, 123));
 
         lblPlaceholderTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblPlaceholderTitle.setForeground(java.awt.Color.white);
         lblPlaceholderTitle.setText("No secrets here");
 
         lblPlaceholderDescription.setText("how about adding the first one?");
 
-        btnPlaceholderNew.setBackground(new java.awt.Color(34, 133, 225));
-        btnPlaceholderNew.setForeground(java.awt.Color.white);
+        btnPlaceholderNew.setBackground(new java.awt.Color(70, 206, 252));
+        btnPlaceholderNew.setForeground(java.awt.Color.black);
+        btnPlaceholderNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/passportSimbolic.png"))); // NOI18N
         btnPlaceholderNew.setText("Start now");
         btnPlaceholderNew.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPlaceholderNew.addActionListener(new java.awt.event.ActionListener() {
@@ -357,13 +366,13 @@ public class frmMain extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -452,6 +461,8 @@ public class frmMain extends javax.swing.JFrame {
 
     private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
         frmSettings s = new frmSettings();
+        s.setLocation(this.getLocation());
+        s.setSize(this.getSize());
         s.setVisible(true);
     }//GEN-LAST:event_btnSettingsActionPerformed
 
@@ -495,8 +506,26 @@ public class frmMain extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (Exception e) {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            Properties properties = new Properties();
+
+            properties.load(new FileInputStream("src/main/resources/laf/passportlaf.properties"));
+
+            for (String key : properties.stringPropertyNames()) {
+                String value = properties.getProperty(key);
+                if (value.contains(",")) {
+                    String[] rgb = value.split(",");
+                    UIManager.put(key, new Color(
+                            Integer.parseInt(rgb[0].trim()),
+                            Integer.parseInt(rgb[1].trim()),
+                            Integer.parseInt(rgb[2].trim())
+                    ));
+                } else {
+                    UIManager.put(key, Color.decode(value));
+                }
+            }
+
+        } catch (IOException | NumberFormatException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
 
@@ -519,8 +548,8 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSettings;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
-    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblPlaceholderDescription;
@@ -537,7 +566,7 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JPopupMenu popNew;
     private javax.swing.JPopupMenu popTag;
     private javax.swing.JPopupMenu.Separator separator;
-    private javax.swing.JSeparator separator2;
-    private javax.swing.JSeparator separator3;
+    private javax.swing.JPopupMenu.Separator separator2;
+    private javax.swing.JPopupMenu.Separator separator3;
     // End of variables declaration//GEN-END:variables
 }

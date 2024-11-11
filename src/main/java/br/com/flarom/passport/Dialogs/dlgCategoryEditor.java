@@ -25,8 +25,8 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     private boolean confirmed = false;
 
     public Category Create() {
-        setTitle("New category - Passport");
-        lblTitle.setText("New category");
+        setTitle("New tag - Passport");
+        lblTitle.setText("New tag");
         
         this.setVisible(true);
 
@@ -43,8 +43,8 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     }
     
     public Category Update(Category oldCategory){
-        setTitle("Edit category - Passport");
-        lblTitle.setText("Edit category");
+        setTitle("Edit tag - Passport");
+        lblTitle.setText("Edit tag");
         txtName.setText(oldCategory.getName());
         lblColor.setForeground(stringToColor(oldCategory.getColor()));
         
@@ -82,10 +82,11 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
         setMinimumSize(new java.awt.Dimension(412, 224));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblTitle.setText("New category");
+        lblTitle.setForeground(java.awt.Color.white);
+        lblTitle.setText("New tag");
 
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        jPanel1.setBackground(new java.awt.Color(43, 43, 43));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         jLabel2.setText("Name:");
 
@@ -139,8 +140,8 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnOk.setBackground(new java.awt.Color(34, 133, 225));
-        btnOk.setForeground(java.awt.Color.white);
+        btnOk.setBackground(new java.awt.Color(70, 206, 252));
+        btnOk.setForeground(java.awt.Color.black);
         btnOk.setText("OK");
         btnOk.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnOk.addActionListener(new java.awt.event.ActionListener() {

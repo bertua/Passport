@@ -15,7 +15,6 @@ create table login_attempts(
     id_attempt INTEGER PRIMARY KEY AUTOINCREMENT,
     id_user INTEGER,
     event TIMESTAMP,
-    successful INTEGER,
     FOREIGN KEY (id_user) REFERENCES users(id_user)
 );
 

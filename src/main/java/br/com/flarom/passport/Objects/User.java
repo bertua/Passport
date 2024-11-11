@@ -124,10 +124,37 @@ public class User {
     }
 
     public void Delete() {
-        String sql = "DELETE FROM users WHERE id_user = ?";
-        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id_user);
-            stmt.executeUpdate();
+        String deleteCategoriesSql = "DELETE FROM categories WHERE id_user = ?";
+        String deletePasswordsSql = "DELETE FROM passwords WHERE id_user = ?";
+        String deleteNotesSql = "DELETE FROM notes WHERE id_user = ?";
+        String deleteCreditCardsSql = "DELETE FROM credit_cards WHERE id_user = ?";
+
+        try (Connection conn = Database.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement stmt = conn.prepareStatement(deleteCategoriesSql); PreparedStatement stmtPass = conn.prepareStatement(deletePasswordsSql); PreparedStatement stmtNotes = conn.prepareStatement(deleteNotesSql); PreparedStatement stmtCards = conn.prepareStatement(deleteCreditCardsSql)) {
+
+                stmt.setInt(1, id_user);
+                stmtPass.setInt(1, id_user);
+                stmtNotes.setInt(1, id_user);
+                stmtCards.setInt(1, id_user);
+
+                stmt.executeUpdate();
+                stmtPass.executeUpdate();
+                stmtNotes.executeUpdate();
+                stmtCards.executeUpdate();
+
+                String deleteUserSql = "DELETE FROM users WHERE id_user = ?";
+                try (PreparedStatement deleteUserStmt = conn.prepareStatement(deleteUserSql)) {
+                    deleteUserStmt.setInt(1, id_user);
+                    deleteUserStmt.executeUpdate();
+                }
+
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -214,7 +241,7 @@ public class User {
                         rs.getString("email"),
                         rs.getString("password")
                 );
-                
+
                 return loggedUser;
             }
         } catch (SQLException e) {

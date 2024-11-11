@@ -8,22 +8,19 @@ public class LoginAttempt {
     private int id_attempt;
     private int id_user;
     private Timestamp event;
-    private boolean successful;
 
     public LoginAttempt() {
     }
 
-    public LoginAttempt(int id_user, boolean success) {
+    public LoginAttempt(int id_user) {
         this.id_user = id_user;
-        this.successful = success;
         this.event = new Timestamp(System.currentTimeMillis());
     }
     
-    public LoginAttempt(int id_attempt, int id_user, Timestamp event, boolean successful) {
+    public LoginAttempt(int id_attempt, int id_user, Timestamp event) {
         this.id_attempt = id_attempt;
         this.id_user = id_user;
         this.event = event;
-        this.successful = successful;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Getters and setters">
@@ -50,23 +47,14 @@ public class LoginAttempt {
     public void setEvent(Timestamp event) {
         this.event = event;
     }
-
-    public boolean isSuccessful() {
-        return successful;
-    }
-
-    public void setSuccessful(boolean successful) {
-        this.successful = successful;
-    }
     //</editor-fold>
 
     public void Create() {
-        String sql = "INSERT INTO login_attempts (id_user, event, successful) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO login_attempts (id_user, event) VALUES (?, ?)";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id_user);
             stmt.setTimestamp(2, event);
-            stmt.setBoolean(3, successful);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,8 +73,7 @@ public class LoginAttempt {
                 return new LoginAttempt(
                         rs.getInt("id_attempt"),
                         rs.getInt("id_user"),
-                        rs.getTimestamp("event"),
-                        rs.getBoolean("successful")
+                        rs.getTimestamp("event")
                 );
             }
         } catch (SQLException e) {
@@ -108,8 +95,7 @@ public class LoginAttempt {
                 attempts.add(new LoginAttempt(
                         rs.getInt("id_attempt"),
                         rs.getInt("id_user"),
-                        rs.getTimestamp("event"),
-                        rs.getBoolean("successful")
+                        rs.getTimestamp("event")
                 ));
             }
         } catch (SQLException e) {
@@ -132,8 +118,7 @@ public class LoginAttempt {
                 attempts.add(new LoginAttempt(
                         rs.getInt("id_attempt"),
                         rs.getInt("id_user"),
-                        rs.getTimestamp("event"),
-                        rs.getBoolean("successful")
+                        rs.getTimestamp("event")
                 ));
             }
         } catch (SQLException e) {
@@ -156,8 +141,7 @@ public class LoginAttempt {
                 attempts.add(new LoginAttempt(
                         rs.getInt("id_attempt"),
                         rs.getInt("id_user"),
-                        rs.getTimestamp("event"),
-                        rs.getBoolean("successful")
+                        rs.getTimestamp("event")
                 ));
             }
         } catch (SQLException e) {
@@ -176,8 +160,7 @@ public class LoginAttempt {
                 attempts.add(new LoginAttempt(
                         rs.getInt("id_attempt"),
                         rs.getInt("id_user"),
-                        rs.getTimestamp("event"),
-                        rs.getBoolean("successful")
+                        rs.getTimestamp("event")
                 ));
             }
         } catch (SQLException e) {

@@ -118,8 +118,8 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
             }
         });
 
-        btnOk.setBackground(new java.awt.Color(34, 133, 225));
-        btnOk.setForeground(java.awt.Color.white);
+        btnOk.setBackground(new java.awt.Color(70, 206, 252));
+        btnOk.setForeground(java.awt.Color.black);
         btnOk.setText("OK");
         btnOk.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnOk.addActionListener(new java.awt.event.ActionListener() {
@@ -136,8 +136,8 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        jPanel1.setBackground(new java.awt.Color(43, 43, 43));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         jLabel3.setText("Password:");
 
@@ -154,8 +154,8 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
 
         jLabel4.setText("Generate random");
 
-        pnlGenerateRandom.setBackground(java.awt.Color.white);
-        pnlGenerateRandom.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        pnlGenerateRandom.setBackground(new java.awt.Color(43, 43, 43));
+        pnlGenerateRandom.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         cbxLower.setSelected(true);
         cbxLower.setText("a-z");
@@ -287,16 +287,17 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         );
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel9.setForeground(java.awt.Color.white);
         jLabel9.setText("Account Details");
 
-        jPanel2.setBackground(new java.awt.Color(251, 251, 251));
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        jPanel2.setBackground(new java.awt.Color(43, 43, 43));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         jLabel1.setText("Service name:");
 
         jLabel2.setText("Username:");
 
-        jLabel8.setText("Category:");
+        jLabel8.setText("Tag:");
 
         btnAddCategory.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnAddCategory.setText("");
@@ -351,6 +352,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         );
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel10.setForeground(java.awt.Color.white);
         jLabel10.setText("Password");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -421,15 +423,32 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
     public Password Edit(Password p) {
         txtServiceName.setText(p.getService_name());
         txtUsername.setText(p.getUser_name());
-        cbxCategory.setSelectedItem(Category.Read(p.getId_category()).getName());
+        if(Category.Read(p.getId_category()) != null) cbxCategory.setSelectedItem(Category.Read(p.getId_category()).getName());
         txtPassword.setText(p.getPassword());
-        
+
         this.setVisible(true);
-        
+
         if (confirmed) {
-            
+            int id_category = userCategories.get(cbxCategory.getSelectedIndex()).getId_category();
+            String service_name = txtServiceName.getText();
+            String user_name = txtUsername.getText();
+            String password = txtPassword.getText();
+            Timestamp edit_date = new Timestamp(System.currentTimeMillis());
+
+            p.setId_category(id_category);
+            p.setService_name(service_name);
+            p.setUser_name(user_name);
+            p.setPassword(password);
+            p.setEdit_date(edit_date);
+
+            try {
+                p.Update();
+                return p;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        
+
         return null;
     }
 
@@ -470,11 +489,19 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddCategoryActionPerformed
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        if (txtServiceName.getText().isBlank()) return;
-        if (txtUsername.getText().isBlank()) return;
-        if (cbxCategory.getSelectedItem() == null) return;
-        if (txtPassword.getText().length() <= 6) return;
-        
+        if (txtServiceName.getText().isBlank()) {
+            return;
+        }
+        if (txtUsername.getText().isBlank()) {
+            return;
+        }
+        if (cbxCategory.getSelectedItem() == null) {
+            return;
+        }
+        if (txtPassword.getText().length() <= 6) {
+            return;
+        }
+
         confirmed = true;
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed

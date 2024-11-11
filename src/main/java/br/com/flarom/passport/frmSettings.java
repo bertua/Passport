@@ -1,8 +1,14 @@
 package br.com.flarom.passport;
 
+import br.com.flarom.passport.Helpers.MiscHelper;
 import br.com.flarom.passport.LogonDialogs.dlgUpdateAccount;
+import br.com.flarom.passport.MiscDialogs.dlgTableView;
+import br.com.flarom.passport.MiscDialogs.dlgTextInput;
+import br.com.flarom.passport.Objects.LoginAttempt;
 import br.com.flarom.passport.Objects.User;
-import java.awt.Color;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmSettings extends javax.swing.JFrame {
@@ -34,28 +40,41 @@ public class frmSettings extends javax.swing.JFrame {
         lblGithub = new javax.swing.JLabel();
 
         mnuLoginHistory.setText("Login history");
+        mnuLoginHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuLoginHistoryActionPerformed(evt);
+            }
+        });
         popAccountOptions.add(mnuLoginHistory);
 
         mnuDeleteAccount.setForeground(new java.awt.Color(220, 53, 69));
         mnuDeleteAccount.setText("Delete this account");
         mnuDeleteAccount.setToolTipText("Delete this account and everything related to it");
+        mnuDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDeleteAccountActionPerformed(evt);
+            }
+        });
         popAccountOptions.add(mnuDeleteAccount);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Settings - Passport");
 
         jLabel2.setFont(new java.awt.Font("SegoeUI", 0, 36)); // NOI18N
+        jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Settings");
 
         jLabel3.setFont(new java.awt.Font("SegoeUI", 0, 18)); // NOI18N
+        jLabel3.setForeground(java.awt.Color.white);
         jLabel3.setText("Account");
 
-        pnlAccount.setBackground(new java.awt.Color(251, 251, 251));
-        pnlAccount.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        pnlAccount.setBackground(new java.awt.Color(43, 43, 43));
+        pnlAccount.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         jLabel1.setText("Logged as:");
 
         lblDisplayname.setFont(new java.awt.Font("SegoeUI", 0, 18)); // NOI18N
+        lblDisplayname.setForeground(java.awt.Color.white);
         lblDisplayname.setText("Dislpayname");
 
         jButton1.setText("Edit account");
@@ -67,6 +86,7 @@ public class frmSettings extends javax.swing.JFrame {
 
         lblUsername.setText("Username");
 
+        btnAccountOptions.setBackground(new java.awt.Color(43, 43, 43));
         btnAccountOptions.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 16)); // NOI18N
         btnAccountOptions.setText("");
         btnAccountOptions.setBorder(null);
@@ -114,11 +134,12 @@ public class frmSettings extends javax.swing.JFrame {
         );
 
         jLabel4.setFont(new java.awt.Font("SegoeUI", 1, 13)); // NOI18N
+        jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("About this app");
 
         jLabel5.setText("<html>\n<p>\nPassport Password Manager v1.0<br>\n© 2024 Passport. Licensed under MIT License.\n</p>");
 
-        lblGithub.setForeground(new java.awt.Color(34, 133, 225));
+        lblGithub.setForeground(new java.awt.Color(70, 206, 252));
         lblGithub.setText("Github repository");
         lblGithub.setToolTipText("");
         lblGithub.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -179,7 +200,6 @@ public class frmSettings extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAccountOptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccountOptionsActionPerformed
@@ -199,6 +219,58 @@ public class frmSettings extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_lblGithubMouseClicked
+
+    private void mnuDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDeleteAccountActionPerformed
+        try {
+            int confirm = JOptionPane.showConfirmDialog(rootPane, "Are you sure?\nThis will delete all your Passwords, Notes, Credit cards and tags.\nThere is no way to restore it latter,", "Delete account", JOptionPane.YES_NO_OPTION);
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+            User u = User.getLoggedUser();
+
+            dlgTextInput ti = new dlgTextInput(this);
+            String password = ti.Show("Confirm deletion", "Enter your password to confirm deletion", "", "Delete account");
+
+            if (password == null) {
+                return;
+            }
+
+            if (!MiscHelper.decryptPassword(u.getPassword()).equals(password)) {
+                JOptionPane.showMessageDialog(rootPane, "Wrong password");
+                return;
+            };
+
+            u.Delete();
+            JOptionPane.showMessageDialog(rootPane, "Your account was deleted\nGoodbye!");
+            System.exit(0);
+        } catch (Exception ex) {
+            Logger.getLogger(frmSettings.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_mnuDeleteAccountActionPerformed
+
+    private void mnuLoginHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoginHistoryActionPerformed
+        ArrayList<LoginAttempt> las = LoginAttempt.ListFromUser(User.getLoggedUser().getId_user());
+        dlgTableView tv = new dlgTableView(this, false);
+
+        ArrayList<ArrayList<String>> table = new ArrayList<>();
+
+        ArrayList<String> headers = new ArrayList<>();
+        headers.add("User");
+        headers.add("Time");
+        table.add(headers);
+
+        las.sort((la1, la2) -> la2.getEvent().compareTo(la1.getEvent()));
+
+        for (LoginAttempt la : las) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(User.Read(la.getId_user()).getUsername());
+            row.add(la.getEvent().toString());
+            table.add(row);
+        }
+
+        tv.displayArrayListMatrix(table, "Login history");
+    }//GEN-LAST:event_mnuLoginHistoryActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

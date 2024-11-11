@@ -4,12 +4,14 @@ import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
 import static br.com.flarom.passport.Helpers.MiscHelper.colorToString;
 import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
 import br.com.flarom.passport.MiscDialogs.dlgColorInput;
+import br.com.flarom.passport.MiscDialogs.dlgTableView;
 import br.com.flarom.passport.MiscDialogs.dlgTextInput;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.sql.Timestamp;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -23,10 +25,10 @@ public class pnlPassword extends javax.swing.JPanel {
 
         initComponents();
 
-        lblServiceName.setText(p.getService_name());
-        lblUsername.setText(p.getUser_name());
-        lblPassword.setText(p.getPassword());
-        color = stringToColor(p.getColor());
+        lblServiceName.setText(password.getService_name());
+        lblUsername.setText(password.getUser_name());
+        lblPassword.setText(password.getPassword());
+        color = stringToColor(password.getColor());
 
         updateColor();
     }
@@ -81,6 +83,11 @@ public class pnlPassword extends javax.swing.JPanel {
 
         mnuProperties.setText("Properties");
         mnuProperties.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        mnuProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuPropertiesActionPerformed(evt);
+            }
+        });
         cmnOptions.add(mnuProperties);
         cmnOptions.add(jSeparator1);
 
@@ -94,8 +101,8 @@ public class pnlPassword extends javax.swing.JPanel {
         });
         cmnOptions.add(mnuDelete);
 
-        setBackground(new java.awt.Color(251, 251, 251));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        setBackground(new java.awt.Color(43, 43, 43));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
         setMaximumSize(new java.awt.Dimension(286, 123));
         setMinimumSize(new java.awt.Dimension(286, 123));
 
@@ -160,18 +167,19 @@ public class pnlPassword extends javax.swing.JPanel {
         );
 
         lblServiceName.setEditable(false);
-        lblServiceName.setBackground(new java.awt.Color(251, 251, 251));
+        lblServiceName.setBackground(new java.awt.Color(43, 43, 43));
         lblServiceName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblServiceName.setForeground(java.awt.Color.white);
         lblServiceName.setText("Service name");
         lblServiceName.setBorder(null);
 
         lblUsername.setEditable(false);
-        lblUsername.setBackground(new java.awt.Color(251, 251, 251));
+        lblUsername.setBackground(new java.awt.Color(43, 43, 43));
         lblUsername.setText("Username");
         lblUsername.setBorder(null);
 
         lblPassword.setEditable(false);
-        lblPassword.setBackground(new java.awt.Color(251, 251, 251));
+        lblPassword.setBackground(new java.awt.Color(43, 43, 43));
         lblPassword.setText("Password");
         lblPassword.setBorder(null);
 
@@ -204,6 +212,15 @@ public class pnlPassword extends javax.swing.JPanel {
     public Password getPassword() {
         return this.password;
     }
+    
+    private void updateViewDate(){
+        try {
+            this.password.setView_date(new Timestamp(System.currentTimeMillis()));
+            this.password.Update();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
         StringSelection stringSelection = new StringSelection(password.getPassword());
@@ -211,6 +228,7 @@ public class pnlPassword extends javax.swing.JPanel {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
         clipboard.setContents(stringSelection, null);
+        updateViewDate();
     }//GEN-LAST:event_btnCopyActionPerformed
 
     private boolean showing = false;
@@ -223,6 +241,7 @@ public class pnlPassword extends javax.swing.JPanel {
             lblPassword.setEchoChar((char) 0);
             btnView.setToolTipText("Hide password");
             btnView.setText("\ued1a");
+            updateViewDate();
         }
         showing = !showing;
     }//GEN-LAST:event_btnViewActionPerformed
@@ -270,8 +289,39 @@ public class pnlPassword extends javax.swing.JPanel {
 
     private void mnuEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEditActionPerformed
         dlgPasswordEditor pe = new dlgPasswordEditor((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
-        pe.Edit(password);
+        Password np = pe.Edit(password);
+
+        if (np == null) {
+            return;
+        }
+
+        password = np;
+
+        lblServiceName.setText(password.getService_name());
+        lblUsername.setText(password.getUser_name());
+        lblPassword.setText(password.getPassword());
+        color = stringToColor(password.getColor());
     }//GEN-LAST:event_mnuEditActionPerformed
+
+    private void mnuPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPropertiesActionPerformed
+        dlgTableView tv = new dlgTableView((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar), false);
+        
+        String tag = "Null";
+        if(Category.Read(password.getId_category()) != null) tag = Category.Read(password.getId_category()).getName(); // a category can be null if you delete the category
+
+        String[][] table = {
+          {"Property",      "Value"},
+          {"Owner",         "@" + User.Read(password.getId_user()).getUsername()},
+          {"Service Name",  password.getService_name()},
+          {"Username",      password.getUser_name()},
+          {"Tag",           tag},
+          {"Created in",    password.getCreate_date().toString()},
+          {"Last edited in",password.getEdit_date().toString()},
+          {"Last viewed in",password.getView_date().toString()}
+        };
+        
+        tv.displayMatrix(table, password.getService_name());
+    }//GEN-LAST:event_mnuPropertiesActionPerformed
 
     public void updateColor() {
         pnlSidebar.setBackground(this.color);

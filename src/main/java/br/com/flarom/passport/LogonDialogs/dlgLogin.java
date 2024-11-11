@@ -1,8 +1,11 @@
 package br.com.flarom.passport.LogonDialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
+import br.com.flarom.passport.Objects.LoginAttempt;
 import br.com.flarom.passport.Objects.User;
 import javax.swing.JOptionPane;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class dlgLogin extends javax.swing.JDialog {
 
@@ -43,8 +46,8 @@ public class dlgLogin extends javax.swing.JDialog {
             }
         });
 
-        btnLogin.setBackground(new java.awt.Color(34, 133, 225));
-        btnLogin.setForeground(java.awt.Color.white);
+        btnLogin.setBackground(new java.awt.Color(70, 206, 252));
+        btnLogin.setForeground(java.awt.Color.black);
         btnLogin.setText("Log in");
         btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -62,10 +65,11 @@ public class dlgLogin extends javax.swing.JDialog {
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Login");
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/images/passportFullWhite.png")).getImage().getScaledInstance(130, 25, Image.SCALE_SMOOTH)));
 
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        jPanel1.setBackground(new java.awt.Color(43, 43, 43));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         jLabel1.setText("Username:");
 
@@ -75,7 +79,6 @@ public class dlgLogin extends javax.swing.JDialog {
         btnViewPassword.setText("");
         btnViewPassword.setToolTipText("Show password");
         btnViewPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnViewPassword.setPreferredSize(new java.awt.Dimension(22, 22));
         btnViewPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnViewPasswordActionPerformed(evt);
@@ -98,7 +101,7 @@ public class dlgLogin extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtPassword)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnViewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnViewPassword)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -129,20 +132,18 @@ public class dlgLogin extends javax.swing.JDialog {
                         .addComponent(btnSignUp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLogin))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin)
                     .addComponent(btnSignUp))
@@ -164,6 +165,11 @@ public class dlgLogin extends javax.swing.JDialog {
 
             try {
                 User u = User.Login(identifier, password);
+                
+                if(u == null) return null;
+                
+                LoginAttempt la = new LoginAttempt(u.getId_user());
+                la.Create();
 
                 return u;
             } catch (Exception e) {

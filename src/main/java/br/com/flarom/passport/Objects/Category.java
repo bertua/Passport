@@ -162,4 +162,24 @@ public class Category {
         }
         return categories;
     }
+
+    public static int Count(int id_category) {
+        String sql = "SELECT COUNT(*) AS count FROM passwords WHERE id_category = ? "
+                + "UNION ALL "
+                + "SELECT COUNT(*) FROM notes WHERE id_category = ?";
+        int count = 0;
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id_category);
+            stmt.setInt(2, id_category);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                count += rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

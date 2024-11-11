@@ -69,10 +69,11 @@ public class dlgSignup extends javax.swing.JDialog {
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.white);
         jLabel1.setText("Sign up");
 
-        jPanel1.setBackground(new java.awt.Color(251, 251, 251));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(194, 194, 194)));
+        jPanel1.setBackground(new java.awt.Color(43, 43, 43));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         jLabel2.setText("Display name:");
 
@@ -132,8 +133,8 @@ public class dlgSignup extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnOk.setBackground(new java.awt.Color(34, 133, 225));
-        btnOk.setForeground(java.awt.Color.white);
+        btnOk.setBackground(new java.awt.Color(70, 206, 252));
+        btnOk.setForeground(java.awt.Color.black);
         btnOk.setText("Sign up");
         btnOk.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnOk.addActionListener(new java.awt.event.ActionListener() {

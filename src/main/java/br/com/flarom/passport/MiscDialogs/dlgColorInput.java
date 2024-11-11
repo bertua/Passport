@@ -112,9 +112,10 @@ public class dlgColorInput extends javax.swing.JDialog {
         setMinimumSize(new java.awt.Dimension(346, 426));
         setModal(true);
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        pnlColors.setBackground(new java.awt.Color(251, 251, 251));
+        pnlColors.setBackground(new java.awt.Color(43, 43, 43));
         pnlColors.setMinimumSize(new java.awt.Dimension(0, 0));
         pnlColors.setPreferredSize(new java.awt.Dimension(40, 1000));
         pnlColors.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
