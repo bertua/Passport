@@ -2,6 +2,8 @@ package br.com.flarom.passport.LogonDialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.User;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 public class dlgSignup extends javax.swing.JDialog {
@@ -9,7 +11,7 @@ public class dlgSignup extends javax.swing.JDialog {
     public dlgSignup(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
-        
+
         KeyboardHelper kh = new KeyboardHelper(rootPane);
         kh.setCloseOnEscape(this);
         kh.setConfirmButton(btnOk);
@@ -27,10 +29,10 @@ public class dlgSignup extends javax.swing.JDialog {
             String password = txtPassword.getText();
 
             User u = new User(username, nickname, email, password);
-            
+
             try {
                 u.Create();
-                
+
                 return u;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -188,19 +190,39 @@ public class dlgSignup extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        if(txtUsername.getText().isBlank()) return;
-        if(txtNickname.getText().isBlank()) return;
-        if(txtEmail.getText().isBlank()) return;
-        if(txtPassword.getText().isBlank()) return;
-        if(txtPasswordConfirm.getText().isBlank()) return;
-        
-        if(!txtPassword.getText().equals(txtPasswordConfirm.getText())){ 
-            JOptionPane.showMessageDialog(rootPane, "Confirm your password!");
+        if (txtNickname.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a display name.");
             return;
         }
-        
-        if(User.isDataTaken(txtUsername.getText(), txtEmail.getText())) return;
-        
+        if (txtUsername.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a username.");
+            return;
+        }
+        if (txtEmail.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Email cannot be empty.");
+            return;
+        }
+        if (!isEmailValid(txtEmail.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "The email address is invalid. Please check the format.");
+            return;
+        }
+        if (txtPassword.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a password.");
+            return;
+        }
+        if (txtPasswordConfirm.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Password confirmation cannot be empty.");
+            return;
+        }
+        if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "The passwords do not match. Please verify.");
+            return;
+        }
+        if (User.isDataTaken(txtUsername.getText(), txtEmail.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "This username or email is already in use.");
+            return;
+        }
+
         confirmed = true;
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed
@@ -214,6 +236,15 @@ public class dlgSignup extends javax.swing.JDialog {
         confirmed = false;
         dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    public static boolean isEmailValid(String email) {
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
+    }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

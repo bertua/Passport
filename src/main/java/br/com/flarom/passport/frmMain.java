@@ -1,11 +1,11 @@
 package br.com.flarom.passport;
 
-import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Dialogs.dlgCategories;
-import br.com.flarom.passport.MiscDialogs.dlgTextInput;
 import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
-import br.com.flarom.passport.Helpers.KeyboardHelper;
+import br.com.flarom.passport.MiscDialogs.dlgTextInput;
 import br.com.flarom.passport.LogonDialogs.dlgLogin;
+import br.com.flarom.passport.Helpers.KeyboardHelper;
+import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Objects.Category;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;

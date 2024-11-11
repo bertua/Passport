@@ -2,6 +2,7 @@ package br.com.flarom.passport.LogonDialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import static br.com.flarom.passport.Helpers.MiscHelper.decryptPassword;
+import static br.com.flarom.passport.LogonDialogs.dlgSignup.isEmailValid;
 import br.com.flarom.passport.Objects.User;
 import javax.swing.JOptionPane;
 
@@ -190,19 +191,36 @@ public class dlgUpdateAccount extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        if (txtUsername.getText().isBlank()) {
+        if (txtNickname.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a display name.");
             return;
         }
-        if (txtNickname.getText().isBlank()) {
+        if (txtUsername.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a username.");
             return;
         }
         if (txtEmail.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Email cannot be empty.");
+            return;
+        }
+        if (!isEmailValid(txtEmail.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "The email address is invalid. Please check the format.");
             return;
         }
         if (txtPassword.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a password.");
             return;
         }
         if (txtPasswordConfirm.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Password confirmation cannot be empty.");
+            return;
+        }
+        if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "The passwords do not match. Please verify.");
+            return;
+        }
+        if (User.isDataTaken(txtUsername.getText(), txtEmail.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "This username or email is already in use.");
             return;
         }
 
