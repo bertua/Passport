@@ -1,6 +1,7 @@
 package br.com.flarom.passport;
 
 import br.com.flarom.passport.Dialogs.dlgCategories;
+import br.com.flarom.passport.Dialogs.dlgNoteEditor;
 import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
 import br.com.flarom.passport.MiscDialogs.dlgTextInput;
 import br.com.flarom.passport.LogonDialogs.dlgLogin;
@@ -15,7 +16,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.RenderingHints; 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -183,6 +184,11 @@ public class frmMain extends javax.swing.JFrame {
 
         mnuNewNote.setText("Text note");
         mnuNewNote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        mnuNewNote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuNewNoteActionPerformed(evt);
+            }
+        });
         popNew.add(mnuNewNote);
 
         mnuNewCreditCard.setText("Credit card");
@@ -481,6 +487,11 @@ public class frmMain extends javax.swing.JFrame {
     private void mnuRemoveTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRemoveTagActionPerformed
         Filter(null);
     }//GEN-LAST:event_mnuRemoveTagActionPerformed
+
+    private void mnuNewNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuNewNoteActionPerformed
+        dlgNoteEditor ne = new dlgNoteEditor(this);
+        ne.Create();
+    }//GEN-LAST:event_mnuNewNoteActionPerformed
 
     private void updateScrollBar() {
         int buttonHeight = 123;

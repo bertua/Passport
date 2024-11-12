@@ -219,11 +219,6 @@ public class dlgUpdateAccount extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "The passwords do not match. Please verify.");
             return;
         }
-        if (User.isDataTaken(txtUsername.getText(), txtEmail.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "This username or email is already in use.");
-            return;
-        }
-
         if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
             JOptionPane.showMessageDialog(rootPane, "Confirm your password!");
             return;
