@@ -51,6 +51,7 @@ create table notes(
     create_date TIMESTAMP,
     edit_date TIMESTAMP,
     view_date TIMESTAMP,
+    color TEXT NOT NULL,
     FOREIGN KEY(id_user) REFERENCES users(id_user),
     FOREIGN KEY(id_category) REFERENCES categories(id_category),
     FOREIGN KEY(id_password) REFERENCES passwords(id_password)

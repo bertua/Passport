@@ -17,11 +17,12 @@ public class Note {
     private Timestamp create_date;
     private Timestamp edit_date;
     private Timestamp view_date;
+    private String color;
     
     public Note(){
         
     }
-    public Note(int id_note, int id_user, int id_category, int id_password, String title, String document, Timestamp create_date, Timestamp edit_date, Timestamp view_date){
+    public Note(int id_note, int id_user, int id_category, int id_password, String title, String document, Timestamp create_date, Timestamp edit_date, Timestamp view_date, String color){
         this.id_note = id_note;
         this.id_user = id_user;
         this.id_category = id_category;
@@ -31,6 +32,7 @@ public class Note {
         this.create_date = create_date;
         this.edit_date = edit_date;
         this.view_date = view_date;
+        this.color = color;
     }
 
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
@@ -105,10 +107,18 @@ public class Note {
     public void setView_date(Timestamp view_date) {
         this.view_date = view_date;
     }
+    
+    public String getColor(){
+        return color;
+    }
+    
+    public void setColor(String color){
+        this.color = color;
+    }
     //</editor-fold>
     
     public void Create() {
-        String sql = "INSERT INTO notes (id_user, id_category, id_password, title, document, create_date, edit_date, view_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO notes (id_user, id_category, id_password, title, document, create_date, edit_date, view_date, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
@@ -120,6 +130,7 @@ public class Note {
             stmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
+            stmt.setString(9, color);
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -132,7 +143,7 @@ public class Note {
     }
 
     public void Update() {
-        String sql = "UPDATE notes SET id_category = ?, id_password = ?, title = ?, document = ?, edit_date = ? WHERE id_note = ?";
+        String sql = "UPDATE notes SET id_category = ?, id_password = ?, title = ?, document = ?, edit_date = ?, color = ?, WHERE id_note = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -141,7 +152,8 @@ public class Note {
             stmt.setString(3, title);
             stmt.setString(4, document);
             stmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-            stmt.setInt(6, id_note);
+            stmt.setString(6, color);
+            stmt.setInt(7, id_note);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -178,7 +190,8 @@ public class Note {
                     rs.getString("document"),
                     rs.getTimestamp("create_date"),
                     rs.getTimestamp("edit_date"),
-                    rs.getTimestamp("view_date")
+                    rs.getTimestamp("view_date"),
+                    rs.getString("color")
                 );
             }
         } catch (SQLException e) {
@@ -206,7 +219,8 @@ public class Note {
                     rs.getString("document"),
                     rs.getTimestamp("create_date"),
                     rs.getTimestamp("edit_date"),
-                    rs.getTimestamp("view_date")
+                    rs.getTimestamp("view_date"),
+                    rs.getString("color")
                 ));
             }
         } catch (SQLException e) {
@@ -234,7 +248,8 @@ public class Note {
                     rs.getString("document"),
                     rs.getTimestamp("create_date"),
                     rs.getTimestamp("edit_date"),
-                    rs.getTimestamp("view_date")
+                    rs.getTimestamp("view_date"),
+                    rs.getString("color")
                 ));
             }
         } catch (SQLException e) {

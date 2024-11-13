@@ -8,8 +8,10 @@ import br.com.flarom.passport.LogonDialogs.dlgLogin;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Objects.Category;
+import br.com.flarom.passport.Objects.Note;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
+import br.com.flarom.passport.Objects.pnlNote;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Component;
@@ -97,7 +99,7 @@ public class frmMain extends javax.swing.JFrame {
             ArrayList<Category> userCategories = Category.ListFromUser(loggedUser.getId_user());
 
             for (Category c : userCategories) {
-                JMenuItem mnuCategory = new JMenuItem(c.getName() + " (" + Category.Count(c.getId_category()) + ")");
+                JMenuItem mnuCategory = new JMenuItem(c.getName());
                 Color catColor = Color.decode(c.getColor());
 
                 ImageIcon icon = getCategoryIcon(catColor);

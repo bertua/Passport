@@ -1,6 +1,7 @@
 br\com\flarom\passport\Dialogs\dlgNoteEditor$4.class
 br\com\flarom\passport\Dialogs\dlgCategoryEditor$4.class
 br\com\flarom\passport\frmMain$11.class
+br\com\flarom\passport\MiscDialogs\dlgTextView$1.class
 br\com\flarom\passport\Objects\pnlPassword$8.class
 br\com\flarom\passport\Dialogs\dlgCategories$2.class
 br\com\flarom\passport\LogonDialogs\dlgLogin.class
@@ -9,6 +10,7 @@ br\com\flarom\passport\frmSettings$2.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor$3.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor$6.class
 br\com\flarom\passport\Dialogs\dlgCategoryEditor$1.class
+br\com\flarom\passport\Objects\pnlNote$3.class
 br\com\flarom\passport\Objects\CreditCard.class
 br\com\flarom\passport\frmMain$8.class
 br\com\flarom\passport\LogonDialogs\dlgLogin$3.class
@@ -24,7 +26,9 @@ br\com\flarom\passport\Dialogs\dlgPasswordEditor$4.class
 br\com\flarom\passport\Objects\pnlPassword$6.class
 br\com\flarom\passport\frmMain$13.class
 br\com\flarom\passport\frmSettings$4.class
+br\com\flarom\passport\Objects\pnlNote$2.class
 br\com\flarom\passport\LogonDialogs\dlgUpdateAccount$1.class
+br\com\flarom\passport\MiscDialogs\dlgTextView.class
 br\com\flarom\passport\Dialogs\dlgCategories$4.class
 br\com\flarom\passport\frmMain$6.class
 br\com\flarom\passport\Dialogs\dlgNoteEditor$2.class
@@ -35,6 +39,7 @@ br\com\flarom\passport\frmMain$12.class
 br\com\flarom\passport\LogonDialogs\dlgLogin$4.class
 br\com\flarom\passport\Objects\pnlPassword$7.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor.class
+br\com\flarom\passport\Objects\pnlNote$8.class
 br\com\flarom\passport\MiscDialogs\dlgTextInput.class
 br\com\flarom\passport\LogonDialogs\dlgSignup$4$1.class
 br\com\flarom\passport\MiscDialogs\dlgTextInput$2.class
@@ -50,8 +55,10 @@ br\com\flarom\passport\frmSettings$3.class
 br\com\flarom\passport\Helpers\KeyboardHelper$3.class
 br\com\flarom\passport\frmSettings.class
 br\com\flarom\passport\Objects\Password.class
+br\com\flarom\passport\Objects\pnlNote$4.class
 br\com\flarom\passport\frmMain$7.class
 br\com\flarom\passport\LogonDialogs\dlgLogin$2.class
+br\com\flarom\passport\Objects\pnlNote$7.class
 br\com\flarom\passport\MiscDialogs\dlgTextInput$3.class
 br\com\flarom\passport\Dialogs\dlgCategories.class
 br\com\flarom\passport\LogonDialogs\dlgSignup$4.class
@@ -60,6 +67,7 @@ br\com\flarom\passport\Objects\pnlPassword$4.class
 br\com\flarom\passport\frmMain$1.class
 br\com\flarom\passport\frmMain$4.class
 br\com\flarom\passport\MiscDialogs\dlgColorInput$2.class
+br\com\flarom\passport\Objects\pnlNote$1.class
 br\com\flarom\passport\Objects\pnlPassword$1.class
 br\com\flarom\passport\Helpers\KeyboardHelper.class
 br\com\flarom\passport\LogonDialogs\dlgSignup$1.class
@@ -79,6 +87,7 @@ br\com\flarom\passport\Helpers\KeyboardHelper$1.class
 br\com\flarom\passport\LogonDialogs\dlgSignup$2.class
 br\com\flarom\passport\LogonDialogs\dlgUpdateAccount.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor$1.class
+br\com\flarom\passport\Objects\pnlNote$6.class
 br\com\flarom\passport\LogonDialogs\dlgLogin$1.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor$8.class
 br\com\flarom\passport\Dialogs\dlgCategoryEditor.class
@@ -86,6 +95,8 @@ br\com\flarom\passport\MiscDialogs\dlgTableView$1$1.class
 br\com\flarom\passport\LogonDialogs\dlgSignup.class
 br\com\flarom\passport\frmMain$9.class
 br\com\flarom\passport\Dialogs\dlgCategories$4$1.class
+br\com\flarom\passport\MiscDialogs\dlgTextView$1$1.class
+br\com\flarom\passport\Objects\pnlNote.class
 br\com\flarom\passport\frmMain$3.class
 br\com\flarom\passport\Helpers\KeyboardHelper$2.class
 br\com\flarom\passport\Objects\Note.class
@@ -98,3 +109,4 @@ br\com\flarom\passport\frmSettings$6.class
 br\com\flarom\passport\LogonDialogs\dlgSignup$3.class
 br\com\flarom\passport\Objects\pnlPassword.class
 br\com\flarom\passport\Dialogs\dlgCategoryEditor$4$1.class
+br\com\flarom\passport\Objects\pnlNote$5.class

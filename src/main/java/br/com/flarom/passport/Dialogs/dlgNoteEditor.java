@@ -2,7 +2,10 @@ package br.com.flarom.passport.Dialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.Category;
+import br.com.flarom.passport.Objects.Note;
+import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class dlgNoteEditor extends javax.swing.JDialog {
@@ -18,6 +21,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         kh.setCloseOnEscape(this);
         
         refreshCategories();
+        refreshPasswords();
     }
 
     @SuppressWarnings("unchecked")
@@ -36,7 +40,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDocument = new javax.swing.JTextArea();
         btnOk = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
@@ -113,10 +117,10 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(43, 43, 43));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
-        jTextArea1.setBackground(new java.awt.Color(43, 43, 43));
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtDocument.setBackground(new java.awt.Color(43, 43, 43));
+        txtDocument.setColumns(20);
+        txtDocument.setRows(5);
+        jScrollPane2.setViewportView(txtDocument);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -194,7 +198,30 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         this.setVisible(true);
         
         if(confirmed){
+            int id_user = User.getLoggedUser().getId_user();
+            int id_category = userCategories.get(cbxCategory.getSelectedIndex()).getId_category();
+            String title = txtTitle.getText();
+            String document = txtDocument.getText();
+            Timestamp create_date = new Timestamp(System.currentTimeMillis());
+            String color = userCategories.get(cbxCategory.getSelectedIndex()).getColor();
             
+            Note n = new Note();
+            
+            n.setId_user(id_user);
+            n.setId_category(id_category);
+            n.setTitle(title);
+            n.setDocument(document);
+            n.setCreate_date(create_date);
+            n.setEdit_date(create_date);
+            n.setView_date(create_date);
+            n.setColor(color);
+            
+            if (cbxPassword.getSelectedIndex() != 0){
+                int id_password = userPasswords.get(cbxPassword.getSelectedIndex() -1).getId_password();
+                n.setId_password(id_password);
+            }
+            
+            n.Create();
         }
     }
     
@@ -215,6 +242,25 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private ArrayList<Password> userPasswords = new ArrayList<Password>();
+    
+    private void refreshPasswords(){
+        userPasswords.clear();
+        cbxPassword.removeAllItems();
+        
+        cbxPassword.addItem("(None)");
+        try {
+            ArrayList<Password> passwords = Password.ListFromUser(User.getLoggedUser().getId_user());
+            for (Password pss : passwords) {
+                userPasswords.add(pss);
+                cbxPassword.addItem(pss.getService_name());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+    
     private ArrayList<Category> userCategories = new ArrayList<Category>();
     
     private void refreshCategories() {
@@ -257,7 +303,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea txtDocument;
     private javax.swing.JTextField txtTitle;
     // End of variables declaration//GEN-END:variables
 }
