@@ -13,7 +13,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
     private java.awt.Frame parent;
     
     public dlgNoteEditor(java.awt.Frame parent) {
-        super(parent);
+        super(parent, true);
         this.parent = parent;
         initComponents();
         
@@ -46,6 +46,11 @@ public class dlgNoteEditor extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Text note - Passport");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Note Details");
@@ -194,6 +199,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     private boolean confirmed = false;
+    
     public void Create(){
         this.setVisible(true);
         
@@ -223,6 +229,8 @@ public class dlgNoteEditor extends javax.swing.JDialog {
             
             n.Create();
         }
+        
+        System.out.println("aaaaa");
     }
     
     
@@ -241,6 +249,11 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         confirmed = false;
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        confirmed = false;
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     private ArrayList<Password> userPasswords = new ArrayList<Password>();
     

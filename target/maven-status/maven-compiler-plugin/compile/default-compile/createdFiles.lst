@@ -20,8 +20,10 @@ br\com\flarom\passport\frmMain$14.class
 br\com\flarom\passport\frmSettings$5.class
 br\com\flarom\passport\Dialogs\dlgNoteEditor.class
 br\com\flarom\passport\frmMain$5.class
+br\com\flarom\passport\LogonDialogs\dlgSignup$5.class
 br\com\flarom\passport\Objects\pnlPassword$2.class
 br\com\flarom\passport\Objects\pnlPassword$5.class
+br\com\flarom\passport\LogonDialogs\dlgSignup$5$1.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor$4.class
 br\com\flarom\passport\Objects\pnlPassword$6.class
 br\com\flarom\passport\frmMain$13.class
@@ -32,7 +34,6 @@ br\com\flarom\passport\MiscDialogs\dlgTextView.class
 br\com\flarom\passport\Dialogs\dlgCategories$4.class
 br\com\flarom\passport\frmMain$6.class
 br\com\flarom\passport\Dialogs\dlgNoteEditor$2.class
-br\com\flarom\passport\Dialogs\dlgNoteEditor$4$1.class
 br\com\flarom\passport\MiscDialogs\dlgTextInput$1.class
 br\com\flarom\passport\Objects\User.class
 br\com\flarom\passport\frmMain$12.class
@@ -41,7 +42,6 @@ br\com\flarom\passport\Objects\pnlPassword$7.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor.class
 br\com\flarom\passport\Objects\pnlNote$8.class
 br\com\flarom\passport\MiscDialogs\dlgTextInput.class
-br\com\flarom\passport\LogonDialogs\dlgSignup$4$1.class
 br\com\flarom\passport\MiscDialogs\dlgTextInput$2.class
 br\com\flarom\passport\Helpers\MiscHelper.class
 br\com\flarom\passport\LogonDialogs\dlgUpdateAccount$2.class
@@ -71,6 +71,7 @@ br\com\flarom\passport\Objects\pnlNote$1.class
 br\com\flarom\passport\Objects\pnlPassword$1.class
 br\com\flarom\passport\Helpers\KeyboardHelper.class
 br\com\flarom\passport\LogonDialogs\dlgSignup$1.class
+br\com\flarom\passport\Dialogs\dlgNoteEditor$5$1.class
 br\com\flarom\passport\Dialogs\dlgNoteEditor$3.class
 br\com\flarom\passport\Dialogs\dlgPasswordEditor$5.class
 br\com\flarom\passport\frmSettings$1.class
@@ -93,6 +94,7 @@ br\com\flarom\passport\Dialogs\dlgPasswordEditor$8.class
 br\com\flarom\passport\Dialogs\dlgCategoryEditor.class
 br\com\flarom\passport\MiscDialogs\dlgTableView$1$1.class
 br\com\flarom\passport\LogonDialogs\dlgSignup.class
+br\com\flarom\passport\Dialogs\dlgNoteEditor$5.class
 br\com\flarom\passport\frmMain$9.class
 br\com\flarom\passport\Dialogs\dlgCategories$4$1.class
 br\com\flarom\passport\MiscDialogs\dlgTextView$1$1.class

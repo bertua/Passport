@@ -89,6 +89,7 @@ public class frmSettings extends javax.swing.JFrame {
         btnAccountOptions.setBackground(new java.awt.Color(43, 43, 43));
         btnAccountOptions.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 16)); // NOI18N
         btnAccountOptions.setText("");
+        btnAccountOptions.setToolTipText("More options");
         btnAccountOptions.setBorder(null);
         btnAccountOptions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,7 +243,7 @@ public class frmSettings extends javax.swing.JFrame {
             };
 
             u.Delete();
-            JOptionPane.showMessageDialog(rootPane, "Your account was deleted\nGoodbye!");
+            JOptionPane.showMessageDialog(rootPane, "Your account was deleted\nWe'll miss you 💔");
             System.exit(0);
         } catch (Exception ex) {
             Logger.getLogger(frmSettings.class.getName()).log(Level.SEVERE, null, ex);

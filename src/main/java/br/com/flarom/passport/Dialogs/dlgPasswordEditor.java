@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentListener;
 
 public class dlgPasswordEditor extends javax.swing.JDialog {
@@ -177,7 +178,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         jLabel6.setText("Lenght:");
 
         sldPassLenght.setMaximum(50);
-        sldPassLenght.setMinimum(3);
+        sldPassLenght.setMinimum(7);
         sldPassLenght.setValue(13);
 
         btnGenerate.setText("Generate");
@@ -423,7 +424,9 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
     public Password Edit(Password p) {
         txtServiceName.setText(p.getService_name());
         txtUsername.setText(p.getUser_name());
-        if(Category.Read(p.getId_category()) != null) cbxCategory.setSelectedItem(Category.Read(p.getId_category()).getName());
+        if (Category.Read(p.getId_category()) != null) {
+            cbxCategory.setSelectedItem(Category.Read(p.getId_category()).getName());
+        }
         txtPassword.setText(p.getPassword());
 
         this.setVisible(true);
@@ -468,6 +471,11 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
 
     private void updateRandomPass(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateRandomPass
         int lenght = sldPassLenght.getValue();
+
+        if (cbxLower.isSelected() == false && cbxUpper.isSelected() == false && cbxNumbr.isSelected() == false && cbxSpecl.isSelected() == false) {
+            cbxLower.setSelected(true);
+        }
+
         boolean useLowerCase = cbxLower.isSelected();
         boolean useUpperCase = cbxUpper.isSelected();
         boolean useNumbers = cbxNumbr.isSelected();
@@ -490,15 +498,27 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         if (txtServiceName.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Service name cannot be empty");
             return;
         }
         if (txtUsername.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Username cannot be empty");
             return;
         }
         if (cbxCategory.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(rootPane, "Category cannot be empty");
+            return;
+        }
+        if (txtPassword.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a password");
             return;
         }
         if (txtPassword.getText().length() <= 6) {
+            JOptionPane.showMessageDialog(rootPane, "Password cannot be shorter than 7 characters");
+            return;
+        }
+        if (txtPassword.getText().contains(" ")) {
+            JOptionPane.showMessageDialog(rootPane, "Password cannot contain spaces");
             return;
         }
 

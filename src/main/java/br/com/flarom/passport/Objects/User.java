@@ -187,6 +187,30 @@ public class User {
         return false;
     }
 
+    public static boolean isEmailTaken(String email) {
+        String sql = "SELECT 1 FROM users WHERE email = ?";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean isUsernameTaken(String username) {
+        String sql = "SELECT 1 FROM users WHERE username = ?";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static User Read(int id_user) {
         String sql = "SELECT * FROM users WHERE id_user = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {

@@ -16,6 +16,7 @@ public class dlgUpdateAccount extends javax.swing.JDialog {
         kh.setCloseOnEscape(this);
     }
     private boolean confirmed = false;
+    private String defaultEmail;
 
     public void Edit() {
         User u = User.getLoggedUser();
@@ -23,6 +24,8 @@ public class dlgUpdateAccount extends javax.swing.JDialog {
         txtNickname.setText(u.getNickname());
         txtUsername.setText(u.getUsername());
         txtEmail.setText(u.getEmail());
+        defaultEmail = u.getEmail();
+
         try {
             txtPassword.setText(decryptPassword(u.getPassword()));
         } catch (Exception e) {
@@ -192,36 +195,47 @@ public class dlgUpdateAccount extends javax.swing.JDialog {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         if (txtNickname.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Please enter a display name.");
+            JOptionPane.showMessageDialog(rootPane, "Please enter a display name");
             return;
         }
         if (txtUsername.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Please enter a username.");
+            JOptionPane.showMessageDialog(rootPane, "Please enter a username");
             return;
         }
         if (txtEmail.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Email cannot be empty.");
+            JOptionPane.showMessageDialog(rootPane, "Email cannot be empty");
             return;
         }
         if (!isEmailValid(txtEmail.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "The email address is invalid. Please check the format.");
+            JOptionPane.showMessageDialog(rootPane, "The email address is invalid. Please check the format");
             return;
         }
         if (txtPassword.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Please enter a password.");
+            JOptionPane.showMessageDialog(rootPane, "Please enter a password");
+            return;
+        }
+        if (txtPassword.getText().length() <= 6) {
+            JOptionPane.showMessageDialog(rootPane, "Please use a password with at least 7 characters");
+            return;
+        }
+        if (txtPassword.getText().contains(" ")) {
+            JOptionPane.showMessageDialog(rootPane, "Password cannot contain spaces");
             return;
         }
         if (txtPasswordConfirm.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Password confirmation cannot be empty.");
+            JOptionPane.showMessageDialog(rootPane, "Please confirm password");
             return;
         }
         if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "The passwords do not match. Please verify.");
+            JOptionPane.showMessageDialog(rootPane, "The passwords do not match. Please verify");
             return;
         }
-        if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "Confirm your password!");
-            return;
+
+        if (!defaultEmail.equals(txtEmail.getText())) {
+            if (User.isEmailTaken(txtEmail.getText())) {
+                JOptionPane.showMessageDialog(rootPane, "This email is already in use");
+                return;
+            }
         }
 
         confirmed = true;

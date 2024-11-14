@@ -58,6 +58,7 @@ public class dlgSignup extends javax.swing.JDialog {
         txtPassword = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
         txtPasswordConfirm = new javax.swing.JPasswordField();
+        btnViewPassword = new javax.swing.JButton();
         btnOk = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
@@ -87,6 +88,16 @@ public class dlgSignup extends javax.swing.JDialog {
 
         jLabel6.setText("Confirm password:");
 
+        btnViewPassword.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 16)); // NOI18N
+        btnViewPassword.setText("");
+        btnViewPassword.setToolTipText("Show password");
+        btnViewPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnViewPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewPasswordActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -94,19 +105,25 @@ public class dlgSignup extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPasswordConfirm)
                     .addComponent(txtNickname)
                     .addComponent(txtUsername)
                     .addComponent(txtEmail)
-                    .addComponent(txtPassword)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtPasswordConfirm))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnViewPassword))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -127,12 +144,14 @@ public class dlgSignup extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnViewPassword))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         btnOk.setBackground(new java.awt.Color(70, 206, 252));
@@ -178,7 +197,7 @@ public class dlgSignup extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
                     .addComponent(btnCancel))
@@ -191,35 +210,43 @@ public class dlgSignup extends javax.swing.JDialog {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         if (txtNickname.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Please enter a display name.");
+            JOptionPane.showMessageDialog(rootPane, "Please enter a display name");
             return;
         }
         if (txtUsername.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Please enter a username.");
+            JOptionPane.showMessageDialog(rootPane, "Please enter a username");
             return;
         }
         if (txtEmail.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Email cannot be empty.");
+            JOptionPane.showMessageDialog(rootPane, "Email cannot be empty");
             return;
         }
         if (!isEmailValid(txtEmail.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "The email address is invalid. Please check the format.");
+            JOptionPane.showMessageDialog(rootPane, "The email address is invalid. Please check the format");
             return;
         }
         if (txtPassword.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Please enter a password.");
+            JOptionPane.showMessageDialog(rootPane, "Please enter a password");
+            return;
+        }
+        if (txtPassword.getText().length() <= 6) {
+            JOptionPane.showMessageDialog(rootPane, "Please use a password with at least 7 characters");
+            return;
+        }
+        if (txtPassword.getText().contains(" ")) {
+            JOptionPane.showMessageDialog(rootPane, "Password cannot contain spaces");
             return;
         }
         if (txtPasswordConfirm.getText().isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "Password confirmation cannot be empty.");
+            JOptionPane.showMessageDialog(rootPane, "Please confirm password");
             return;
         }
         if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "The passwords do not match. Please verify.");
+            JOptionPane.showMessageDialog(rootPane, "The passwords do not match. Please verify");
             return;
         }
         if (User.isDataTaken(txtUsername.getText(), txtEmail.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "This username or email is already in use.");
+            JOptionPane.showMessageDialog(rootPane, "This username or email is already in use");
             return;
         }
 
@@ -236,6 +263,23 @@ public class dlgSignup extends javax.swing.JDialog {
         confirmed = false;
         dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private boolean showing = false;
+
+    private void btnViewPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPasswordActionPerformed
+        if (showing) {
+            txtPassword.setEchoChar('\u2022');
+            txtPasswordConfirm.setEchoChar('\u2022');
+            btnViewPassword.setToolTipText("Show password");
+            btnViewPassword.setText("\ue052");
+        } else {
+            txtPassword.setEchoChar((char) 0);
+            txtPasswordConfirm.setEchoChar((char) 0);
+            btnViewPassword.setToolTipText("Hide password");
+            btnViewPassword.setText("\ued1a");
+        }
+        showing = !showing;
+    }//GEN-LAST:event_btnViewPasswordActionPerformed
 
     public static boolean isEmailValid(String email) {
         String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -264,6 +308,7 @@ public class dlgSignup extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOk;
+    private javax.swing.JButton btnViewPassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

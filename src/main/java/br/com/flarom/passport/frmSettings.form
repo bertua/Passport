@@ -204,6 +204,7 @@
               <Font name="Segoe Fluent Icons" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe712;"/>
+            <Property name="toolTipText" type="java.lang.String" value="More options"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>

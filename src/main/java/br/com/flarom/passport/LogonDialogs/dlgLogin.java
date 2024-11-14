@@ -32,7 +32,7 @@ public class dlgLogin extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtIdentifier = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         btnViewPassword = new javax.swing.JButton();
@@ -92,7 +92,7 @@ public class dlgLogin extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtIdentifier)
+                    .addComponent(txtUsername)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -110,7 +110,7 @@ public class dlgLogin extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtIdentifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -160,7 +160,7 @@ public class dlgLogin extends javax.swing.JDialog {
         this.setVisible(true);
 
         if (confirmed) {
-            String identifier = txtIdentifier.getText();
+            String identifier = txtUsername.getText();
             String password = txtPassword.getText();
 
             try {
@@ -186,13 +186,16 @@ public class dlgLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSignUpActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        String identifier = txtIdentifier.getText();
+        String identifier = txtUsername.getText();
         String password = txtPassword.getText();
         try {
             User u = User.Login(identifier, password);
 
             if (u == null) {
                 JOptionPane.showMessageDialog(parent, "Incorrect username or password");
+                txtPassword.setText("");
+                txtUsername.requestFocus();
+                txtUsername.selectAll();
                 return;
             }
 
@@ -245,7 +248,7 @@ public class dlgLogin extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtIdentifier;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

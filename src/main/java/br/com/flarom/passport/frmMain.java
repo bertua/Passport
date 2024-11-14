@@ -8,10 +8,8 @@ import br.com.flarom.passport.LogonDialogs.dlgLogin;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Objects.Category;
-import br.com.flarom.passport.Objects.Note;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
-import br.com.flarom.passport.Objects.pnlNote;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Component;
@@ -392,6 +390,7 @@ public class frmMain extends javax.swing.JFrame {
         dlgPasswordEditor dlg = new dlgPasswordEditor(this);
         dlg.Create();
         loadPasswords();
+        loadCategories();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void pnlPasswordsAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_pnlPasswordsAncestorResized

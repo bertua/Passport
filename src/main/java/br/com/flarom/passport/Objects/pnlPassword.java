@@ -310,14 +310,14 @@ public class pnlPassword extends javax.swing.JPanel {
         if(Category.Read(password.getId_category()) != null) tag = Category.Read(password.getId_category()).getName(); // a category can be null if you delete the category
 
         String[][] table = {
-          {"Property",      "Value"},
-          {"Owner",         "@" + User.Read(password.getId_user()).getUsername()},
-          {"Service Name",  password.getService_name()},
-          {"Username",      password.getUser_name()},
-          {"Tag",           tag},
-          {"Created in",    password.getCreate_date().toString()},
-          {"Last edited in",password.getEdit_date().toString()},
-          {"Last viewed in",password.getView_date().toString()}
+          {"Property",       "Value"},
+          {"Owner",          "@" + User.Read(password.getId_user()).getUsername()},
+          {"Service Name",   password.getService_name()},
+          {"Username",       password.getUser_name()},
+          {"Tag",            tag},
+          {"Created in",     password.getCreate_date().toString()},
+          {"Last edited in", password.getEdit_date().toString()},
+          {"Last viewed in", password.getView_date().toString()}
         };
         
         tv.displayMatrix(table, password.getService_name());
@@ -328,6 +328,19 @@ public class pnlPassword extends javax.swing.JPanel {
         btnOptions.setBackground(this.color);
         btnCopy.setBackground(this.color);
         btnView.setBackground(this.color);
+        
+        Color darker = this.color.darker().darker().darker().darker();
+        
+        float[] hsbVals = Color.RGBtoHSB(darker.getRed(), darker.getGreen(), darker.getBlue(), null);
+
+        hsbVals[1] *= 0.5f;
+
+        Color desaturated = Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]);
+        
+        this.setBackground(desaturated);
+        lblServiceName.setBackground(desaturated);
+        lblPassword.setBackground(desaturated);
+        lblUsername.setBackground(desaturated);
 
         double luminance = (0.299 * this.color.getRed() + 0.587 * this.color.getGreen() + 0.114 * this.color.getBlue()) / 255;
         Color textColor = luminance > 0.5 ? Color.BLACK : Color.WHITE;
