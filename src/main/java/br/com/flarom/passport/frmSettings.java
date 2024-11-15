@@ -47,7 +47,7 @@ public class frmSettings extends javax.swing.JFrame {
         });
         popAccountOptions.add(mnuLoginHistory);
 
-        mnuDeleteAccount.setForeground(new java.awt.Color(220, 53, 69));
+        mnuDeleteAccount.setForeground(new java.awt.Color(252, 70, 70));
         mnuDeleteAccount.setText("Delete this account");
         mnuDeleteAccount.setToolTipText("Delete this account and everything related to it");
         mnuDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +77,7 @@ public class frmSettings extends javax.swing.JFrame {
         lblDisplayname.setForeground(java.awt.Color.white);
         lblDisplayname.setText("Dislpayname");
 
+        jButton1.setMnemonic('e');
         jButton1.setText("Edit account");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -231,7 +232,7 @@ public class frmSettings extends javax.swing.JFrame {
             User u = User.getLoggedUser();
 
             dlgTextInput ti = new dlgTextInput(this);
-            String password = ti.Show("Confirm deletion", "Enter your password to confirm deletion", "", "Delete account");
+            String password = ti.Show("Confirm deletion", "Enter your password to confirm deletion", "", "Delete account", false);
 
             if (password == null) {
                 return;

@@ -8,8 +8,10 @@ import br.com.flarom.passport.LogonDialogs.dlgLogin;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Objects.Category;
+import br.com.flarom.passport.Objects.Note;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
+import br.com.flarom.passport.Objects.pnlNote;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Component;
@@ -37,10 +39,10 @@ public class frmMain extends javax.swing.JFrame {
 
     public frmMain() {
         initComponents();
-
+        
         login();
 
-        loadPasswords();
+        loadSecrets();
         loadCategories();
 
         updateScrollBar();
@@ -64,24 +66,30 @@ public class frmMain extends javax.swing.JFrame {
         loggedUser = User.getLoggedUser();
     }
 
-    private void loadPasswords() {
-        pnlPasswords.removeAll();
+    private void loadSecrets() {
+        pnlSecrets.removeAll();
 
         try {
             ArrayList<Password> userPasswords = Password.ListFromUser(loggedUser.getId_user());
+            ArrayList<Note> userNotes = Note.ListFromUser(loggedUser.getId_user());
 
             for (Password p : userPasswords) {
                 pnlPassword pass = new pnlPassword(p);
 
-                pnlPasswords.add(pass);
+                pnlSecrets.add(pass);
+            }
+            
+            for (Note n : userNotes){
+                pnlNote note = new pnlNote(n);
+                
+                pnlSecrets.add(note);
+            }
+
+            if (pnlSecrets.getComponentCount() == 0) {
+                pnlSecrets.add(pnlPlaceholder);
             }
 
             updateScrollBar();
-
-            if (pnlPasswords.getComponentCount() == 0) {
-                pnlPasswords.add(pnlPlaceholder);
-                updateScrollBar();
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -153,7 +161,11 @@ public class frmMain extends javax.swing.JFrame {
         mnuRemoveTag = new javax.swing.JMenuItem();
         separator3 = new javax.swing.JPopupMenu.Separator();
         mnuManageTags = new javax.swing.JMenuItem();
+        popContext = new javax.swing.JPopupMenu();
+        mnuNew = new javax.swing.JMenu();
+        mnuNewPassword2 = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
         btnAdd = new javax.swing.JButton();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
         btnFilter = new javax.swing.JButton();
@@ -162,7 +174,7 @@ public class frmMain extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         btnSettings = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        pnlPasswords = new javax.swing.JPanel();
+        pnlSecrets = new javax.swing.JPanel();
         pnlPlaceholder = new javax.swing.JPanel();
         lblPlaceholderTitle = new javax.swing.JLabel();
         lblPlaceholderDescription = new javax.swing.JLabel();
@@ -218,12 +230,25 @@ public class frmMain extends javax.swing.JFrame {
         });
         popTag.add(mnuManageTags);
 
+        mnuNew.setText("Create new");
+
+        mnuNewPassword2.setText("Password");
+        mnuNewPassword2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        mnuNew.add(mnuNewPassword2);
+
+        popContext.add(mnuNew);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Passport");
         setMinimumSize(new java.awt.Dimension(364, 250));
 
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setRollover(true);
+        jToolBar1.add(filler2);
 
         btnAdd.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnAdd.setForeground(java.awt.Color.white);
@@ -305,15 +330,16 @@ public class frmMain extends javax.swing.JFrame {
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        pnlPasswords.setMinimumSize(new java.awt.Dimension(0, 0));
-        pnlPasswords.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
+        pnlSecrets.setComponentPopupMenu(popContext);
+        pnlSecrets.setMinimumSize(new java.awt.Dimension(0, 0));
+        pnlSecrets.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
             }
             public void ancestorResized(java.awt.event.HierarchyEvent evt) {
-                pnlPasswordsAncestorResized(evt);
+                pnlSecretsAncestorResized(evt);
             }
         });
-        pnlPasswords.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 7, 7));
+        pnlSecrets.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 7, 7));
 
         pnlPlaceholder.setBackground(new java.awt.Color(43, 43, 43));
         pnlPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
@@ -360,9 +386,9 @@ public class frmMain extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pnlPasswords.add(pnlPlaceholder);
+        pnlSecrets.add(pnlPlaceholder);
 
-        jScrollPane1.setViewportView(pnlPasswords);
+        jScrollPane1.setViewportView(pnlSecrets);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -389,13 +415,13 @@ public class frmMain extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         dlgPasswordEditor dlg = new dlgPasswordEditor(this);
         dlg.Create();
-        loadPasswords();
+        loadSecrets();
         loadCategories();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void pnlPasswordsAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_pnlPasswordsAncestorResized
+    private void pnlSecretsAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_pnlSecretsAncestorResized
         updateScrollBar();
-    }//GEN-LAST:event_pnlPasswordsAncestorResized
+    }//GEN-LAST:event_pnlSecretsAncestorResized
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         dlgTextInput dlg = new dlgTextInput(this);
@@ -403,7 +429,7 @@ public class frmMain extends javax.swing.JFrame {
 
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
             setTitle("Passport");
-            for (Component c : pnlPasswords.getComponents()) {
+            for (Component c : pnlSecrets.getComponents()) {
                 c.setVisible(true);
             }
             return;
@@ -411,7 +437,7 @@ public class frmMain extends javax.swing.JFrame {
 
         setTitle("Search results for \"" + searchTerm + "\" - Passport");
 
-        for (Component c : pnlPasswords.getComponents()) {
+        for (Component c : pnlSecrets.getComponents()) {
             if (c instanceof pnlPassword) {
                 pnlPassword passwordPanel = (pnlPassword) c;
                 Password p = passwordPanel.getPassword();
@@ -429,7 +455,7 @@ public class frmMain extends javax.swing.JFrame {
     private void Filter(String category) {
         if (category == null || category.trim().isEmpty()) {
             setTitle("Passport");
-            for (Component c : pnlPasswords.getComponents()) {
+            for (Component c : pnlSecrets.getComponents()) {
                 c.setVisible(true);
             }
             return;
@@ -437,7 +463,7 @@ public class frmMain extends javax.swing.JFrame {
 
         setTitle("Filter results for \"" + category + "\" - Passport");
 
-        for (Component c : pnlPasswords.getComponents()) {
+        for (Component c : pnlSecrets.getComponents()) {
             if (c instanceof pnlPassword) {
                 pnlPassword passwordPanel = (pnlPassword) c;
                 Password p = passwordPanel.getPassword();
@@ -474,7 +500,7 @@ public class frmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSettingsActionPerformed
 
     private void btnPlaceholderNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceholderNewActionPerformed
-        popNew.show(pnlPasswords, btnPlaceholderNew.getLocation().x, btnPlaceholderNew.getLocation().y);
+        popNew.show(pnlSecrets, btnPlaceholderNew.getLocation().x, btnPlaceholderNew.getLocation().y);
     }//GEN-LAST:event_btnPlaceholderNewActionPerformed
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
@@ -492,6 +518,8 @@ public class frmMain extends javax.swing.JFrame {
     private void mnuNewNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuNewNoteActionPerformed
         dlgNoteEditor ne = new dlgNoteEditor(this);
         ne.Create();
+        loadSecrets();
+        loadCategories();
     }//GEN-LAST:event_mnuNewNoteActionPerformed
 
     private void updateScrollBar() {
@@ -500,20 +528,20 @@ public class frmMain extends javax.swing.JFrame {
         int spacing = 5;
         int lineHeight = buttonHeight + spacing;
 
-        int availableWidth = pnlPasswords.getWidth();
+        int availableWidth = pnlSecrets.getWidth();
 
         int buttonsPerLine = availableWidth / (buttonWidth + spacing);
 
-        int totalButtons = pnlPasswords.getComponentCount();
+        int totalButtons = pnlSecrets.getComponentCount();
 
         int rows = (int) Math.ceil((double) totalButtons / buttonsPerLine);
 
         int preferredHeight = rows * lineHeight;
 
-        pnlPasswords.setPreferredSize(new Dimension(pnlPasswords.getPreferredSize().width, preferredHeight));
+        pnlSecrets.setPreferredSize(new Dimension(pnlSecrets.getPreferredSize().width, preferredHeight));
 
-        pnlPasswords.revalidate();
-        pnlPasswords.repaint();
+        pnlSecrets.revalidate();
+        pnlSecrets.repaint();
     }
 
     public static void main(String args[]) {
@@ -560,6 +588,7 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSettings;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.JScrollPane jScrollPane1;
@@ -567,14 +596,17 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JLabel lblPlaceholderDescription;
     private javax.swing.JLabel lblPlaceholderTitle;
     private javax.swing.JMenuItem mnuManageTags;
+    private javax.swing.JMenu mnuNew;
     private javax.swing.JMenuItem mnuNewCreditCard;
     private javax.swing.JMenuItem mnuNewNote;
     private javax.swing.JMenuItem mnuNewPassword;
+    private javax.swing.JMenuItem mnuNewPassword2;
     private javax.swing.JMenuItem mnuRemoveTag;
     private javax.swing.JMenuItem mnuTitle;
     private javax.swing.JMenuItem mnuTitle2;
-    private javax.swing.JPanel pnlPasswords;
     private javax.swing.JPanel pnlPlaceholder;
+    private javax.swing.JPanel pnlSecrets;
+    private javax.swing.JPopupMenu popContext;
     private javax.swing.JPopupMenu popNew;
     private javax.swing.JPopupMenu popTag;
     private javax.swing.JPopupMenu.Separator separator;

@@ -19,7 +19,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="mnuDeleteAccount">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="45" green="35" red="dc" type="rgb"/>
+              <Color blue="46" green="46" red="fc" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Delete this account"/>
             <Property name="toolTipText" type="java.lang.String" value="Delete this account and everything related to it"/>
@@ -184,6 +184,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
+            <Property name="mnemonic" type="int" value="101"/>
             <Property name="text" type="java.lang.String" value="Edit account"/>
           </Properties>
           <Events>

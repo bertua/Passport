@@ -1,6 +1,8 @@
 package br.com.flarom.passport.Objects;
 
+import br.com.flarom.passport.Dialogs.dlgNoteEditor;
 import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
+import br.com.flarom.passport.MiscDialogs.dlgTableView;
 import br.com.flarom.passport.MiscDialogs.dlgTextView;
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -23,9 +25,21 @@ public class pnlNote extends javax.swing.JPanel {
     }
     
     public void updateColor() {
-        pnlTools.setBackground(this.color);
+        pnlSidebar.setBackground(this.color);
         btnOptions.setBackground(this.color);
         btnRead.setBackground(this.color);
+        
+        Color darker = this.color.darker().darker().darker().darker();
+        
+        float[] hsbVals = Color.RGBtoHSB(darker.getRed(), darker.getGreen(), darker.getBlue(), null);
+
+        hsbVals[1] *= 0.5f;
+
+        Color desaturated = Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]);
+        
+        this.setBackground(desaturated);
+        lblTitle.setBackground(desaturated);
+        btnRead2.setBackground(desaturated);
 
         double luminance = (0.299 * this.color.getRed() + 0.587 * this.color.getGreen() + 0.114 * this.color.getBlue()) / 255;
         Color textColor = luminance > 0.5 ? Color.BLACK : Color.WHITE;
@@ -47,10 +61,10 @@ public class pnlNote extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuDelete = new javax.swing.JMenuItem();
         lblTitle = new javax.swing.JTextField();
-        pnlTools = new javax.swing.JPanel();
+        pnlSidebar = new javax.swing.JPanel();
         btnOptions = new javax.swing.JButton();
         btnRead = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnRead2 = new javax.swing.JButton();
 
         mnuRead.setText("Read");
         mnuRead.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -90,7 +104,7 @@ public class pnlNote extends javax.swing.JPanel {
         cmnOptions.add(mnuProperties);
         cmnOptions.add(jSeparator1);
 
-        mnuDelete.setForeground(new java.awt.Color(220, 53, 69));
+        mnuDelete.setForeground(new java.awt.Color(252, 70, 70));
         mnuDelete.setText("Delete");
         mnuDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mnuDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -110,8 +124,8 @@ public class pnlNote extends javax.swing.JPanel {
         lblTitle.setText("Title");
         lblTitle.setBorder(null);
 
-        pnlTools.setBackground(new java.awt.Color(0, 0, 0));
-        pnlTools.setPreferredSize(new java.awt.Dimension(0, 30));
+        pnlSidebar.setBackground(new java.awt.Color(0, 0, 0));
+        pnlSidebar.setPreferredSize(new java.awt.Dimension(0, 30));
 
         btnOptions.setBackground(new java.awt.Color(0, 0, 0));
         btnOptions.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 16)); // NOI18N
@@ -139,28 +153,28 @@ public class pnlNote extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout pnlToolsLayout = new javax.swing.GroupLayout(pnlTools);
-        pnlTools.setLayout(pnlToolsLayout);
-        pnlToolsLayout.setHorizontalGroup(
-            pnlToolsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlSidebarLayout = new javax.swing.GroupLayout(pnlSidebar);
+        pnlSidebar.setLayout(pnlSidebarLayout);
+        pnlSidebarLayout.setHorizontalGroup(
+            pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnRead, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnOptions, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
-        pnlToolsLayout.setVerticalGroup(
-            pnlToolsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlToolsLayout.createSequentialGroup()
+        pnlSidebarLayout.setVerticalGroup(
+            pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSidebarLayout.createSequentialGroup()
                 .addComponent(btnOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRead, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        jButton1.setBackground(new java.awt.Color(43, 43, 43));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jButton1.setText("Click to read");
-        jButton1.setBorder(null);
-        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRead2.setBackground(new java.awt.Color(43, 43, 43));
+        btnRead2.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        btnRead2.setText("Click to read");
+        btnRead2.setBorder(null);
+        btnRead2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnRead2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReadActionPerformed(evt);
             }
@@ -171,22 +185,22 @@ public class pnlNote extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTools, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTitle)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnRead2)
                         .addGap(0, 183, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTools, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+            .addComponent(pnlSidebar, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnRead2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -196,11 +210,41 @@ public class pnlNote extends javax.swing.JPanel {
     }//GEN-LAST:event_mnuColorActionPerformed
 
     private void mnuEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEditActionPerformed
+        dlgNoteEditor ne = new dlgNoteEditor((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
+        Note nn = ne.Edit(note);
         
+        if(nn == null) return;
+        
+        note = nn;
+        
+        lblTitle.setText(note.getTitle());
     }//GEN-LAST:event_mnuEditActionPerformed
 
     private void mnuPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPropertiesActionPerformed
-        
+        try {
+            dlgTableView tv = new dlgTableView((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar), false);
+            
+            String tag = "Null";
+            String relatedPassword = "Null";
+            
+            if(Category.Read(note.getId_category()) != null) tag = Category.Read(note.getId_category()).getName();
+            if(Password.Read(note.getId_password()) != null) relatedPassword = Password.Read(note.getId_password()).getService_name();
+            
+            String[][] table = {
+                {"Property",         "Value"},
+                {"Owner",            "@" + User.Read(note.getId_user()).getUsername()},
+                {"Title",            note.getTitle()},
+                {"Tag",              tag},
+                {"Related password", relatedPassword},
+                {"Created in",       note.getCreate_date().toString()},
+                {"Last edited in",   note.getEdit_date().toString()},
+                {"Last viewed in",   note.getView_date().toString()}
+            };
+            
+            tv.displayMatrix(table, note.getTitle() + " properties");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_mnuPropertiesActionPerformed
 
     private void mnuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDeleteActionPerformed
@@ -213,7 +257,7 @@ public class pnlNote extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOptionsMousePressed
 
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
-        dlgTextView tv = new dlgTextView((JFrame) SwingUtilities.getWindowAncestor(pnlTools), false);
+        dlgTextView tv = new dlgTextView((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar), false);
         tv.displayText(note.getDocument(), note.getTitle());
     }//GEN-LAST:event_btnReadActionPerformed
 
@@ -221,8 +265,8 @@ public class pnlNote extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOptions;
     private javax.swing.JButton btnRead;
+    private javax.swing.JButton btnRead2;
     private javax.swing.JPopupMenu cmnOptions;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTextField lblTitle;
@@ -231,6 +275,6 @@ public class pnlNote extends javax.swing.JPanel {
     private javax.swing.JMenuItem mnuEdit;
     private javax.swing.JMenuItem mnuProperties;
     private javax.swing.JMenuItem mnuRead;
-    private javax.swing.JPanel pnlTools;
+    private javax.swing.JPanel pnlSidebar;
     // End of variables declaration//GEN-END:variables
 }

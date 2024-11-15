@@ -14,7 +14,7 @@ public class MiscHelper {
 
     private static final SecureRandom random = new SecureRandom();
 
-    public String getRandomPassword(int length, boolean useLowerCase, boolean useUpperCase, boolean useNumbers, boolean useSpecial) {
+    public static String getRandomPassword(int length, boolean useLowerCase, boolean useUpperCase, boolean useNumbers, boolean useSpecial) {
         StringBuilder passwordPool = new StringBuilder();
 
         if (useLowerCase) {

@@ -1,6 +1,7 @@
 package br.com.flarom.passport.MiscDialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
+import java.awt.Color;
 
 public class dlgTextInput extends javax.swing.JDialog {
 
@@ -19,6 +20,26 @@ public class dlgTextInput extends javax.swing.JDialog {
         lblInstructions.setText(instructions);
         lblIcon.setText(icon);
         btnOk.setText(okButtonText);
+        btnOk.setBackground(new Color(70,206,252));
+        
+        this.setVisible(true);
+        
+        if (confirmed){
+            return txtInput.getText();
+        }
+        
+        return null;
+    }
+    
+    public String Show(String title, String instructions, String icon, String okButtonText, boolean isPositive){
+        this.setTitle(title);
+        lblInstructions.setText(instructions);
+        lblIcon.setText(icon);
+        btnOk.setText(okButtonText);
+        btnOk.setBackground(new Color(70,206,252));
+        if(!isPositive){
+            btnOk.setBackground(new Color(252, 70, 70));
+        }
         
         this.setVisible(true);
         

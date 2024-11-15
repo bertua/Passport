@@ -1,6 +1,9 @@
 package br.com.flarom.passport.Objects;
 
 import br.com.flarom.passport.Helpers.MiscHelper;
+import static br.com.flarom.passport.Helpers.MiscHelper.decryptPassword;
+import static br.com.flarom.passport.Helpers.MiscHelper.encryptPassword;
+import static br.com.flarom.passport.Helpers.MiscHelper.getRandomPassword;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,7 +96,7 @@ public class User {
             stmt.setString(1, username);
             stmt.setString(2, nickname);
             stmt.setString(3, email);
-            stmt.setString(4, MiscHelper.encryptPassword(password));
+            stmt.setString(4, encryptPassword(password));
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -115,7 +118,7 @@ public class User {
             stmt.setString(1, username);
             stmt.setString(2, nickname);
             stmt.setString(3, email);
-            stmt.setString(4, MiscHelper.encryptPassword(password));
+            stmt.setString(4, encryptPassword(password));
             stmt.setInt(5, id_user);
             stmt.executeUpdate();
         } catch (SQLException e) {

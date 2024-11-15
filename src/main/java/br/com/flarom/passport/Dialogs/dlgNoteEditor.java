@@ -7,19 +7,21 @@ import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class dlgNoteEditor extends javax.swing.JDialog {
-    
+
     private java.awt.Frame parent;
-    
+
     public dlgNoteEditor(java.awt.Frame parent) {
         super(parent, true);
         this.parent = parent;
         initComponents();
-        
+
         KeyboardHelper kh = new KeyboardHelper(rootPane);
         kh.setCloseOnEscape(this);
-        
+
         refreshCategories();
         refreshPasswords();
     }
@@ -199,20 +201,20 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     private boolean confirmed = false;
-    
-    public void Create(){
+
+    public void Create() {
         this.setVisible(true);
-        
-        if(confirmed){
+
+        if (confirmed) {
             int id_user = User.getLoggedUser().getId_user();
             int id_category = userCategories.get(cbxCategory.getSelectedIndex()).getId_category();
             String title = txtTitle.getText();
             String document = txtDocument.getText();
             Timestamp create_date = new Timestamp(System.currentTimeMillis());
             String color = userCategories.get(cbxCategory.getSelectedIndex()).getColor();
-            
+
             Note n = new Note();
-            
+
             n.setId_user(id_user);
             n.setId_category(id_category);
             n.setTitle(title);
@@ -221,19 +223,52 @@ public class dlgNoteEditor extends javax.swing.JDialog {
             n.setEdit_date(create_date);
             n.setView_date(create_date);
             n.setColor(color);
-            
-            if (cbxPassword.getSelectedIndex() != 0){
-                int id_password = userPasswords.get(cbxPassword.getSelectedIndex() -1).getId_password();
+
+            if (cbxPassword.getSelectedIndex() != 0) {
+                int id_password = userPasswords.get(cbxPassword.getSelectedIndex() - 1).getId_password();
                 n.setId_password(id_password);
             }
-            
+
             n.Create();
         }
-        
-        System.out.println("aaaaa");
     }
-    
-    
+
+    public Note Edit(Note n) {
+        try {
+            txtTitle.setText(n.getTitle());
+            if (Password.Read(n.getId_password()) != null) {
+                cbxCategory.setSelectedItem(Password.Read(n.getId_password()).getService_name());
+            }
+            if (Category.Read(n.getId_category()) != null) {
+                cbxCategory.setSelectedItem(Category.Read(n.getId_category()).getName());
+            }
+            txtDocument.setText(n.getDocument());
+
+            this.setVisible(true);
+
+            if (confirmed) {
+                int id_category = userCategories.get(cbxCategory.getSelectedIndex()).getId_category();
+                String title = txtTitle.getText();
+                String document = txtDocument.getText();
+                Timestamp edit_date = new Timestamp(System.currentTimeMillis());
+                String color = userCategories.get(cbxCategory.getSelectedIndex()).getColor();
+
+                n.setId_category(id_category);
+                n.setTitle(title);
+                n.setDocument(document);
+                n.setEdit_date(edit_date);
+                n.setColor(color);
+                
+                n.Update();
+                return n;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return null;
+    }
+
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
         dlgCategories ct = new dlgCategories(this.parent);
         ct.setVisible(true);
@@ -256,11 +291,11 @@ public class dlgNoteEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     private ArrayList<Password> userPasswords = new ArrayList<Password>();
-    
-    private void refreshPasswords(){
+
+    private void refreshPasswords() {
         userPasswords.clear();
         cbxPassword.removeAllItems();
-        
+
         cbxPassword.addItem("(None)");
         try {
             ArrayList<Password> passwords = Password.ListFromUser(User.getLoggedUser().getId_user());
@@ -271,11 +306,11 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
     }
-    
+
     private ArrayList<Category> userCategories = new ArrayList<Category>();
-    
+
     private void refreshCategories() {
         userCategories.clear();
         cbxCategory.removeAllItems();
@@ -286,7 +321,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
             cbxCategory.addItem(cat.getName());
         }
     }
-    
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

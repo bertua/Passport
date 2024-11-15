@@ -91,7 +91,7 @@ public class pnlPassword extends javax.swing.JPanel {
         cmnOptions.add(mnuProperties);
         cmnOptions.add(jSeparator1);
 
-        mnuDelete.setForeground(new java.awt.Color(220, 53, 69));
+        mnuDelete.setForeground(new java.awt.Color(252, 70, 70));
         mnuDelete.setText("Delete");
         mnuDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mnuDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -272,7 +272,7 @@ public class pnlPassword extends javax.swing.JPanel {
 
     private void mnuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDeleteActionPerformed
         dlgTextInput ti = new dlgTextInput((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
-        String confirmPassword = ti.Show("Delete " + password.getService_name(), "Insert your password to confirm deletion", "", "Delete");
+        String confirmPassword = ti.Show("Delete " + password.getService_name(), "Insert your password to confirm deletion", "", "Delete", false);
 
         if (confirmPassword == null) {
             return;
@@ -320,7 +320,7 @@ public class pnlPassword extends javax.swing.JPanel {
           {"Last viewed in", password.getView_date().toString()}
         };
         
-        tv.displayMatrix(table, password.getService_name());
+        tv.displayMatrix(table, password.getService_name() + " properties");
     }//GEN-LAST:event_mnuPropertiesActionPerformed
 
     public void updateColor() {

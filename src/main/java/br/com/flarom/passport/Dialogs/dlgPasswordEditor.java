@@ -1,11 +1,11 @@
 package br.com.flarom.passport.Dialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
+import static br.com.flarom.passport.Helpers.MiscHelper.getRandomPassword;
 import br.com.flarom.passport.Objects.Category;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
 import java.awt.Color;
-import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -536,37 +536,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_formWindowClosed
 
-    private static final SecureRandom random = new SecureRandom();
-
-    private String getRandomPassword(int length, boolean useLowerCase, boolean useUpperCase, boolean useNumbers, boolean useSpecial) {
-        StringBuilder passwordPool = new StringBuilder();
-
-        if (useLowerCase) {
-            passwordPool.append("abcdefghijklmnopqrstuvwxyz");
-        }
-        if (useUpperCase) {
-            passwordPool.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        }
-        if (useNumbers) {
-            passwordPool.append("1234567890");
-        }
-        if (useSpecial) {
-            passwordPool.append("!@#$%&*-_");
-        }
-
-        if (passwordPool.length() == 0) {
-            return null;
-        }
-
-        StringBuilder password = new StringBuilder(length);
-
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(passwordPool.length());
-            password.append(passwordPool.charAt(index));
-        }
-
-        return password.toString();
-    }
+    
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

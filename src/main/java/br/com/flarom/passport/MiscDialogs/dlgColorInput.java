@@ -1,5 +1,6 @@
 package br.com.flarom.passport.MiscDialogs;
 
+import br.com.flarom.passport.Helpers.KeyboardHelper;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -72,6 +73,10 @@ public class dlgColorInput extends javax.swing.JDialog {
     public dlgColorInput(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setCloseOnEscape(this);
+        
         for (String color : defaultColors) {
             JButton btn = new JButton();
             btn.setPreferredSize(new Dimension(32, 32));
