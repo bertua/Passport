@@ -143,7 +143,7 @@ public class Note {
     }
 
     public void Update() {
-        String sql = "UPDATE notes SET id_category = ?, id_password = ?, title = ?, document = ?, edit_date = ?, color = ?, WHERE id_note = ?";
+        String sql = "UPDATE notes SET id_category = ?, id_password = ?, title = ?, document = ?, edit_date = ?, color = ? WHERE id_note = ?";
         try (Connection conn = Database.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
 

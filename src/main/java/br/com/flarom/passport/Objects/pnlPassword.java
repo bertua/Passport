@@ -247,8 +247,8 @@ public class pnlPassword extends javax.swing.JPanel {
     }//GEN-LAST:event_btnViewActionPerformed
 
     private void mnuColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuColorActionPerformed
-        dlgColorInput dlg = new dlgColorInput((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
-        Color newColor = dlg.getColor();
+        dlgColorInput ci = new dlgColorInput((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
+        Color newColor = ci.getColor();
 
         if (newColor == null) {
             return;
@@ -324,30 +324,34 @@ public class pnlPassword extends javax.swing.JPanel {
     }//GEN-LAST:event_mnuPropertiesActionPerformed
 
     public void updateColor() {
+        // set sidebar and sidebar buttons background color to the setted password color
         pnlSidebar.setBackground(this.color);
         btnOptions.setBackground(this.color);
         btnCopy.setBackground(this.color);
         btnView.setBackground(this.color);
         
+        // gets an adequate color for the sidebar buttons
+        double luminance = (0.299 * this.color.getRed() + 0.587 * this.color.getGreen() + 0.114 * this.color.getBlue()) / 255;
+        Color textColor = luminance > 0.5 ? Color.BLACK : Color.WHITE;
+
+        // set sidebar buttons foreground color to black or white, depending of the background
+        btnOptions.setForeground(textColor);
+        btnCopy.setForeground(textColor);
+        btnView.setForeground(textColor);
+        
+        // gets a darker variant of the password color, for the body of the panel
         Color darker = this.color.darker().darker().darker().darker();
         
+        // gets a more desaturated variant of the darker color - looks better then only darker
         float[] hsbVals = Color.RGBtoHSB(darker.getRed(), darker.getGreen(), darker.getBlue(), null);
-
         hsbVals[1] *= 0.5f;
-
         Color desaturated = Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]);
         
+        // set body and body items background color as the desaturated variant
         this.setBackground(desaturated);
         lblServiceName.setBackground(desaturated);
         lblPassword.setBackground(desaturated);
         lblUsername.setBackground(desaturated);
-
-        double luminance = (0.299 * this.color.getRed() + 0.587 * this.color.getGreen() + 0.114 * this.color.getBlue()) / 255;
-        Color textColor = luminance > 0.5 ? Color.BLACK : Color.WHITE;
-
-        btnOptions.setForeground(textColor);
-        btnCopy.setForeground(textColor);
-        btnView.setForeground(textColor);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,24 +1,25 @@
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\LoginAttempt.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\frmSettings.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\LogonDialogs\dlgLogin.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\MiscDialogs\dlgColorInput.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\Note.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\pnlPassword.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Dialogs\dlgNoteEditor.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Dialogs\dlgPasswordEditor.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\MiscDialogs\dlgTableView.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\MiscDialogs\dlgTextInput.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\frmMain.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\LogonDialogs\dlgSignup.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Helpers\MiscHelper.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\CreditCard.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\Database.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\Category.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Helpers\KeyboardHelper.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\Password.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\User.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\MiscDialogs\dlgTextView.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Dialogs\dlgCategoryEditor.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Dialogs\dlgCategories.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\LogonDialogs\dlgUpdateAccount.java
-C:\Users\03123806073\Documents\NetBeansProjects\passport\src\main\java\br\com\flarom\passport\Objects\pnlNote.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Dialogs/dlgCategories.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Dialogs/dlgCategoryEditor.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Dialogs/dlgNoteEditor.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Dialogs/dlgPasswordEditor.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Helpers/KeyboardHelper.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Helpers/MiscHelper.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Helpers/VersionHelper.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/LogonDialogs/dlgLogin.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/LogonDialogs/dlgSignup.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/LogonDialogs/dlgUpdateAccount.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/MiscDialogs/dlgColorInput.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/MiscDialogs/dlgDocumentView.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/MiscDialogs/dlgTableView.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/MiscDialogs/dlgTextInput.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/Category.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/CreditCard.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/Database.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/LoginAttempt.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/Note.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/Password.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/User.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/pnlNote.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/Objects/pnlPassword.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/frmMain.java
+/home/flarom/Documentos/projetos programação/passport/src/main/java/br/com/flarom/passport/frmSettings.java

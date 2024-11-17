@@ -1,14 +1,20 @@
 package br.com.flarom.passport.Dialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
+import static br.com.flarom.passport.Helpers.MiscHelper.decryptPassword;
+import static br.com.flarom.passport.Helpers.MiscHelper.encryptPassword;
+import static br.com.flarom.passport.Helpers.MiscHelper.openWebsite;
 import br.com.flarom.passport.Objects.Category;
 import br.com.flarom.passport.Objects.Note;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
+import com.github.rjeschke.txtmark.Processor;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentListener;
 
 public class dlgNoteEditor extends javax.swing.JDialog {
 
@@ -24,6 +30,30 @@ public class dlgNoteEditor extends javax.swing.JDialog {
 
         refreshCategories();
         refreshPasswords();
+
+        txtDocument.getDocument().addDocumentListener(new DocumentListener() {
+            private void renderHTML() {
+                String md = txtDocument.getText();
+                String html = Processor.process(md);
+
+                txtPreview.setText(html);
+            }
+
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                renderHTML();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                renderHTML();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -40,11 +70,15 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         btnAddCategory = new javax.swing.JButton();
         cbxPassword = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtDocument = new javax.swing.JTextArea();
         btnOk = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtDocument = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtPreview = new javax.swing.JEditorPane();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Text note - Passport");
@@ -55,6 +89,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.white);
         jLabel1.setText("Note Details");
 
         jPanel2.setBackground(new java.awt.Color(43, 43, 43));
@@ -93,7 +128,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
                             .addComponent(jLabel8))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cbxCategory, 0, 343, Short.MAX_VALUE)
+                        .addComponent(cbxCategory, 0, 356, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -108,37 +143,19 @@ public class dlgNoteEditor extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbxPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(cbxPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAddCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(btnAddCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbxCategory))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Note");
-
-        jPanel1.setBackground(new java.awt.Color(43, 43, 43));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
-
-        txtDocument.setBackground(new java.awt.Color(43, 43, 43));
-        txtDocument.setColumns(20);
-        txtDocument.setRows(5);
-        jScrollPane2.setViewportView(txtDocument);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-        );
 
         btnOk.setBackground(new java.awt.Color(70, 206, 252));
         btnOk.setForeground(java.awt.Color.black);
@@ -158,6 +175,34 @@ public class dlgNoteEditor extends javax.swing.JDialog {
             }
         });
 
+        jScrollPane2.setToolTipText("");
+        jScrollPane2.setName(""); // NOI18N
+
+        txtDocument.setBackground(new java.awt.Color(43, 43, 43));
+        txtDocument.setColumns(20);
+        txtDocument.setRows(5);
+        jScrollPane2.setViewportView(txtDocument);
+
+        jTabbedPane1.addTab("Edit", jScrollPane2);
+
+        txtPreview.setEditable(false);
+        txtPreview.setBackground(java.awt.Color.white);
+        txtPreview.setContentType("text/html"); // NOI18N
+        txtPreview.setForeground(java.awt.Color.black);
+        jScrollPane1.setViewportView(txtPreview);
+
+        jTabbedPane1.addTab("Preview", jScrollPane1);
+
+        jLabel5.setText("Markdown is supported.");
+
+        jLabel6.setForeground(new java.awt.Color(70, 206, 252));
+        jLabel6.setText("Learn more");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,17 +211,20 @@ public class dlgNoteEditor extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOk))
+                    .addComponent(jTabbedPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel4))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCancel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnOk)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -189,11 +237,13 @@ public class dlgNoteEditor extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
-                    .addComponent(btnCancel))
+                    .addComponent(btnCancel)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
                 .addContainerGap())
         );
 
@@ -206,30 +256,34 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         this.setVisible(true);
 
         if (confirmed) {
-            int id_user = User.getLoggedUser().getId_user();
-            int id_category = userCategories.get(cbxCategory.getSelectedIndex()).getId_category();
-            String title = txtTitle.getText();
-            String document = txtDocument.getText();
-            Timestamp create_date = new Timestamp(System.currentTimeMillis());
-            String color = userCategories.get(cbxCategory.getSelectedIndex()).getColor();
+            try {
+                int id_user = User.getLoggedUser().getId_user();
+                int id_category = userCategories.get(cbxCategory.getSelectedIndex()).getId_category();
+                String title = txtTitle.getText();
+                String document = encryptPassword(txtDocument.getText());
+                Timestamp create_date = new Timestamp(System.currentTimeMillis());
+                String color = userCategories.get(cbxCategory.getSelectedIndex()).getColor();
 
-            Note n = new Note();
+                Note n = new Note();
 
-            n.setId_user(id_user);
-            n.setId_category(id_category);
-            n.setTitle(title);
-            n.setDocument(document);
-            n.setCreate_date(create_date);
-            n.setEdit_date(create_date);
-            n.setView_date(create_date);
-            n.setColor(color);
+                n.setId_user(id_user);
+                n.setId_category(id_category);
+                n.setTitle(title);
+                n.setDocument(document);
+                n.setCreate_date(create_date);
+                n.setEdit_date(create_date);
+                n.setView_date(create_date);
+                n.setColor(color);
 
-            if (cbxPassword.getSelectedIndex() != 0) {
-                int id_password = userPasswords.get(cbxPassword.getSelectedIndex() - 1).getId_password();
-                n.setId_password(id_password);
+                if (cbxPassword.getSelectedIndex() != 0) {
+                    int id_password = userPasswords.get(cbxPassword.getSelectedIndex() - 1).getId_password();
+                    n.setId_password(id_password);
+                }
+
+                n.Create();
+            } catch (Exception ex) {
+                Logger.getLogger(dlgNoteEditor.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            n.Create();
         }
     }
 
@@ -242,30 +296,33 @@ public class dlgNoteEditor extends javax.swing.JDialog {
             if (Category.Read(n.getId_category()) != null) {
                 cbxCategory.setSelectedItem(Category.Read(n.getId_category()).getName());
             }
-            txtDocument.setText(n.getDocument());
+            txtDocument.setText(decryptPassword(n.getDocument()));
 
             this.setVisible(true);
 
             if (confirmed) {
                 int id_category = userCategories.get(cbxCategory.getSelectedIndex()).getId_category();
                 String title = txtTitle.getText();
-                String document = txtDocument.getText();
+                String document = encryptPassword(txtDocument.getText());
                 Timestamp edit_date = new Timestamp(System.currentTimeMillis());
-                String color = userCategories.get(cbxCategory.getSelectedIndex()).getColor();
 
                 n.setId_category(id_category);
                 n.setTitle(title);
                 n.setDocument(document);
                 n.setEdit_date(edit_date);
-                n.setColor(color);
-                
+
+                if (cbxPassword.getSelectedIndex() != 0) {
+                    int id_password = userPasswords.get(cbxPassword.getSelectedIndex() - 1).getId_password();
+                    n.setId_password(id_password);
+                }
+
                 n.Update();
                 return n;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
         return null;
     }
 
@@ -276,6 +333,19 @@ public class dlgNoteEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddCategoryActionPerformed
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+        if (txtTitle.getText().isBlank()) {
+            JOptionPane.showMessageDialog(parent, "Title cannot be empty");
+            return;
+        }
+        if (cbxCategory.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(rootPane, "Category cannot be empty");
+            return;
+        }
+        if (txtDocument.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Write something... don't be shy!");
+            return;
+        }
+
         confirmed = true;
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed
@@ -289,6 +359,10 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         confirmed = false;
         dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        openWebsite(rootPane, "https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax");
+    }//GEN-LAST:event_jLabel6MouseClicked
 
     private ArrayList<Password> userPasswords = new ArrayList<Password>();
 
@@ -347,11 +421,15 @@ public class dlgNoteEditor extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea txtDocument;
+    private javax.swing.JEditorPane txtPreview;
     private javax.swing.JTextField txtTitle;
     // End of variables declaration//GEN-END:variables
 }

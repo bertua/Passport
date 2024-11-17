@@ -1,6 +1,7 @@
 package br.com.flarom.passport.LogonDialogs;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
+import br.com.flarom.passport.Helpers.VersionHelper;
 import br.com.flarom.passport.Objects.LoginAttempt;
 import br.com.flarom.passport.Objects.User;
 import javax.swing.JOptionPane;
@@ -21,6 +22,9 @@ public class dlgLogin extends javax.swing.JDialog {
         kh.setConfirmButton(btnLogin);
         
         getRootPane().setDefaultButton(btnLogin);
+        
+        VersionHelper vh = new VersionHelper();
+        lblVersion.setText(vh.getLocalVersion());
     }
 
     @SuppressWarnings("unchecked")
@@ -36,6 +40,7 @@ public class dlgLogin extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         btnViewPassword = new javax.swing.JButton();
+        lblVersion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Login - Passport");
@@ -120,6 +125,8 @@ public class dlgLogin extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        lblVersion.setText("version");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,7 +135,8 @@ public class dlgLogin extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 275, Short.MAX_VALUE)
+                        .addComponent(lblVersion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 233, Short.MAX_VALUE)
                         .addComponent(btnSignUp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLogin))
@@ -146,7 +154,8 @@ public class dlgLogin extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin)
-                    .addComponent(btnSignUp))
+                    .addComponent(btnSignUp)
+                    .addComponent(lblVersion))
                 .addContainerGap())
         );
 
@@ -248,6 +257,7 @@ public class dlgLogin extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblVersion;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables

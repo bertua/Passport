@@ -1,51 +1,69 @@
 package br.com.flarom.passport.Objects;
 
 import br.com.flarom.passport.Dialogs.dlgNoteEditor;
+import static br.com.flarom.passport.Helpers.MiscHelper.colorToString;
+import static br.com.flarom.passport.Helpers.MiscHelper.decryptPassword;
 import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
+import br.com.flarom.passport.MiscDialogs.dlgColorInput;
 import br.com.flarom.passport.MiscDialogs.dlgTableView;
-import br.com.flarom.passport.MiscDialogs.dlgTextView;
+import br.com.flarom.passport.MiscDialogs.dlgDocumentView;
 import java.awt.Color;
+import java.awt.Container;
+import java.sql.Timestamp;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class pnlNote extends javax.swing.JPanel {
 
     private Color color;
     private Note note;
-    
+
     public pnlNote(Note n) {
         this.note = n;
-        
+
         initComponents();
-        
+
         lblTitle.setText(n.getTitle());
         color = stringToColor(n.getColor());
-        
+
         updateColor();
+        updateStatus();
+    }
+
+    public Note getNote(){
+        return this.note;
     }
     
     public void updateColor() {
         pnlSidebar.setBackground(this.color);
         btnOptions.setBackground(this.color);
         btnRead.setBackground(this.color);
-        
+
         Color darker = this.color.darker().darker().darker().darker();
-        
+
         float[] hsbVals = Color.RGBtoHSB(darker.getRed(), darker.getGreen(), darker.getBlue(), null);
 
         hsbVals[1] *= 0.5f;
 
         Color desaturated = Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]);
-        
+
         this.setBackground(desaturated);
         lblTitle.setBackground(desaturated);
-        btnRead2.setBackground(desaturated);
 
         double luminance = (0.299 * this.color.getRed() + 0.587 * this.color.getGreen() + 0.114 * this.color.getBlue()) / 255;
         Color textColor = luminance > 0.5 ? Color.BLACK : Color.WHITE;
 
         btnOptions.setForeground(textColor);
         btnRead.setForeground(textColor);
+    }
+
+    public void updateStatus() {
+        int words = countWords();
+        int subjects = countTitles();
+
+        lblSubjects.setText("Subjects: " + subjects);
+        lblWords.setText("Total words: " + words);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,7 +82,8 @@ public class pnlNote extends javax.swing.JPanel {
         pnlSidebar = new javax.swing.JPanel();
         btnOptions = new javax.swing.JButton();
         btnRead = new javax.swing.JButton();
-        btnRead2 = new javax.swing.JButton();
+        lblSubjects = new javax.swing.JLabel();
+        lblWords = new javax.swing.JLabel();
 
         mnuRead.setText("Read");
         mnuRead.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -133,6 +152,7 @@ public class pnlNote extends javax.swing.JPanel {
         btnOptions.setText("");
         btnOptions.setToolTipText("Options");
         btnOptions.setBorder(null);
+        btnOptions.setBorderPainted(false);
         btnOptions.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnOptions.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -169,16 +189,9 @@ public class pnlNote extends javax.swing.JPanel {
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        btnRead2.setBackground(new java.awt.Color(43, 43, 43));
-        btnRead2.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        btnRead2.setText("Click to read");
-        btnRead2.setBorder(null);
-        btnRead2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnRead2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReadActionPerformed(evt);
-            }
-        });
+        lblSubjects.setText("jLabel1");
+
+        lblWords.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -188,10 +201,12 @@ public class pnlNote extends javax.swing.JPanel {
                 .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitle)
+                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRead2)
-                        .addGap(0, 183, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSubjects)
+                            .addComponent(lblWords))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,47 +215,71 @@ public class pnlNote extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRead2)
+                .addComponent(lblSubjects)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblWords)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnuColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuColorActionPerformed
-        
+        dlgColorInput ci = new dlgColorInput((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
+        Color newColor = ci.getColor();
+
+        if (newColor == null) {
+            return;
+        }
+
+        this.color = newColor;
+        updateColor();
+
+        try {
+            note.setColor(colorToString(newColor));
+            note.Update();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_mnuColorActionPerformed
 
     private void mnuEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEditActionPerformed
         dlgNoteEditor ne = new dlgNoteEditor((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar));
         Note nn = ne.Edit(note);
-        
-        if(nn == null) return;
-        
+
+        if (nn == null) {
+            return;
+        }
+
         note = nn;
-        
+
         lblTitle.setText(note.getTitle());
+        updateStatus();
     }//GEN-LAST:event_mnuEditActionPerformed
 
     private void mnuPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPropertiesActionPerformed
         try {
             dlgTableView tv = new dlgTableView((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar), false);
-            
+
             String tag = "Null";
             String relatedPassword = "Null";
-            
-            if(Category.Read(note.getId_category()) != null) tag = Category.Read(note.getId_category()).getName();
-            if(Password.Read(note.getId_password()) != null) relatedPassword = Password.Read(note.getId_password()).getService_name();
-            
+
+            if (Category.Read(note.getId_category()) != null) {
+                tag = Category.Read(note.getId_category()).getName();
+            }
+            if (Password.Read(note.getId_password()) != null) {
+                relatedPassword = Password.Read(note.getId_password()).getService_name();
+            }
+
             String[][] table = {
-                {"Property",         "Value"},
-                {"Owner",            "@" + User.Read(note.getId_user()).getUsername()},
-                {"Title",            note.getTitle()},
-                {"Tag",              tag},
+                {"Property", "Value"},
+                {"Owner", "@" + User.Read(note.getId_user()).getUsername()},
+                {"Title", note.getTitle()},
+                {"Tag", tag},
                 {"Related password", relatedPassword},
-                {"Created in",       note.getCreate_date().toString()},
-                {"Last edited in",   note.getEdit_date().toString()},
-                {"Last viewed in",   note.getView_date().toString()}
+                {"Created in", note.getCreate_date().toString()},
+                {"Last edited in", note.getEdit_date().toString()},
+                {"Last viewed in", note.getView_date().toString()}
             };
-            
+
             tv.displayMatrix(table, note.getTitle() + " properties");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -248,7 +287,15 @@ public class pnlNote extends javax.swing.JPanel {
     }//GEN-LAST:event_mnuPropertiesActionPerformed
 
     private void mnuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDeleteActionPerformed
-        
+        int confirm = JOptionPane.showConfirmDialog(btnOptions, "Are you sure you want to delete '" + note.getTitle() + "'?", "Delete note", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+        note.Delete();
+        Container c = this.getParent();
+        c.remove(this);
+        c.revalidate();
+        c.repaint();
     }//GEN-LAST:event_mnuDeleteActionPerformed
 
     private void btnOptionsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOptionsMousePressed
@@ -257,19 +304,78 @@ public class pnlNote extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOptionsMousePressed
 
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
-        dlgTextView tv = new dlgTextView((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar), false);
-        tv.displayText(note.getDocument(), note.getTitle());
+        try {
+            dlgDocumentView dv = new dlgDocumentView((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar), false);
+            updateViewDate();
+            dv.readMarkdown(decryptPassword(note.getDocument()), note.getTitle());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_btnReadActionPerformed
+
+    private int countWords() {
+        try {
+            String document = decryptPassword(note.getDocument());
+            
+            if (document == null || document.isEmpty()) {
+                return 0;
+            }
+            
+            // removes markdown objects to not affect the counting
+            String plainText = document.replaceAll("(\\*\\*|__|\\*|_|`|~~)", "");
+            plainText = plainText.replaceAll("\\[(.*?)\\]\\(.*?\\)", "$1"); // [text](url) links
+            
+            String[] words = plainText.split("\\s+");
+            return words.length;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+    private int countTitles() {
+        try {
+            String document = decryptPassword(note.getDocument());
+            
+            if (document == null || document.isEmpty()) {
+                return 0;
+            }
+            
+            String[] lines = document.split("\\r?\\n");
+            int titleCount = 0;
+            
+            for (String line : lines) {
+                if (line.trim().startsWith("#")) {
+                    titleCount++;
+                }
+            }
+            
+            return titleCount;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+    
+    private void updateViewDate(){
+        try {
+            this.note.setView_date(new Timestamp(System.currentTimeMillis()));
+            this.note.Update();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOptions;
     private javax.swing.JButton btnRead;
-    private javax.swing.JButton btnRead2;
     private javax.swing.JPopupMenu cmnOptions;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JLabel lblSubjects;
     private javax.swing.JTextField lblTitle;
+    private javax.swing.JLabel lblWords;
     private javax.swing.JMenuItem mnuColor;
     private javax.swing.JMenuItem mnuDelete;
     private javax.swing.JMenuItem mnuEdit;

@@ -161,9 +161,6 @@ public class frmMain extends javax.swing.JFrame {
         mnuRemoveTag = new javax.swing.JMenuItem();
         separator3 = new javax.swing.JPopupMenu.Separator();
         mnuManageTags = new javax.swing.JMenuItem();
-        popContext = new javax.swing.JPopupMenu();
-        mnuNew = new javax.swing.JMenu();
-        mnuNewPassword2 = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
         btnAdd = new javax.swing.JButton();
@@ -229,18 +226,6 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
         popTag.add(mnuManageTags);
-
-        mnuNew.setText("Create new");
-
-        mnuNewPassword2.setText("Password");
-        mnuNewPassword2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        mnuNew.add(mnuNewPassword2);
-
-        popContext.add(mnuNew);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Passport");
@@ -330,7 +315,6 @@ public class frmMain extends javax.swing.JFrame {
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        pnlSecrets.setComponentPopupMenu(popContext);
         pnlSecrets.setMinimumSize(new java.awt.Dimension(0, 0));
         pnlSecrets.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
@@ -449,6 +433,16 @@ public class frmMain extends javax.swing.JFrame {
                     c.setVisible(false);
                 }
             }
+            else if (c instanceof pnlNote) {
+                pnlNote notePanel = (pnlNote) c;
+                Note n = notePanel.getNote();
+                
+                if (n.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase())){
+                    c.setVisible(true);
+                } else {
+                    c.setVisible(false);
+                }
+            }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -469,6 +463,17 @@ public class frmMain extends javax.swing.JFrame {
                 Password p = passwordPanel.getPassword();
                 Category cat = Category.Read(p.getId_category());
 
+                if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
+                    c.setVisible(true);
+                } else {
+                    c.setVisible(false);
+                }
+            }
+            else if (c instanceof pnlNote) {
+                pnlNote notePanel = (pnlNote) c;
+                Note n = notePanel.getNote();
+                Category cat = Category.Read(n.getId_category());
+                
                 if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
                     c.setVisible(true);
                 } else {
@@ -596,17 +601,14 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JLabel lblPlaceholderDescription;
     private javax.swing.JLabel lblPlaceholderTitle;
     private javax.swing.JMenuItem mnuManageTags;
-    private javax.swing.JMenu mnuNew;
     private javax.swing.JMenuItem mnuNewCreditCard;
     private javax.swing.JMenuItem mnuNewNote;
     private javax.swing.JMenuItem mnuNewPassword;
-    private javax.swing.JMenuItem mnuNewPassword2;
     private javax.swing.JMenuItem mnuRemoveTag;
     private javax.swing.JMenuItem mnuTitle;
     private javax.swing.JMenuItem mnuTitle2;
     private javax.swing.JPanel pnlPlaceholder;
     private javax.swing.JPanel pnlSecrets;
-    private javax.swing.JPopupMenu popContext;
     private javax.swing.JPopupMenu popNew;
     private javax.swing.JPopupMenu popTag;
     private javax.swing.JPopupMenu.Separator separator;

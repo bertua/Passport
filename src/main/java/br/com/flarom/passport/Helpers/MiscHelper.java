@@ -1,6 +1,8 @@
 package br.com.flarom.passport.Helpers;
 
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
@@ -9,6 +11,8 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 
 public class MiscHelper {
 
@@ -110,5 +114,15 @@ public class MiscHelper {
         }
         int rgb = color.getRGB() & 0xFFFFFF;
         return String.format("#%06X", rgb);
+    }
+    
+    public static void openWebsite(JRootPane rootPane,String URL){
+        try {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI(URL));
+        } catch (Exception e) {
+            StringSelection stringSelection = new StringSelection(URL);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+            JOptionPane.showMessageDialog(rootPane, "This feature may not be supported in your system\nURL was copied to the clipboard instead", "Failed to open website", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

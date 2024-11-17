@@ -1,5 +1,6 @@
 package br.com.flarom.passport.MiscDialogs;
 
+import br.com.flarom.passport.Helpers.KeyboardHelper;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -8,6 +9,9 @@ public class dlgTableView extends javax.swing.JDialog {
     public dlgTableView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        KeyboardHelper kh = new KeyboardHelper(rootPane);
+        kh.setCloseOnEscape(this);
     }
 
     public void displayMatrix(String[][] matrix, String title) {
@@ -57,7 +61,8 @@ public class dlgTableView extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable.setBackground(new java.awt.Color(30, 30, 30));
+        jTable.setBackground(java.awt.Color.white);
+        jTable.setForeground(java.awt.Color.black);
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -71,6 +76,7 @@ public class dlgTableView extends javax.swing.JDialog {
         ));
         jTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jTable.setEnabled(false);
+        jTable.setGridColor(new java.awt.Color(204, 204, 204));
         jTable.setShowGrid(false);
         jTable.setShowHorizontalLines(true);
         jTable.getTableHeader().setReorderingAllowed(false);
