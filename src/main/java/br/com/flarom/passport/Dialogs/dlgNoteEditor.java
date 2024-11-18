@@ -23,6 +23,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
     public dlgNoteEditor(java.awt.Frame parent) {
         super(parent, true);
         this.parent = parent;
+        
         initComponents();
 
         KeyboardHelper kh = new KeyboardHelper(rootPane);
