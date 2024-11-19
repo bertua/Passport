@@ -6,6 +6,7 @@ import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
 import br.com.flarom.passport.MiscDialogs.dlgColorInput;
 import br.com.flarom.passport.Objects.User;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 public class dlgCategoryEditor extends javax.swing.JDialog {
 
@@ -101,7 +102,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
         });
 
         lblColor.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
-        lblColor.setForeground(new java.awt.Color(34, 133, 225));
+        lblColor.setForeground(new java.awt.Color(70, 206, 252));
         lblColor.setText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -196,6 +197,11 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+        if (txtName.getText().isBlank()){
+            JOptionPane.showMessageDialog(rootPane, "Tag name cannot be empty");
+            return;
+        }
+        
         confirmed = true;
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed

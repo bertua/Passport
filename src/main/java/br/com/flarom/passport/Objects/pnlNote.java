@@ -24,8 +24,8 @@ public class pnlNote extends javax.swing.JPanel {
 
         initComponents();
 
-        lblTitle.setText(n.getTitle());
-        color = stringToColor(n.getColor());
+        lblTitle.setText(note.getTitle());
+        color = stringToColor(note.getColor());
 
         updateColor();
         updateStatus();

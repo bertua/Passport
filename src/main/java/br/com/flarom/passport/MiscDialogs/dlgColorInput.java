@@ -37,7 +37,7 @@ public class dlgColorInput extends javax.swing.JDialog {
         "#881798",
         "#0099bc",
         "#2d7d9a",
-        "#00b7c3",
+        "#46CEFC",
         "#038387",
         "#00b294",
         "#018574",

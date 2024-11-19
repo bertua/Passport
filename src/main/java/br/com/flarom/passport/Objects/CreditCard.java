@@ -11,25 +11,31 @@ import java.util.ArrayList;
 public class CreditCard {
     private int id_credit_card;
     private int id_user;
+    private String alias;
+    private String issuer;
     private String number;
     private String cvv;
     private String expiration_date;
     private String holder;
     private Timestamp creation_date;
     private Timestamp view_date;
+    private String color;
     
     public CreditCard(){
         
     }
-    public CreditCard(int id_credit_card, int id_user, String number, String cvv, String expiration_date, String holder, Timestamp creation_date, Timestamp view_date){
+    public CreditCard(int id_credit_card, int id_user, String alias, String issuer, String number, String cvv, String expiration_date, String holder, Timestamp creation_date, Timestamp view_date, String color){
         this.id_credit_card = id_credit_card;
         this.id_user = id_user;
+        this.alias = alias;
+        this.issuer = issuer;
         this.number = number;
         this.cvv = cvv;
         this.expiration_date = expiration_date;
         this.holder = holder;
         this.creation_date = creation_date;
         this.view_date = view_date;
+        this.color = color;
     }
 
     // <editor-fold defaultstate="collapsed" desc="getters and setters">
@@ -48,7 +54,23 @@ public class CreditCard {
     public void setId_user(int id_user) {
         this.id_user = id_user;
     }
-
+    
+    public String getAlias(){
+        return alias;
+    }
+    
+    public void setAlias(String alias){
+        this.alias = alias;
+    }
+    
+    public String getIssuer(){
+        return issuer;
+    }
+    
+    public void setIssuer(String issuer){
+        this.issuer = issuer;
+    }
+    
     public String getNumber() {
         return number;
     }
@@ -96,20 +118,31 @@ public class CreditCard {
     public void setView_date(Timestamp view_date) {
         this.view_date = view_date;
     }
+    
+    public String getColor(){
+        return color;
+    }
+    
+    public void setColor(String color){
+        this.color = color;
+    }
     //</editor-fold>
 
     public void Create() throws Exception {
-        String sql = "INSERT INTO credit_cards (id_user, number, cvv, expiration_date, holder, create_date, view_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO credit_cards (id_user, alias, issuer, number, cvv, expiration_date, holder, create_date, view_date, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, id_user);
-            stmt.setString(2, MiscHelper.encryptPassword(number));
-            stmt.setString(3, MiscHelper.encryptPassword(cvv));
-            stmt.setString(4, expiration_date);
-            stmt.setString(5, holder);
-            stmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-            stmt.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+            stmt.setString(2, alias);
+            stmt.setString(3, issuer);
+            stmt.setString(4, MiscHelper.encryptPassword(number));
+            stmt.setString(5, MiscHelper.encryptPassword(cvv));
+            stmt.setString(6, expiration_date);
+            stmt.setString(7, holder);
+            stmt.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
+            stmt.setTimestamp(9, new Timestamp(System.currentTimeMillis()));
+            stmt.setString(10, color);
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -143,12 +176,15 @@ public class CreditCard {
                 return new CreditCard(
                     rs.getInt("id_credit_card"),
                     rs.getInt("id_user"),
+                    rs.getString("alias"),
+                    rs.getString("issuer"),
                     MiscHelper.decryptPassword(rs.getString("number")),
                     MiscHelper.decryptPassword(rs.getString("cvv")),
                     rs.getString("expiration_date"),
                     rs.getString("holder"),
                     rs.getTimestamp("create_date"),
-                    rs.getTimestamp("view_date")
+                    rs.getTimestamp("view_date"),
+                    rs.getString("color")
                 );
             }
         } catch (SQLException e) {
@@ -169,12 +205,15 @@ public class CreditCard {
                 creditCards.add(new CreditCard(
                     rs.getInt("id_credit_card"),
                     rs.getInt("id_user"),
+                    rs.getString("alias"),
+                    rs.getString("issuer"),
                     MiscHelper.decryptPassword(rs.getString("number")),
                     MiscHelper.decryptPassword(rs.getString("cvv")),
                     rs.getString("expiration_date"),
                     rs.getString("holder"),
                     rs.getTimestamp("create_date"),
-                    rs.getTimestamp("view_date")
+                    rs.getTimestamp("view_date"),
+                    rs.getString("color")
                 ));
             }
         } catch (SQLException e) {

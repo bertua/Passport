@@ -1,6 +1,7 @@
 package br.com.flarom.passport;
 
 import br.com.flarom.passport.Dialogs.dlgCategories;
+import br.com.flarom.passport.Dialogs.dlgCreditCardEditor;
 import br.com.flarom.passport.Dialogs.dlgNoteEditor;
 import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
 import br.com.flarom.passport.MiscDialogs.dlgTextInput;
@@ -8,9 +9,11 @@ import br.com.flarom.passport.LogonDialogs.dlgLogin;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Objects.Category;
+import br.com.flarom.passport.Objects.CreditCard;
 import br.com.flarom.passport.Objects.Note;
 import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
+import br.com.flarom.passport.Objects.pnlCreditCard;
 import br.com.flarom.passport.Objects.pnlNote;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
@@ -42,7 +45,7 @@ public class frmMain extends javax.swing.JFrame {
         
         login();
 
-        loadSecrets();
+        loadData();
         loadCategories();
 
         updateScrollBar();
@@ -66,12 +69,13 @@ public class frmMain extends javax.swing.JFrame {
         loggedUser = User.getLoggedUser();
     }
 
-    private void loadSecrets() {
+    private void loadData() {
         pnlSecrets.removeAll();
 
         try {
             ArrayList<Password> userPasswords = Password.ListFromUser(loggedUser.getId_user());
             ArrayList<Note> userNotes = Note.ListFromUser(loggedUser.getId_user());
+            ArrayList<CreditCard> userCreditCards = CreditCard.ListFromUser(loggedUser.getId_user());
 
             for (Password p : userPasswords) {
                 pnlPassword pass = new pnlPassword(p);
@@ -83,6 +87,12 @@ public class frmMain extends javax.swing.JFrame {
                 pnlNote note = new pnlNote(n);
                 
                 pnlSecrets.add(note);
+            }
+            
+            for (CreditCard c : userCreditCards){
+                pnlCreditCard cred = new pnlCreditCard(c);
+                
+                pnlSecrets.add(cred);
             }
 
             if (pnlSecrets.getComponentCount() == 0) {
@@ -208,6 +218,11 @@ public class frmMain extends javax.swing.JFrame {
 
         mnuNewCreditCard.setText("Credit card");
         mnuNewCreditCard.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        mnuNewCreditCard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuNewCreditCardActionPerformed(evt);
+            }
+        });
         popNew.add(mnuNewCreditCard);
 
         mnuTitle2.setText("Tags");
@@ -437,7 +452,7 @@ public class frmMain extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         dlgPasswordEditor dlg = new dlgPasswordEditor(this);
         dlg.Create();
-        loadSecrets();
+        loadData();
         loadCategories();
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -561,9 +576,15 @@ public class frmMain extends javax.swing.JFrame {
     private void mnuNewNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuNewNoteActionPerformed
         dlgNoteEditor ne = new dlgNoteEditor(this);
         ne.Create();
-        loadSecrets();
+        loadData();
         loadCategories();
     }//GEN-LAST:event_mnuNewNoteActionPerformed
+
+    private void mnuNewCreditCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuNewCreditCardActionPerformed
+        dlgCreditCardEditor ce = new dlgCreditCardEditor(this);
+        ce.Create();
+        loadData();
+    }//GEN-LAST:event_mnuNewCreditCardActionPerformed
 
     private void updateScrollBar() {
         int buttonHeight = 123;

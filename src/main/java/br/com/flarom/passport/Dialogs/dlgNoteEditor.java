@@ -34,10 +34,14 @@ public class dlgNoteEditor extends javax.swing.JDialog {
 
         txtDocument.getDocument().addDocumentListener(new DocumentListener() {
             private void renderHTML() {
+                try{
                 String md = txtDocument.getText();
                 String html = Processor.process(md);
 
                 txtPreview.setText(html);
+                } catch (Exception ex) {
+                    
+                }
             }
 
             @Override
@@ -149,7 +153,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAddCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAddCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(cbxCategory))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
@@ -238,7 +242,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)

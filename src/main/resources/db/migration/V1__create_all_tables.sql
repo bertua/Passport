@@ -1,8 +1,3 @@
-/**
- * Author:  cesar, lucas
- * Created: 6 de nov. de 2024
- */
-
 create table users(
     id_user INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
@@ -60,11 +55,14 @@ create table notes(
 create table credit_cards(
     id_credit_card INTEGER PRIMARY KEY AUTOINCREMENT,
     id_user INTEGER,
+    `alias` TEXT,
+    issuer TEXT NOT NULL,
     `number` TEXT NOT NULL, -- uses encryption
     cvv TEXT NOT NULL, -- uses encryption
     expiration_date TEXT NOT NULL,
     holder TEXT NOT NULL,
     create_date TIMESTAMP,
     view_date TIMESTAMP,
+    color TEXT NOT NULL,
     FOREIGN KEY(id_user) REFERENCES users(id_user)
 );
