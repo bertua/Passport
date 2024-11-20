@@ -194,6 +194,8 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         txtPreview.setBackground(java.awt.Color.white);
         txtPreview.setContentType("text/html"); // NOI18N
         txtPreview.setForeground(java.awt.Color.black);
+        txtPreview.setSelectedTextColor(java.awt.Color.black);
+        txtPreview.setSelectionColor(new java.awt.Color(70, 206, 252));
         jScrollPane1.setViewportView(txtPreview);
 
         jTabbedPane1.addTab("Preview", jScrollPane1);

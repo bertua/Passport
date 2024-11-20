@@ -24,6 +24,20 @@ public class CreditCard {
     public CreditCard(){
         
     }
+    
+    public CreditCard(int id_user, String alias, String issuer, String number, String cvv, String expiration_date, String holder, Timestamp creation_date, Timestamp view_date, String color){
+        this.id_user = id_user;
+        this.alias = alias;
+        this.issuer = issuer;
+        this.number = number;
+        this.cvv = cvv;
+        this.expiration_date = expiration_date;
+        this.holder = holder;
+        this.creation_date = creation_date;
+        this.view_date = view_date;
+        this.color = color;
+    }
+    
     public CreditCard(int id_credit_card, int id_user, String alias, String issuer, String number, String cvv, String expiration_date, String holder, Timestamp creation_date, Timestamp view_date, String color){
         this.id_credit_card = id_credit_card;
         this.id_user = id_user;
@@ -149,6 +163,26 @@ public class CreditCard {
             if (rs.next()) {
                 this.id_credit_card = rs.getInt(1);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void Update() throws Exception {
+        String sql = "UPDATE credit_cards SET alias = ?, issuer = ?, number = ?, cvv = ?, expiration_date = ?, holder = ?, view_date = ?, color = ? WHERE id_credit_card = ?";
+        try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, alias);
+            stmt.setString(2, issuer);
+            stmt.setString(3, MiscHelper.encryptPassword(number));
+            stmt.setString(4, MiscHelper.encryptPassword(cvv));
+            stmt.setString(5, expiration_date);
+            stmt.setString(6, holder);
+            stmt.setTimestamp(7, view_date);
+            stmt.setString(8, color);
+            stmt.setInt(9, id_credit_card);
+            
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,13 +1,21 @@
 package br.com.flarom.passport.Dialogs;
 
+import br.com.flarom.passport.Objects.CreditCard;
+import br.com.flarom.passport.Objects.User;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import javax.swing.JOptionPane;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
 public class dlgCreditCardEditor extends javax.swing.JDialog {
 
+    private java.awt.Frame parent;
+    
     public dlgCreditCardEditor(java.awt.Frame parent) {
         super(parent, true);
+        this.parent = parent;
+        
         initComponents();
     }
 
@@ -17,7 +25,23 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
         this.setVisible(true);
 
         if (confirmed) {
-
+            int id_user = User.getLoggedUser().getId_user();
+            String alias = txtAlias.getText();
+            String issuer = txtIssuer.getText();
+            String number = txtNumber.getText();
+            String cvv = txtCVV.getText();
+            String expiration_date = txtExpirationDate.getText();
+            String holder = txtHolder.getText();
+            Timestamp create_date = new Timestamp(System.currentTimeMillis());
+            String color = "#46CEFC";
+            
+            CreditCard c = new CreditCard(id_user, alias, issuer, number, cvv, expiration_date, holder, create_date, create_date, color);
+            
+            try {
+                c.Create();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -26,6 +50,8 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        btnOk = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtAlias = new javax.swing.JTextField();
@@ -40,8 +66,6 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
         chk4digit = new javax.swing.JCheckBox();
         jLabel7 = new javax.swing.JLabel();
         txtExpirationDate = new javax.swing.JFormattedTextField();
-        btnOk = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Credit card - Passport");
@@ -50,10 +74,28 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
         jLabel1.setForeground(java.awt.Color.white);
         jLabel1.setText("Credit Card Details");
 
+        btnOk.setBackground(new java.awt.Color(70, 206, 252));
+        btnOk.setForeground(java.awt.Color.black);
+        btnOk.setText("OK");
+        btnOk.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOkActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancel");
+        btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
         jPanel2.setBackground(new java.awt.Color(43, 43, 43));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
-        jLabel2.setText("Alias:");
+        jLabel2.setText("Label:");
 
         jLabel3.setText("Name on card:");
 
@@ -106,7 +148,7 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
-                                .addGap(0, 48, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(txtExpirationDate)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,7 +159,7 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
                             .addComponent(chk4digit))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(txtAlias)
-                    .addComponent(txtIssuer, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                    .addComponent(txtIssuer)
                     .addComponent(txtHolder)
                     .addComponent(txtNumber))
                 .addContainerGap())
@@ -154,24 +196,6 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnOk.setBackground(new java.awt.Color(70, 206, 252));
-        btnOk.setForeground(java.awt.Color.black);
-        btnOk.setText("OK");
-        btnOk.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnOk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOkActionPerformed(evt);
-            }
-        });
-
-        btnCancel.setText("Cancel");
-        btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnCancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -181,27 +205,34 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 241, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOk)))
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
                     .addComponent(btnCancel))
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
@@ -223,18 +254,30 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_chk4digitActionPerformed
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-//        if (txtTitle.getText().isBlank()) {
-//            JOptionPane.showMessageDialog(parent, "Title cannot be empty");
-//            return;
-//        }
-//        if (cbxCategory.getSelectedItem() == null) {
-//            JOptionPane.showMessageDialog(rootPane, "Category cannot be empty");
-//            return;
-//        }
-//        if (txtDocument.getText().isBlank()) {
-//            JOptionPane.showMessageDialog(rootPane, "Write something... don't be shy!");
-//            return;
-//        }
+        if (txtAlias.getText().isBlank()) {
+            JOptionPane.showMessageDialog(parent, "Label cannot be empty");
+            return;
+        }
+        if (txtIssuer.getText().isBlank()) {
+            JOptionPane.showMessageDialog(parent, "Issuer cannot be empty");
+            return;
+        }
+        if (txtNumber.getText().isBlank()) {
+            JOptionPane.showMessageDialog(parent, "Card number cannot be empty");
+            return;
+        }
+        if (txtCVV.getText().isBlank()) {
+            JOptionPane.showMessageDialog(parent, "CVV cannot be empty");
+            return;
+        }
+        if (txtExpirationDate.getText().equals("  /  ")) {
+            JOptionPane.showMessageDialog(parent, "Expiry date cannot be empty");
+            return;
+        }
+        if (txtHolder.getText().isBlank()) {
+            JOptionPane.showMessageDialog(parent, "Holder cannot be empty");
+            return;
+        }
 
         confirmed = true;
         dispose();

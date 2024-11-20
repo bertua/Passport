@@ -152,6 +152,8 @@ public class dlgDocumentView extends javax.swing.JDialog {
         textArea.setContentType("text/html"); // NOI18N
         textArea.setForeground(java.awt.Color.black);
         textArea.setComponentPopupMenu(popDocument);
+        textArea.setSelectedTextColor(java.awt.Color.black);
+        textArea.setSelectionColor(new java.awt.Color(70, 206, 252));
         jScrollPane2.setViewportView(textArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
