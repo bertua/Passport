@@ -2,8 +2,8 @@ package br.com.flarom.passport.Objects;
 
 import static br.com.flarom.passport.Helpers.MiscHelper.colorToString;
 import static br.com.flarom.passport.Helpers.MiscHelper.stringToColor;
-import br.com.flarom.passport.MiscDialogs.dlgColorInput;
-import br.com.flarom.passport.MiscDialogs.dlgTableView;
+import br.com.flarom.passport.Dialogs.Misc.dlgColorInput;
+import br.com.flarom.passport.Dialogs.Misc.dlgTableView;
 import java.awt.Color;
 import java.awt.Container;
 import java.sql.Timestamp;

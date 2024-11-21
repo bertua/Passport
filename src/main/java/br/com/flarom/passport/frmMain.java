@@ -1,11 +1,11 @@
 package br.com.flarom.passport;
 
-import br.com.flarom.passport.Dialogs.dlgCategories;
-import br.com.flarom.passport.Dialogs.dlgCreditCardEditor;
-import br.com.flarom.passport.Dialogs.dlgNoteEditor;
-import br.com.flarom.passport.Dialogs.dlgPasswordEditor;
-import br.com.flarom.passport.MiscDialogs.dlgTextInput;
-import br.com.flarom.passport.LogonDialogs.dlgLogin;
+import br.com.flarom.passport.Dialogs.Editors.dlgCategories;
+import br.com.flarom.passport.Dialogs.Editors.dlgCreditCardEditor;
+import br.com.flarom.passport.Dialogs.Editors.dlgNoteEditor;
+import br.com.flarom.passport.Dialogs.Editors.dlgPasswordEditor;
+import br.com.flarom.passport.Dialogs.Misc.dlgTextInput;
+import br.com.flarom.passport.Dialogs.Logon.dlgLogin;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Objects.Category;
@@ -190,8 +190,10 @@ public class frmMain extends javax.swing.JFrame {
         pnlSecrets = new javax.swing.JPanel();
         pnlPlaceholder = new javax.swing.JPanel();
         lblPlaceholderTitle = new javax.swing.JLabel();
-        lblPlaceholderDescription = new javax.swing.JLabel();
         btnPlaceholderNew = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        lblPlaceholderDescription = new javax.swing.JLabel();
+        jScrollBar1 = new javax.swing.JScrollBar();
 
         mnuTitle.setText("Create new");
         mnuTitle.setEnabled(false);
@@ -366,6 +368,7 @@ public class frmMain extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBar(jScrollBar1);
 
         pnlSecrets.setComponentPopupMenu(popContext);
         pnlSecrets.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -378,19 +381,15 @@ public class frmMain extends javax.swing.JFrame {
         });
         pnlSecrets.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 7, 7));
 
-        pnlPlaceholder.setBackground(new java.awt.Color(43, 43, 43));
-        pnlPlaceholder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
+        pnlPlaceholder.setBackground(new java.awt.Color(38, 54, 60));
         pnlPlaceholder.setPreferredSize(new java.awt.Dimension(286, 123));
 
         lblPlaceholderTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblPlaceholderTitle.setForeground(java.awt.Color.white);
         lblPlaceholderTitle.setText("No secrets here");
 
-        lblPlaceholderDescription.setText("how about adding the first one?");
-
         btnPlaceholderNew.setBackground(new java.awt.Color(70, 206, 252));
         btnPlaceholderNew.setForeground(java.awt.Color.black);
-        btnPlaceholderNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/passportSimbolic.png"))); // NOI18N
         btnPlaceholderNew.setText("Start now");
         btnPlaceholderNew.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPlaceholderNew.addActionListener(new java.awt.event.ActionListener() {
@@ -399,17 +398,38 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(70, 206, 252));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 3, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 123, Short.MAX_VALUE)
+        );
+
+        lblPlaceholderDescription.setText("how about adding the first one?");
+
         javax.swing.GroupLayout pnlPlaceholderLayout = new javax.swing.GroupLayout(pnlPlaceholder);
         pnlPlaceholder.setLayout(pnlPlaceholderLayout);
         pnlPlaceholderLayout.setHorizontalGroup(
             pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlPlaceholderLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPlaceholderTitle)
-                    .addComponent(lblPlaceholderDescription)
-                    .addComponent(btnPlaceholderNew))
-                .addContainerGap(110, Short.MAX_VALUE))
+                    .addGroup(pnlPlaceholderLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnPlaceholderNew)
+                        .addContainerGap())
+                    .addGroup(pnlPlaceholderLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPlaceholderDescription)
+                            .addComponent(lblPlaceholderTitle))
+                        .addContainerGap(90, Short.MAX_VALUE))))
         );
         pnlPlaceholderLayout.setVerticalGroup(
             pnlPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -418,14 +438,19 @@ public class frmMain extends javax.swing.JFrame {
                 .addComponent(lblPlaceholderTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPlaceholderDescription)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnPlaceholderNew)
                 .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pnlSecrets.add(pnlPlaceholder);
 
         jScrollPane1.setViewportView(pnlSecrets);
+
+        jScrollBar1.setBackground(new java.awt.Color(32, 32, 32));
+        jScrollBar1.setBlockIncrement(25);
+        jScrollBar1.setUnitIncrement(25);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -435,14 +460,17 @@ public class frmMain extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(layout.createSequentialGroup()
+            .addComponent(jScrollBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -490,9 +518,14 @@ public class frmMain extends javax.swing.JFrame {
                 pnlNote notePanel = (pnlNote) c;
                 Note n = notePanel.getNote();
                 
-                if (n.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase())){
-                    c.setVisible(true);
-                } else {
+                try {
+                    if (n.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase())
+                            || Password.Read(n.getId_password()).getService_name().toLowerCase().startsWith(searchTerm)){
+                        c.setVisible(true);
+                    } else {
+                        c.setVisible(false);
+                    }
+                } catch (Exception ex) {
                     c.setVisible(false);
                 }
             }
@@ -587,18 +620,18 @@ public class frmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuNewCreditCardActionPerformed
 
     private void updateScrollBar() {
-        int buttonHeight = 123;
-        int buttonWidth = 286;
-        int spacing = 5;
-        int lineHeight = buttonHeight + spacing;
+        int objectHeight = 123;
+        int objectWidth = 286;
+        int spacing = 7;
+        int lineHeight = objectHeight + spacing;
 
         int availableWidth = pnlSecrets.getWidth();
 
-        int buttonsPerLine = availableWidth / (buttonWidth + spacing);
+        int objectsPerLine = availableWidth / (objectWidth + spacing);
 
-        int totalButtons = pnlSecrets.getComponentCount();
+        int totalObjects = pnlSecrets.getComponentCount();
 
-        int rows = (int) Math.ceil((double) totalButtons / buttonsPerLine);
+        int rows = (int) Math.ceil((double) totalObjects / objectsPerLine);
 
         int preferredHeight = rows * lineHeight;
 
@@ -655,6 +688,8 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblPlaceholderDescription;

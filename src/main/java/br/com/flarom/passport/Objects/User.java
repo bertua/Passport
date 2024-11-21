@@ -1,9 +1,7 @@
 package br.com.flarom.passport.Objects;
 
 import br.com.flarom.passport.Helpers.MiscHelper;
-import static br.com.flarom.passport.Helpers.MiscHelper.decryptPassword;
 import static br.com.flarom.passport.Helpers.MiscHelper.encryptPassword;
-import static br.com.flarom.passport.Helpers.MiscHelper.getRandomPassword;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

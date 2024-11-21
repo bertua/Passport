@@ -4,15 +4,18 @@ import br.com.flarom.passport.Helpers.KeyboardHelper;
 import br.com.flarom.passport.Helpers.MiscHelper;
 import static br.com.flarom.passport.Helpers.MiscHelper.openWebsite;
 import br.com.flarom.passport.Helpers.VersionHelper;
-import br.com.flarom.passport.LogonDialogs.dlgUpdateAccount;
-import br.com.flarom.passport.MiscDialogs.dlgDocumentView;
-import br.com.flarom.passport.MiscDialogs.dlgTableView;
-import br.com.flarom.passport.MiscDialogs.dlgTextInput;
+import br.com.flarom.passport.Dialogs.Logon.dlgUpdateAccount;
+import br.com.flarom.passport.Dialogs.Misc.dlgDocumentView;
+import br.com.flarom.passport.Dialogs.Misc.dlgTableView;
+import br.com.flarom.passport.Dialogs.Misc.dlgTextInput;
 import br.com.flarom.passport.Objects.LoginAttempt;
 import br.com.flarom.passport.Objects.User;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmSettings extends javax.swing.JFrame {
@@ -22,7 +25,7 @@ public class frmSettings extends javax.swing.JFrame {
         lblDisplayname.setText(User.getLoggedUser().getNickname());
         lblUsername.setText("@" + User.getLoggedUser().getUsername());
         pnlUpdate.setVisible(false);
-        
+
         KeyboardHelper kh = new KeyboardHelper(rootPane);
         kh.setCloseOnEscape(this);
     }
@@ -35,12 +38,12 @@ public class frmSettings extends javax.swing.JFrame {
         <html>
             <p>
                 Passport Password Manager v%s<br>
-                © 2024 Passport. Licensed under MIT License.
+                © 2024 Passport. Licensed under Apache 2.0.
             </p>                
         """, localVersion));
 
         this.setTitle("Settings - Passport [Checking for updates...]");
-        
+
         try {
             if (vh.isVersionDifferent(localVersion)) {
                 pnlUpdate.setVisible(true);
@@ -52,7 +55,7 @@ public class frmSettings extends javax.swing.JFrame {
             pnlUpdate.setVisible(false);
             System.err.print("Failed to check for updates");
         }
-        
+
         this.setTitle("Settings - Passport");
     }
 
@@ -78,7 +81,7 @@ public class frmSettings extends javax.swing.JFrame {
         pnlUpdate = new javax.swing.JPanel();
         lblUpdate = new javax.swing.JLabel();
         btnUpdate = new javax.swing.JButton();
-        lblMit = new javax.swing.JLabel();
+        lblLicense = new javax.swing.JLabel();
 
         mnuLoginHistory.setText("Login history");
         mnuLoginHistory.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +160,7 @@ public class frmSettings extends javax.swing.JFrame {
                         .addComponent(lblDisplayname)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblUsername)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
                 .addComponent(btnAccountOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -185,7 +188,7 @@ public class frmSettings extends javax.swing.JFrame {
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("About this app");
 
-        lblInfo.setText("<html>\n<p>\nPassport Password Manager v1.0<br>\n© 2024 Passport. Licensed under MIT License.\n</p>");
+        lblInfo.setText("<html>\n<p>\nPassport Password Manager v1.0<br>\n© 2024 Passport. Licensed under Apache 2.0.\n</p>");
 
         lblGithub.setForeground(new java.awt.Color(70, 206, 252));
         lblGithub.setText("Github repository");
@@ -226,12 +229,12 @@ public class frmSettings extends javax.swing.JFrame {
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
-        lblMit.setForeground(new java.awt.Color(70, 206, 252));
-        lblMit.setText("Opensource license");
-        lblMit.setToolTipText("");
-        lblMit.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblLicense.setForeground(new java.awt.Color(70, 206, 252));
+        lblLicense.setText("Opensource license");
+        lblLicense.setToolTipText("");
+        lblLicense.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblMitMouseClicked(evt);
+                lblLicenseMouseClicked(evt);
             }
         });
 
@@ -250,7 +253,7 @@ public class frmSettings extends javax.swing.JFrame {
                             .addComponent(lblGithub))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblMit)
+                        .addComponent(lblLicense)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -263,7 +266,7 @@ public class frmSettings extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblGithub)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblMit)
+                .addComponent(lblLicense)
                 .addGap(35, 35, 35)
                 .addComponent(pnlUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -337,7 +340,7 @@ public class frmSettings extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Your account was deleted\nWe'll miss you 💔");
             System.exit(0);
         } catch (Exception ex) {
-            Logger.getLogger(frmSettings.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_mnuDeleteAccountActionPerformed
 
@@ -372,20 +375,20 @@ public class frmSettings extends javax.swing.JFrame {
         openWebsite(rootPane, "https://github.com/flarom/passport/releases/latest");
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void lblMitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMitMouseClicked
+    private void lblLicenseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLicenseMouseClicked
         dlgDocumentView dv = new dlgDocumentView(this, false);
-        String mitLicense = """
-        Copyright © 2024 Passport
-        
-        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-        
-        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-        
-        THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-        """;
-        
+        String mitLicense;
+
+        try {
+            Path licensePath = Paths.get("license.md");
+            mitLicense = Files.readString(licensePath, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            openWebsite(rootPane, "https://github.com/flarom/passport/blob/main/license.md");
+            return;
+        }
+
         dv.readMarkdown(mitLicense, "Passport");
-    }//GEN-LAST:event_lblMitMouseClicked
+    }//GEN-LAST:event_lblLicenseMouseClicked
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -407,7 +410,7 @@ public class frmSettings extends javax.swing.JFrame {
     private javax.swing.JLabel lblDisplayname;
     private javax.swing.JLabel lblGithub;
     private javax.swing.JLabel lblInfo;
-    private javax.swing.JLabel lblMit;
+    private javax.swing.JLabel lblLicense;
     private javax.swing.JLabel lblUpdate;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JMenuItem mnuDeleteAccount;

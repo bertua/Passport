@@ -136,7 +136,7 @@
                           <Component id="lblUsername" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="206" max="32767" attributes="0"/>
+                  <EmptySpace pref="210" max="32767" attributes="0"/>
                   <Component id="btnAccountOptions" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -237,7 +237,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="lblMit" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblLicense" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -254,7 +254,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lblGithub" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblMit" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblLicense" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   <Component id="pnlUpdate" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
@@ -276,7 +276,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblInfo">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;p&gt;&#xa;Passport Password Manager v1.0&lt;br&gt;&#xa;&#xa9; 2024 Passport. Licensed under MIT License.&#xa;&lt;/p&gt;"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;p&gt;&#xa;Passport Password Manager v1.0&lt;br&gt;&#xa;&#xa9; 2024 Passport. Licensed under Apache 2.0.&#xa;&lt;/p&gt;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblGithub">
@@ -334,7 +334,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="lblMit">
+        <Component class="javax.swing.JLabel" name="lblLicense">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="fc" green="ce" red="46" type="rgb"/>
@@ -343,7 +343,7 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblMitMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblLicenseMouseClicked"/>
           </Events>
         </Component>
       </SubComponents>
