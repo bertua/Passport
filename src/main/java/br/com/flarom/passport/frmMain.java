@@ -7,6 +7,7 @@ import br.com.flarom.passport.Dialogs.Editors.dlgPasswordEditor;
 import br.com.flarom.passport.Dialogs.Misc.dlgTextInput;
 import br.com.flarom.passport.Dialogs.Logon.dlgLogin;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
+import br.com.flarom.passport.Helpers.SettingsHelper;
 import br.com.flarom.passport.Objects.pnlPassword;
 import br.com.flarom.passport.Objects.Category;
 import br.com.flarom.passport.Objects.CreditCard;
@@ -21,9 +22,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints; 
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,6 +35,7 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.flywaydb.core.Flyway;
@@ -39,10 +43,12 @@ import org.flywaydb.core.Flyway;
 public class frmMain extends javax.swing.JFrame {
 
     private User loggedUser;
+    private SettingsHelper sh = new SettingsHelper();
+    private Timer logoutTimer;
 
     public frmMain() {
         initComponents();
-        
+
         login();
 
         loadData();
@@ -56,7 +62,39 @@ public class frmMain extends javax.swing.JFrame {
         kh.setShortcutButton(btnFilter, KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK));
         kh.setShortcutButton(btnSettings, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     }
+//
+//    private void startAutoLogout() {
+//        int logoutTime = Integer.parseInt(sh.readSetting("logoutTimer"));
+//
+//        if (logoutTimer != null) {
+//            logoutTimer.stop();
+//        }
+//
+//        if (logoutTime > 0) {
+//            logoutTimer = new Timer(logoutTime * 1000, new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    login();
+//                }
+//            });
+//            logoutTimer.setRepeats(false);
+//            logoutTimer.start();
+//        }
+//    }
+//    
+//    private void pauseAutoLogout(){
+//        if (logoutTimer != null) {
+//            logoutTimer.stop();
+//        }
+//    }
+//    
+//    private void resumeAutoLogout(){
+//        if (logoutTimer != null) {
+//            logoutTimer.restart();
+//        }
+//    }
 
+    // starts a login operation, if the user is null (login failed) closes the program
     private void login() {
         dlgLogin dl = new dlgLogin(this);
 
@@ -69,6 +107,7 @@ public class frmMain extends javax.swing.JFrame {
         loggedUser = User.getLoggedUser();
     }
 
+    // loads data (passwords, notes, credit cards) from the logged user, and displays it on the screen
     private void loadData() {
         pnlSecrets.removeAll();
 
@@ -82,16 +121,16 @@ public class frmMain extends javax.swing.JFrame {
 
                 pnlSecrets.add(pass);
             }
-            
-            for (Note n : userNotes){
+
+            for (Note n : userNotes) {
                 pnlNote note = new pnlNote(n);
-                
+
                 pnlSecrets.add(note);
             }
-            
-            for (CreditCard c : userCreditCards){
+
+            for (CreditCard c : userCreditCards) {
                 pnlCreditCard cred = new pnlCreditCard(c);
-                
+
                 pnlSecrets.add(cred);
             }
 
@@ -105,6 +144,7 @@ public class frmMain extends javax.swing.JFrame {
         }
     }
 
+    // loads data (categories) from the logged user and displays it on the tag menu
     private void loadCategories() {
         popTag.removeAll();
 
@@ -139,6 +179,7 @@ public class frmMain extends javax.swing.JFrame {
         popTag.add(mnuManageTags);
     }
 
+    // creates a decorative icon to the tag
     private ImageIcon getCategoryIcon(Color color) {
         int diameter = 9;
         BufferedImage img = new BufferedImage(diameter + 2, diameter + 2, BufferedImage.TYPE_INT_ARGB);
@@ -287,6 +328,11 @@ public class frmMain extends javax.swing.JFrame {
 
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setRollover(true);
+        jToolBar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                pnlSecretsMousePressed(evt);
+            }
+        });
         jToolBar1.add(filler2);
 
         btnAdd.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
@@ -372,11 +418,21 @@ public class frmMain extends javax.swing.JFrame {
 
         pnlSecrets.setComponentPopupMenu(popContext);
         pnlSecrets.setMinimumSize(new java.awt.Dimension(0, 0));
+        pnlSecrets.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pnlSecretsMousePressed(evt);
+            }
+        });
         pnlSecrets.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
             }
             public void ancestorResized(java.awt.event.HierarchyEvent evt) {
                 pnlSecretsAncestorResized(evt);
+            }
+        });
+        pnlSecrets.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                pnlSecretsMousePressed(evt);
             }
         });
         pnlSecrets.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 7, 7));
@@ -513,14 +569,13 @@ public class frmMain extends javax.swing.JFrame {
                 } else {
                     c.setVisible(false);
                 }
-            }
-            else if (c instanceof pnlNote) {
+            } else if (c instanceof pnlNote) {
                 pnlNote notePanel = (pnlNote) c;
                 Note n = notePanel.getNote();
-                
+
                 try {
                     if (n.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase())
-                            || Password.Read(n.getId_password()).getService_name().toLowerCase().startsWith(searchTerm)){
+                            || Password.Read(n.getId_password()).getService_name().toLowerCase().startsWith(searchTerm)) {
                         c.setVisible(true);
                     } else {
                         c.setVisible(false);
@@ -532,6 +587,7 @@ public class frmMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    // filters content based on a category search query
     private void Filter(String category) {
         if (category == null || category.trim().isEmpty()) {
             setTitle("Passport");
@@ -554,12 +610,11 @@ public class frmMain extends javax.swing.JFrame {
                 } else {
                     c.setVisible(false);
                 }
-            }
-            else if (c instanceof pnlNote) {
+            } else if (c instanceof pnlNote) {
                 pnlNote notePanel = (pnlNote) c;
                 Note n = notePanel.getNote();
                 Category cat = Category.Read(n.getId_category());
-                
+
                 if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
                     c.setVisible(true);
                 } else {
@@ -619,6 +674,11 @@ public class frmMain extends javax.swing.JFrame {
         loadData();
     }//GEN-LAST:event_mnuNewCreditCardActionPerformed
 
+    private void pnlSecretsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlSecretsMousePressed
+        
+    }//GEN-LAST:event_pnlSecretsMousePressed
+
+    // updates the scroll bar size, based on window size and objects size
     private void updateScrollBar() {
         int objectHeight = 123;
         int objectWidth = 286;
@@ -642,6 +702,7 @@ public class frmMain extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
+        // load look and feel
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
             Properties properties = new Properties();
@@ -666,12 +727,14 @@ public class frmMain extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
+        // show window
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmMain().setVisible(true);
             }
         });
 
+        // load db
         Flyway.configure()
                 .dataSource("jdbc:sqlite:passportdata.db", "", "")
                 .load()

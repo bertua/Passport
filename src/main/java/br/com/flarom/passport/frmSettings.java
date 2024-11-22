@@ -8,6 +8,7 @@ import br.com.flarom.passport.Dialogs.Logon.dlgUpdateAccount;
 import br.com.flarom.passport.Dialogs.Misc.dlgDocumentView;
 import br.com.flarom.passport.Dialogs.Misc.dlgTableView;
 import br.com.flarom.passport.Dialogs.Misc.dlgTextInput;
+import br.com.flarom.passport.Helpers.SettingsHelper;
 import br.com.flarom.passport.Objects.LoginAttempt;
 import br.com.flarom.passport.Objects.User;
 import java.io.IOException;
@@ -17,9 +18,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class frmSettings extends javax.swing.JFrame {
 
+    SettingsHelper sh = new SettingsHelper();
+    
     public frmSettings() {
         initComponents();
         lblDisplayname.setText(User.getLoggedUser().getNickname());
@@ -28,8 +33,26 @@ public class frmSettings extends javax.swing.JFrame {
 
         KeyboardHelper kh = new KeyboardHelper(rootPane);
         kh.setCloseOnEscape(this);
+        
+        loadConfigs();
+        
+        spnLogoutTimer.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int value = (int) spnLogoutTimer.getValue();
+                sh.writeSetting("logoutTimer", Integer.toString(value));
+            }
+        });
+    }
+    
+    private void loadConfigs(){
+        // # security
+        // ## logout timer
+        int logoutTimer = Integer.parseInt(sh.readSetting("logoutTimer"));
+        spnLogoutTimer.setValue(logoutTimer);
     }
 
+    // update version string, check for updates 
     private void updateVersion() {
         VersionHelper vh = new VersionHelper();
         String localVersion = vh.getLocalVersion();
@@ -66,6 +89,11 @@ public class frmSettings extends javax.swing.JFrame {
         popAccountOptions = new javax.swing.JPopupMenu();
         mnuLoginHistory = new javax.swing.JMenuItem();
         mnuDeleteAccount = new javax.swing.JMenuItem();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        spnLogoutTimer = new javax.swing.JSpinner();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         pnlAccount = new javax.swing.JPanel();
@@ -100,6 +128,48 @@ public class frmSettings extends javax.swing.JFrame {
             }
         });
         popAccountOptions.add(mnuDeleteAccount);
+
+        jPanel2.setBackground(new java.awt.Color(43, 43, 43));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
+        jPanel2.setPreferredSize(new java.awt.Dimension(2, 103));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setForeground(java.awt.Color.white);
+        jLabel6.setText("Logout timer");
+
+        spnLogoutTimer.setModel(new javax.swing.SpinnerNumberModel(0, 0, 30, 1));
+
+        jLabel7.setText("Minutes");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(spnLogoutTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spnLogoutTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+
+        jLabel5.setFont(new java.awt.Font("SegoeUI", 0, 18)); // NOI18N
+        jLabel5.setForeground(java.awt.Color.white);
+        jLabel5.setText("Security");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Settings - Passport");
@@ -199,6 +269,7 @@ public class frmSettings extends javax.swing.JFrame {
             }
         });
 
+        lblUpdate.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblUpdate.setText("Passport is outdated!");
 
         btnUpdate.setText("Update now");
@@ -269,7 +340,7 @@ public class frmSettings extends javax.swing.JFrame {
                 .addComponent(lblLicense)
                 .addGap(35, 35, 35)
                 .addComponent(pnlUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -278,10 +349,13 @@ public class frmSettings extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(pnlAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlAccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(12, 12, 12)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -295,7 +369,7 @@ public class frmSettings extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(9, 9, 9)
                 .addComponent(pnlAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -406,7 +480,11 @@ public class frmSettings extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblDisplayname;
     private javax.swing.JLabel lblGithub;
     private javax.swing.JLabel lblInfo;
@@ -418,5 +496,6 @@ public class frmSettings extends javax.swing.JFrame {
     private javax.swing.JPanel pnlAccount;
     private javax.swing.JPanel pnlUpdate;
     private javax.swing.JPopupMenu popAccountOptions;
+    private javax.swing.JSpinner spnLogoutTimer;
     // End of variables declaration//GEN-END:variables
 }

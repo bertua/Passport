@@ -252,6 +252,8 @@ public class User {
     }
 
     public static User Login(String identificator, String password) throws Exception {
+        loggedUser = null;
+        
         String sql = "SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ?";
         try (Connection conn = Database.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, identificator);
