@@ -1,4 +1,4 @@
-package br.com.flarom.passport.Dialogs.Logon;
+package br.com.flarom.passport.Dialogs.Editors;
 
 import br.com.flarom.passport.Helpers.KeyboardHelper;
 import static br.com.flarom.passport.Helpers.MiscHelper.decryptPassword;
@@ -6,9 +6,9 @@ import static br.com.flarom.passport.Dialogs.Logon.dlgSignup.isEmailValid;
 import br.com.flarom.passport.Objects.User;
 import javax.swing.JOptionPane;
 
-public class dlgUpdateAccount extends javax.swing.JDialog {
+public class dlgAccountEditor extends javax.swing.JDialog {
 
-    public dlgUpdateAccount(java.awt.Frame parent) {
+    public dlgAccountEditor(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
         KeyboardHelper kh = new KeyboardHelper(rootPane);
@@ -250,7 +250,7 @@ public class dlgUpdateAccount extends javax.swing.JDialog {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dlgUpdateAccount dialog = new dlgUpdateAccount(new javax.swing.JFrame());
+                dlgAccountEditor dialog = new dlgAccountEditor(new javax.swing.JFrame());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -4,6 +4,7 @@ import br.com.flarom.passport.Dialogs.Editors.dlgCategories;
 import br.com.flarom.passport.Dialogs.Editors.dlgCreditCardEditor;
 import br.com.flarom.passport.Dialogs.Editors.dlgNoteEditor;
 import br.com.flarom.passport.Dialogs.Editors.dlgPasswordEditor;
+import br.com.flarom.passport.Dialogs.Logon.dlgLock;
 import br.com.flarom.passport.Dialogs.Misc.dlgTextInput;
 import br.com.flarom.passport.Dialogs.Logon.dlgLogin;
 import br.com.flarom.passport.Helpers.KeyboardHelper;
@@ -23,10 +24,8 @@ import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -43,7 +42,7 @@ import org.flywaydb.core.Flyway;
 public class frmMain extends javax.swing.JFrame {
 
     private User loggedUser;
-    private SettingsHelper sh = new SettingsHelper();
+    private SettingsHelper config = new SettingsHelper();
     private Timer logoutTimer;
 
     public frmMain() {
@@ -53,6 +52,7 @@ public class frmMain extends javax.swing.JFrame {
 
         loadData();
         loadCategories();
+        loadConfigs();
 
         updateScrollBar();
 
@@ -62,37 +62,6 @@ public class frmMain extends javax.swing.JFrame {
         kh.setShortcutButton(btnFilter, KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK));
         kh.setShortcutButton(btnSettings, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     }
-//
-//    private void startAutoLogout() {
-//        int logoutTime = Integer.parseInt(sh.readSetting("logoutTimer"));
-//
-//        if (logoutTimer != null) {
-//            logoutTimer.stop();
-//        }
-//
-//        if (logoutTime > 0) {
-//            logoutTimer = new Timer(logoutTime * 1000, new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    login();
-//                }
-//            });
-//            logoutTimer.setRepeats(false);
-//            logoutTimer.start();
-//        }
-//    }
-//    
-//    private void pauseAutoLogout(){
-//        if (logoutTimer != null) {
-//            logoutTimer.stop();
-//        }
-//    }
-//    
-//    private void resumeAutoLogout(){
-//        if (logoutTimer != null) {
-//            logoutTimer.restart();
-//        }
-//    }
 
     // starts a login operation, if the user is null (login failed) closes the program
     private void login() {
@@ -107,6 +76,13 @@ public class frmMain extends javax.swing.JFrame {
         loggedUser = User.getLoggedUser();
     }
 
+    private void loadConfigs(){
+        boolean useLockButton = Boolean.parseBoolean(config.Read("useLockButton"));
+        
+        jSeparator1.setVisible(useLockButton);
+        btnLock.setVisible(useLockButton);
+    }
+    
     // loads data (passwords, notes, credit cards) from the logged user, and displays it on the screen
     private void loadData() {
         pnlSecrets.removeAll();
@@ -225,6 +201,10 @@ public class frmMain extends javax.swing.JFrame {
         btnFilter = new javax.swing.JButton();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
         btnSearch = new javax.swing.JButton();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 7), new java.awt.Dimension(0, 7), new java.awt.Dimension(32767, 7));
+        btnLock = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         btnSettings = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -394,6 +374,24 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnSearch);
+        jToolBar1.add(filler6);
+        jToolBar1.add(jSeparator1);
+        jToolBar1.add(filler7);
+
+        btnLock.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
+        btnLock.setForeground(java.awt.Color.white);
+        btnLock.setMnemonic('l');
+        btnLock.setText("");
+        btnLock.setToolTipText("Lock");
+        btnLock.setFocusable(false);
+        btnLock.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLock.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLockActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnLock);
         jToolBar1.add(filler1);
 
         btnSettings.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
@@ -639,10 +637,12 @@ public class frmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed1
 
     private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
-        frmSettings s = new frmSettings();
+        dlgSettings s = new dlgSettings(this);
         s.setLocation(this.getLocation());
         s.setSize(this.getSize());
         s.setVisible(true);
+        
+        loadConfigs();
     }//GEN-LAST:event_btnSettingsActionPerformed
 
     private void btnPlaceholderNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceholderNewActionPerformed
@@ -677,6 +677,11 @@ public class frmMain extends javax.swing.JFrame {
     private void pnlSecretsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlSecretsMousePressed
         
     }//GEN-LAST:event_pnlSecretsMousePressed
+
+    private void btnLockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLockActionPerformed
+        dlgLock lock = new dlgLock(this);
+        lock.Lock();
+    }//GEN-LAST:event_btnLockActionPerformed
 
     // updates the scroll bar size, based on window size and objects size
     private void updateScrollBar() {
@@ -744,6 +749,7 @@ public class frmMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnFilter;
+    private javax.swing.JButton btnLock;
     private javax.swing.JButton btnPlaceholderNew;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSettings;
@@ -751,9 +757,12 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblPlaceholderDescription;
     private javax.swing.JLabel lblPlaceholderTitle;

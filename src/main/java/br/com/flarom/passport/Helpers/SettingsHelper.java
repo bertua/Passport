@@ -46,7 +46,7 @@ public class SettingsHelper {
         }
     }
     
-    public static void writeSetting(String key, String value) {
+    public static void Write(String key, String value) {
         createSettingsFile();
         Path settingsFilePath = Paths.get(System.getProperty("user.home"), CONFIG_FOLDER, SETTINGS_DIR, SETTINGS_FILE);
 
@@ -80,7 +80,7 @@ public class SettingsHelper {
         }
     }
     
-    public static String readSetting(String key) {
+    public static String Read(String key) {
         createSettingsFile();
         Path settingsFilePath = Paths.get(System.getProperty("user.home"), CONFIG_FOLDER, SETTINGS_DIR, SETTINGS_FILE);
 
