@@ -514,13 +514,14 @@ public class dlgSettings extends javax.swing.JDialog {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void lblLicenseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLicenseMouseClicked
-        dlgDocumentView dv = new dlgDocumentView(parent, false);
+        dlgDocumentView dv = new dlgDocumentView(parent, true);
         String mitLicense;
 
         try {
             Path licensePath = Paths.get("license.md");
             mitLicense = Files.readString(licensePath, StandardCharsets.UTF_8);
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(rootPane, "Failed to locate license file, redirecting to github.com/flarom/passport/blob/main/license.md");
             openWebsite(rootPane, "https://github.com/flarom/passport/blob/main/license.md");
             return;
         }

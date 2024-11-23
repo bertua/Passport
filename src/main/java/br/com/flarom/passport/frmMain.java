@@ -76,13 +76,13 @@ public class frmMain extends javax.swing.JFrame {
         loggedUser = User.getLoggedUser();
     }
 
-    private void loadConfigs(){
+    private void loadConfigs() {
         boolean useLockButton = Boolean.parseBoolean(config.Read("useLockButton"));
-        
+
         jSeparator1.setVisible(useLockButton);
         btnLock.setVisible(useLockButton);
     }
-    
+
     // loads data (passwords, notes, credit cards) from the logged user, and displays it on the screen
     private void loadData() {
         pnlSecrets.removeAll();
@@ -641,7 +641,7 @@ public class frmMain extends javax.swing.JFrame {
         s.setLocation(this.getLocation());
         s.setSize(this.getSize());
         s.setVisible(true);
-        
+
         loadConfigs();
     }//GEN-LAST:event_btnSettingsActionPerformed
 
@@ -675,7 +675,7 @@ public class frmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuNewCreditCardActionPerformed
 
     private void pnlSecretsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlSecretsMousePressed
-        
+
     }//GEN-LAST:event_pnlSecretsMousePressed
 
     private void btnLockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLockActionPerformed
@@ -707,43 +707,12 @@ public class frmMain extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
-        // load look and feel
-        try {
-            UIManager.setLookAndFeel(new FlatDarkLaf());
-            Properties properties = new Properties();
-
-            properties.load(new FileInputStream("src/main/resources/laf/passportlaf.properties"));
-
-            for (String key : properties.stringPropertyNames()) {
-                String value = properties.getProperty(key);
-                if (value.contains(",")) {
-                    String[] rgb = value.split(",");
-                    UIManager.put(key, new Color(
-                            Integer.parseInt(rgb[0].trim()),
-                            Integer.parseInt(rgb[1].trim()),
-                            Integer.parseInt(rgb[2].trim())
-                    ));
-                } else {
-                    UIManager.put(key, Color.decode(value));
-                }
-            }
-
-        } catch (IOException | NumberFormatException | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-
         // show window
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmMain().setVisible(true);
             }
         });
-
-        // load db
-        Flyway.configure()
-                .dataSource("jdbc:sqlite:passportdata.db", "", "")
-                .load()
-                .migrate();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

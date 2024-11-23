@@ -278,7 +278,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
                         .addComponent(pgsPasswordStrongness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnViewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(btnViewPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(txtPassword))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
@@ -302,7 +302,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
 
         btnAddCategory.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
         btnAddCategory.setText("");
-        btnAddCategory.setToolTipText("Show password");
+        btnAddCategory.setToolTipText("Add tag");
         btnAddCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAddCategory.setPreferredSize(new java.awt.Dimension(22, 22));
         btnAddCategory.addActionListener(new java.awt.event.ActionListener() {
@@ -347,7 +347,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(btnAddCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(cbxCategory))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -491,9 +491,15 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_updateRandomPass
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
-        dlgCategories ct = new dlgCategories(this.parent);
-        ct.setVisible(true);
+        dlgCategoryEditor ce = new dlgCategoryEditor(this.parent);
+        Category cat = ce.Create();
+        
+        if(cat == null) return;
+        
+        cat.Create();
         refreshCategories();
+        
+        cbxCategory.setSelectedItem(cat.getName());
     }//GEN-LAST:event_btnAddCategoryActionPerformed
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
