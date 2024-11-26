@@ -484,7 +484,7 @@ public class dlgSettings extends javax.swing.JDialog {
 
     private void mnuLoginHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoginHistoryActionPerformed
         ArrayList<LoginAttempt> las = LoginAttempt.ListFromUser(User.getLoggedUser().getId_user());
-        dlgTableView tv = new dlgTableView(parent, false);
+        dlgTableView tv = new dlgTableView(parent, true);
 
         ArrayList<ArrayList<String>> table = new ArrayList<>();
 

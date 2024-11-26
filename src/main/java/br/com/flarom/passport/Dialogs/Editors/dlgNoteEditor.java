@@ -296,7 +296,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         try {
             txtTitle.setText(n.getTitle());
             if (Password.Read(n.getId_password()) != null) {
-                cbxCategory.setSelectedItem(Password.Read(n.getId_password()).getService_name());
+                cbxPassword.setSelectedItem(Password.Read(n.getId_password()).getService_name());
             }
             if (Category.Read(n.getId_category()) != null) {
                 cbxCategory.setSelectedItem(Category.Read(n.getId_category()).getName());

@@ -308,11 +308,6 @@ public class frmMain extends javax.swing.JFrame {
 
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setRollover(true);
-        jToolBar1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                pnlSecretsMousePressed(evt);
-            }
-        });
         jToolBar1.add(filler2);
 
         btnAdd.setFont(new java.awt.Font("Segoe Fluent Icons", 0, 18)); // NOI18N
@@ -416,21 +411,11 @@ public class frmMain extends javax.swing.JFrame {
 
         pnlSecrets.setComponentPopupMenu(popContext);
         pnlSecrets.setMinimumSize(new java.awt.Dimension(0, 0));
-        pnlSecrets.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                pnlSecretsMousePressed(evt);
-            }
-        });
         pnlSecrets.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
             }
             public void ancestorResized(java.awt.event.HierarchyEvent evt) {
                 pnlSecretsAncestorResized(evt);
-            }
-        });
-        pnlSecrets.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                pnlSecretsMousePressed(evt);
             }
         });
         pnlSecrets.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 7, 7));
@@ -673,10 +658,6 @@ public class frmMain extends javax.swing.JFrame {
         ce.Create();
         loadData();
     }//GEN-LAST:event_mnuNewCreditCardActionPerformed
-
-    private void pnlSecretsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlSecretsMousePressed
-
-    }//GEN-LAST:event_pnlSecretsMousePressed
 
     private void btnLockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLockActionPerformed
         dlgLock lock = new dlgLock(this);
