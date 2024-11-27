@@ -19,6 +19,10 @@ public class dlgSignup extends javax.swing.JDialog {
 
     private boolean confirmed = false;
 
+    /**
+     * shows a create account form, creates and returns an account or null if the dialog is closed
+     * @return User|Null
+     */
     public User CreateAccount() {
         this.setVisible(true);
 
@@ -208,6 +212,9 @@ public class dlgSignup extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * ok button, validates account data
+     */
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         if (txtNickname.getText().isBlank()) {
             JOptionPane.showMessageDialog(rootPane, "Please enter a display name");
@@ -266,6 +273,9 @@ public class dlgSignup extends javax.swing.JDialog {
 
     private boolean showing = false;
 
+    /**
+     * show/hide password button
+     */
     private void btnViewPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPasswordActionPerformed
         if (showing) {
             txtPassword.setEchoChar('\u2022');
@@ -281,6 +291,11 @@ public class dlgSignup extends javax.swing.JDialog {
         showing = !showing;
     }//GEN-LAST:event_btnViewPasswordActionPerformed
 
+    /**
+     * checks if an email is formatted correctly
+     * @param email
+     * @return 
+     */
     public static boolean isEmailValid(String email) {
         String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 

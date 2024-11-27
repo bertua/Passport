@@ -95,6 +95,10 @@ public class dlgColorInput extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * show a dialog prompting to select a color
+     * @return the selected color | null if the dialog is closed
+     */
     public Color getColor() {
         this.setVisible(true);
 
@@ -157,6 +161,9 @@ public class dlgColorInput extends javax.swing.JDialog {
         updateScrollBar();
     }//GEN-LAST:event_pnlColorsAncestorResized
 
+    /**
+     * Updates the size of the scroll bar based on the number and size of the components.
+     */
     private void updateScrollBar() {
         int buttonHeight = 32;
         int buttonWidth = 32;

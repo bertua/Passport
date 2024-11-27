@@ -45,6 +45,7 @@ public class Passport {
                 .load()
                 .migrate();
         
+        // load main screen
         frmMain main = new frmMain();
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.show();

@@ -39,19 +39,28 @@ public class dlgSettings extends javax.swing.JDialog {
         loadConfigs();
     }
     
+    /**
+     * Loads configurations and shows in the UI
+     */
     private void loadConfigs(){
         useLockButton = Boolean.parseBoolean(config.Read("useLockButton"));
         
         togLock.setSelected(useLockButton);
     }
     
+    /**
+     * Saves configurations
+     */
     private void saveConfigs(){
         useLockButton = togLock.isSelected();
         
         config.Write("useLockButton", Boolean.toString(useLockButton));
     }
 
-    // update version string, check for updates 
+    /**
+     * Updates version string
+     * check for updates
+     */
     private void updateVersion() {
         VersionHelper vh = new VersionHelper();
         String localVersion = vh.getLocalVersion();
@@ -453,6 +462,9 @@ public class dlgSettings extends javax.swing.JDialog {
         openWebsite(rootPane, "https://github.com/flarom/passport");
     }//GEN-LAST:event_lblGithubMouseClicked
 
+    /**
+     * delete users account, then, logs out
+     */
     private void mnuDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDeleteAccountActionPerformed
         try {
             int confirm = JOptionPane.showConfirmDialog(rootPane, "Are you sure?\nThis will delete all your Passwords, Notes, Credit cards and tags.\nThere is no way to restore it latter,", "Delete account", JOptionPane.YES_NO_OPTION);
@@ -482,6 +494,9 @@ public class dlgSettings extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_mnuDeleteAccountActionPerformed
 
+    /**
+     * Opens all logins made by the user in a tableview
+     */
     private void mnuLoginHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoginHistoryActionPerformed
         ArrayList<LoginAttempt> las = LoginAttempt.ListFromUser(User.getLoggedUser().getId_user());
         dlgTableView tv = new dlgTableView(parent, true);

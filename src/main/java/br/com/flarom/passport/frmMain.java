@@ -17,7 +17,6 @@ import br.com.flarom.passport.Objects.Password;
 import br.com.flarom.passport.Objects.User;
 import br.com.flarom.passport.Objects.pnlCreditCard;
 import br.com.flarom.passport.Objects.pnlNote;
-import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,17 +26,11 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import org.flywaydb.core.Flyway;
 
 public class frmMain extends javax.swing.JFrame {
 
@@ -63,7 +56,9 @@ public class frmMain extends javax.swing.JFrame {
         kh.setShortcutButton(btnSettings, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     }
 
-    // starts a login operation, if the user is null (login failed) closes the program
+    /**
+     * Handles the login process. If no user is logged in, the application closes.
+     */
     private void login() {
         dlgLogin dl = new dlgLogin(this);
 
@@ -76,6 +71,9 @@ public class frmMain extends javax.swing.JFrame {
         loggedUser = User.getLoggedUser();
     }
 
+    /**
+     * Loads user-specific configuration settings and applies them to the UI.
+     */
     private void loadConfigs() {
         boolean useLockButton = Boolean.parseBoolean(config.Read("useLockButton"));
 
@@ -83,7 +81,10 @@ public class frmMain extends javax.swing.JFrame {
         btnLock.setVisible(useLockButton);
     }
 
-    // loads data (passwords, notes, credit cards) from the logged user, and displays it on the screen
+    /**
+     * Loads the user’s stored data (passwords, notes, and credit cards) 
+     * and displays it on the main screen.
+     */
     private void loadData() {
         pnlSecrets.removeAll();
 
@@ -120,7 +121,9 @@ public class frmMain extends javax.swing.JFrame {
         }
     }
 
-    // loads data (categories) from the logged user and displays it on the tag menu
+    /**
+     * Loads the user’s categories and updates the tag menu with the loaded categories.
+     */
     private void loadCategories() {
         popTag.removeAll();
 
@@ -155,7 +158,12 @@ public class frmMain extends javax.swing.JFrame {
         popTag.add(mnuManageTags);
     }
 
-    // creates a decorative icon to the tag
+    /**
+     * Creates a decorative icon to represent a category.
+     * 
+     * @param color The color of the category.
+     * @return An icon with a circular gradient representing the category.
+     */
     private ImageIcon getCategoryIcon(Color color) {
         int diameter = 9;
         BufferedImage img = new BufferedImage(diameter + 2, diameter + 2, BufferedImage.TYPE_INT_ARGB);
@@ -172,6 +180,71 @@ public class frmMain extends javax.swing.JFrame {
         return new ImageIcon(img);
     }
 
+    /**
+     * Updates the size of the scroll bar based on the number and size of the components.
+     */
+    private void updateScrollBar() {
+        int objectHeight = 123;
+        int objectWidth = 286;
+        int spacing = 7;
+        int lineHeight = objectHeight + spacing;
+
+        int availableWidth = pnlSecrets.getWidth();
+
+        int objectsPerLine = availableWidth / (objectWidth + spacing);
+
+        int totalObjects = pnlSecrets.getComponentCount();
+
+        int rows = (int) Math.ceil((double) totalObjects / objectsPerLine);
+
+        int preferredHeight = rows * lineHeight;
+
+        pnlSecrets.setPreferredSize(new Dimension(pnlSecrets.getPreferredSize().width, preferredHeight));
+
+        pnlSecrets.revalidate();
+        pnlSecrets.repaint();
+    }
+    
+    /** 
+     * Filters content based on a category search query
+     * @param category the name of the category
+     */
+    private void Filter(String category) {
+        if (category == null || category.trim().isEmpty()) {
+            setTitle("Passport");
+            for (Component c : pnlSecrets.getComponents()) {
+                c.setVisible(true);
+            }
+            return;
+        }
+
+        setTitle("Filter results for \"" + category + "\" - Passport");
+
+        for (Component c : pnlSecrets.getComponents()) {
+            if (c instanceof pnlPassword) {
+                pnlPassword passwordPanel = (pnlPassword) c;
+                Password p = passwordPanel.getPassword();
+                Category cat = Category.Read(p.getId_category());
+
+                if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
+                    c.setVisible(true);
+                } else {
+                    c.setVisible(false);
+                }
+            } else if (c instanceof pnlNote) {
+                pnlNote notePanel = (pnlNote) c;
+                Note n = notePanel.getNote();
+                Category cat = Category.Read(n.getId_category());
+
+                if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
+                    c.setVisible(true);
+                } else {
+                    c.setVisible(false);
+                }
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -570,43 +643,6 @@ public class frmMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    // filters content based on a category search query
-    private void Filter(String category) {
-        if (category == null || category.trim().isEmpty()) {
-            setTitle("Passport");
-            for (Component c : pnlSecrets.getComponents()) {
-                c.setVisible(true);
-            }
-            return;
-        }
-
-        setTitle("Filter results for \"" + category + "\" - Passport");
-
-        for (Component c : pnlSecrets.getComponents()) {
-            if (c instanceof pnlPassword) {
-                pnlPassword passwordPanel = (pnlPassword) c;
-                Password p = passwordPanel.getPassword();
-                Category cat = Category.Read(p.getId_category());
-
-                if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
-                    c.setVisible(true);
-                } else {
-                    c.setVisible(false);
-                }
-            } else if (c instanceof pnlNote) {
-                pnlNote notePanel = (pnlNote) c;
-                Note n = notePanel.getNote();
-                Category cat = Category.Read(n.getId_category());
-
-                if (cat.getName().toLowerCase().startsWith(category.toLowerCase())) {
-                    c.setVisible(true);
-                } else {
-                    c.setVisible(false);
-                }
-            }
-        }
-    }
-
     private void btnAddMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMousePressed
         popNew.show(btnAdd, jToolBar1.getLocation().x + jToolBar1.getWidth(), btnAdd.getLocation().y);
     }//GEN-LAST:event_btnAddMousePressed
@@ -664,31 +700,7 @@ public class frmMain extends javax.swing.JFrame {
         lock.Lock();
     }//GEN-LAST:event_btnLockActionPerformed
 
-    // updates the scroll bar size, based on window size and objects size
-    private void updateScrollBar() {
-        int objectHeight = 123;
-        int objectWidth = 286;
-        int spacing = 7;
-        int lineHeight = objectHeight + spacing;
-
-        int availableWidth = pnlSecrets.getWidth();
-
-        int objectsPerLine = availableWidth / (objectWidth + spacing);
-
-        int totalObjects = pnlSecrets.getComponentCount();
-
-        int rows = (int) Math.ceil((double) totalObjects / objectsPerLine);
-
-        int preferredHeight = rows * lineHeight;
-
-        pnlSecrets.setPreferredSize(new Dimension(pnlSecrets.getPreferredSize().width, preferredHeight));
-
-        pnlSecrets.revalidate();
-        pnlSecrets.repaint();
-    }
-
     public static void main(String args[]) {
-        // show window
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmMain().setVisible(true);

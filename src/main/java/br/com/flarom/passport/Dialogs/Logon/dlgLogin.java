@@ -160,6 +160,11 @@ public class dlgLogin extends javax.swing.JDialog {
 
     private boolean confirmed = false;
 
+    /**
+     * Show a login dialog
+     * 
+     * @return User|Null
+     */
     public User LogIn() {
         this.setVisible(true);
 
@@ -184,11 +189,18 @@ public class dlgLogin extends javax.swing.JDialog {
         return null;
     }
     
+    /**
+     * Shows signup dialog
+     */
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
         dlgSignup su = new dlgSignup(this.parent);
         su.CreateAccount();
     }//GEN-LAST:event_btnSignUpActionPerformed
 
+    /**
+     * ok button
+     * checks if the account exists
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String identifier = txtUsername.getText();
         String password = txtPassword.getText();
@@ -216,6 +228,10 @@ public class dlgLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosed
 
     private boolean showing = false;
+    
+    /**
+     * view/hide password button
+     */
     private void btnViewPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPasswordActionPerformed
         if (showing) {
             txtPassword.setEchoChar('\u2022');
