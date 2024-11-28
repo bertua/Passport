@@ -76,7 +76,7 @@ public class dlgSettings extends javax.swing.JDialog {
         this.setTitle("Settings - Passport [Checking for updates...]");
 
         try {
-            if (vh.isVersionDifferent(localVersion)) {
+            if (vh.isVersionDifferent()) {
                 pnlUpdate.setVisible(true);
                 btnUpdate.setText("Update to " + vh.getLatestVersion());
             } else {

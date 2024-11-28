@@ -182,6 +182,10 @@ public class pnlCreditCard extends javax.swing.JPanel {
         popOptions.show(btnOptions, btnOptions.getWidth(), -1);
     }//GEN-LAST:event_btnOptionsMousePressed
 
+    public CreditCard getCreditCard(){
+        return this.card;
+    }
+    
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         try {
             dlgTableView tv = new dlgTableView((JFrame) SwingUtilities.getWindowAncestor(pnlSidebar), false);

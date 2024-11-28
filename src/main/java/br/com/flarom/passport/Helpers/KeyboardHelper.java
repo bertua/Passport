@@ -17,22 +17,43 @@ public class KeyboardHelper {
         this.rootPane = rootPane;
     }
 
+    /**
+     * set a button to be automatically pressed when the enter key is typed
+     * @param button button to be pressed
+     */
     public void setConfirmButton(JButton button) {
         addKeyBinding(button, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
     }
 
+    /**
+     * set a button to be automatically pressed when the escape key is typed
+     * @param button button to be pressed
+     */
     public void setCancelButton(JButton button) {
         addKeyBinding(button, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
     }
 
+    /**
+     * set a button to be automatically pressed when a keyboard shortcut is executed
+     * @param button button to be pressed
+     * @param shortcut keyboard shortcut (Ctrl+N = KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK)
+     */
     public void setShortcutButton(JButton button, KeyStroke shortcut) {
         addKeyBinding(button, shortcut);
     }
 
+    /**
+     * automatically close a frame when the escape key is typed
+     * @param frame jframe to be closed
+     */
     public void setCloseOnEscape(JFrame frame) {
         addEscapeKeyBinding(frame);
     }
 
+    /**
+     * automatically close a dialog when the escape key is typed
+     * @param dialog jdialog to be closed
+     */
     public void setCloseOnEscape(JDialog dialog) {
         addEscapeKeyBinding(dialog);
     }

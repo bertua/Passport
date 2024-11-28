@@ -56,6 +56,11 @@ public class dlgDocumentView extends javax.swing.JDialog {
         });
     }
 
+    /**
+     * show a markdown document in a window
+     * @param md document content
+     * @param title window title
+     */
     public void readMarkdown(String md, String title) {
         if (md.isBlank()) {
             return;
@@ -166,6 +171,10 @@ public class dlgDocumentView extends javax.swing.JDialog {
         changeFontSize(-5);
     }//GEN-LAST:event_mnuFontDecreaseActionPerformed
 
+    /**
+     * changes font size based on an modifier
+     * @param sizeMod font size modifier, +1 to increase and -1 to decrease
+     */
     private void changeFontSize(int sizeMod) {
         Font f = textArea.getFont();
         int newSize = f.getSize() + sizeMod;

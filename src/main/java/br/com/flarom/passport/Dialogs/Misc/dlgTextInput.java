@@ -15,6 +15,15 @@ public class dlgTextInput extends javax.swing.JDialog {
     }
 
     private boolean confirmed = false;
+    
+    /**
+     * get an string typed by the user
+     * @param title window title
+     * @param instructions information about what should be inserted
+     * @param icon Segoe Fluent Icons character displayed as icon
+     * @param okButtonText text of the confirm button
+     * @return the string typed by the user | null if the dialog is closed
+     */
     public String Show(String title, String instructions, String icon, String okButtonText){
         this.setTitle(title);
         lblInstructions.setText(instructions);
@@ -31,6 +40,15 @@ public class dlgTextInput extends javax.swing.JDialog {
         return null;
     }
     
+    /**
+     * get an string typed by the user
+     * @param title window title
+     * @param instructions information about what should be inserted
+     * @param icon Segoe Fluent Icons character displayed as icon
+     * @param okButtonText text of the confirm button
+     * @param isPositive if false, the confirm button will be shown in red
+     * @return the string typed by the user | null if the dialog is closed
+     */
     public String Show(String title, String instructions, String icon, String okButtonText, boolean isPositive){
         this.setTitle(title);
         lblInstructions.setText(instructions);

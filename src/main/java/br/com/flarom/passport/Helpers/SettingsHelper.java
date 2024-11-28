@@ -7,8 +7,10 @@ public class SettingsHelper {
     private static final String CONFIG_FOLDER = ".config";
     private static final String SETTINGS_DIR = "passport";
     private static final String SETTINGS_FILE = "settings.conf";
-    
-    //creates the ".config" folder in the system user folder if it does not already exist
+   
+    /**
+     * creates the ".config" folder in the system user folder, if it does not already exist
+     */
     public static void createSettingsRoot() {
         Path configPath = Paths.get(System.getProperty("user.home"), CONFIG_FOLDER);
         if (!Files.exists(configPath)) {
@@ -20,7 +22,9 @@ public class SettingsHelper {
         }
     }
     
-    // creates the "passport" folder inside ".config", if it does not already exist
+    /**
+     * creates the "passport" folder inside ".config", if it does not already exist
+     */
     public static void createSettingsDir() {
         createSettingsRoot();
         Path settingsPath = Paths.get(System.getProperty("user.home"), CONFIG_FOLDER, SETTINGS_DIR);
@@ -33,7 +37,9 @@ public class SettingsHelper {
         }
     }
     
-    // creates the "settings.conf" file inside the "passport" folder, if it does not already exist
+    /**
+     * creates the "settings.conf" file inside the "passport" folder, if it does not already exist
+     */
     public static void createSettingsFile() {
         createSettingsDir();
         Path settingsFilePath = Paths.get(System.getProperty("user.home"), CONFIG_FOLDER, SETTINGS_DIR, SETTINGS_FILE);
@@ -46,12 +52,16 @@ public class SettingsHelper {
         }
     }
     
+    /**
+     * (over)write a setting
+     * @param key setting name
+     * @param value setting value
+     */
     public static void Write(String key, String value) {
         createSettingsFile();
         Path settingsFilePath = Paths.get(System.getProperty("user.home"), CONFIG_FOLDER, SETTINGS_DIR, SETTINGS_FILE);
 
         try {
-            // read existing configs
             StringBuilder fileContent = new StringBuilder();
             boolean keyFound = false;
 
@@ -71,7 +81,6 @@ public class SettingsHelper {
                 fileContent.append(key).append("\t").append(value).append("\n");
             }
 
-            // write back in the file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(settingsFilePath.toFile()))) {
                 writer.write(fileContent.toString());
             }
@@ -80,6 +89,11 @@ public class SettingsHelper {
         }
     }
     
+    /**
+     * get the value of a setting
+     * @param key setting name
+     * @return value
+     */
     public static String Read(String key) {
         createSettingsFile();
         Path settingsFilePath = Paths.get(System.getProperty("user.home"), CONFIG_FOLDER, SETTINGS_DIR, SETTINGS_FILE);

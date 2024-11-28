@@ -13,7 +13,11 @@ public class VersionHelper {
         return this.localVersion;
     }
     
-    // returns the tag name of the last version uploaded as a github release
+    /**
+     * returns the tag name of the last version uploaded as a github release
+     * @return tag name
+     * @throws Exception 
+     */
     public String getLatestVersion() throws Exception {
         HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
         connection.setRequestMethod("GET");
@@ -33,8 +37,12 @@ public class VersionHelper {
         return version;
     }
     
-    // compares if localVersion is equals to getLatestVersion(). if true, probably the client is outdated
-    public boolean isVersionDifferent(String localVersion) throws Exception {
+    /**
+     * compares if localVersion is equals to getLatestVersion(). if true, probably the client is outdated
+     * @return true if versions are different
+     * @throws Exception 
+     */
+    public boolean isVersionDifferent() throws Exception {
         String latestVersion = getLatestVersion();
         return !localVersion.equals(latestVersion);
     }

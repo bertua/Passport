@@ -14,6 +14,12 @@ public class dlgTableView extends javax.swing.JDialog {
         kh.setCloseOnEscape(this);
     }
 
+    /**
+     * display a string matrix as a table, the first row of the table will be
+     * displayed as the table header
+     * @param matrix table contents
+     * @param title window title
+     */
     public void displayMatrix(String[][] matrix, String title) {
         if (matrix == null || matrix.length == 0) {
             return;
@@ -32,6 +38,12 @@ public class dlgTableView extends javax.swing.JDialog {
         setVisible(true);
     }
 
+    /**
+     * display an arraylist of arraylists of strings as a table, the first row
+     * of the table will be displayed as the table header
+     * @param matrix table contents
+     * @param title window title
+     */
     public void displayArrayListMatrix(ArrayList<ArrayList<String>> matrix, String title) {
         if (matrix == null || matrix.isEmpty()) {
             return;

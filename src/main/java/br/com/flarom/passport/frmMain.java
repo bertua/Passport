@@ -611,6 +611,8 @@ public class frmMain extends javax.swing.JFrame {
             }
             return;
         }
+        
+        searchTerm = searchTerm.toLowerCase();
 
         setTitle("Search results for \"" + searchTerm + "\" - Passport");
 
@@ -619,8 +621,8 @@ public class frmMain extends javax.swing.JFrame {
                 pnlPassword passwordPanel = (pnlPassword) c;
                 Password p = passwordPanel.getPassword();
 
-                if (p.getService_name().toLowerCase().startsWith(searchTerm.toLowerCase())
-                        || p.getUser_name().toLowerCase().startsWith(searchTerm.toLowerCase())) {
+                if (p.getService_name().toLowerCase().startsWith(searchTerm)
+                        || p.getUser_name().toLowerCase().startsWith(searchTerm)) {
                     c.setVisible(true);
                 } else {
                     c.setVisible(false);
@@ -630,13 +632,24 @@ public class frmMain extends javax.swing.JFrame {
                 Note n = notePanel.getNote();
 
                 try {
-                    if (n.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase())
+                    if (n.getTitle().toLowerCase().startsWith(searchTerm)
                             || Password.Read(n.getId_password()).getService_name().toLowerCase().startsWith(searchTerm)) {
                         c.setVisible(true);
                     } else {
                         c.setVisible(false);
                     }
                 } catch (Exception ex) {
+                    c.setVisible(false);
+                }
+            } else if (c instanceof pnlCreditCard) {
+                pnlCreditCard cardPanel = (pnlCreditCard) c;
+                CreditCard cc = cardPanel.getCreditCard();
+                
+                if (cc.getAlias().toLowerCase().startsWith(searchTerm)
+                        || cc.getIssuer().toLowerCase().startsWith(searchTerm)
+                        || cc.getHolder().toLowerCase().startsWith(searchTerm)){
+                    c.setVisible(true);
+                } else {
                     c.setVisible(false);
                 }
             }
