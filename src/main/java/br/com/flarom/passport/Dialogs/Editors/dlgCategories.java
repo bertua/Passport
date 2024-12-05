@@ -66,6 +66,8 @@ public class dlgCategories extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(43, 43, 43));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
+        jScrollPane1.setBorder(null);
+
         lstCategories.setBackground(new java.awt.Color(43, 43, 43));
         lstCategories.setBorder(null);
         lstCategories.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N

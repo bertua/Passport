@@ -92,7 +92,7 @@ public class frmMain extends javax.swing.JFrame {
             ArrayList<Password> userPasswords = Password.ListFromUser(loggedUser.getId_user());
             ArrayList<Note> userNotes = Note.ListFromUser(loggedUser.getId_user());
             ArrayList<CreditCard> userCreditCards = CreditCard.ListFromUser(loggedUser.getId_user());
-
+            
             for (Password p : userPasswords) {
                 pnlPassword pass = new pnlPassword(p);
 
@@ -241,6 +241,8 @@ public class frmMain extends javax.swing.JFrame {
                 } else {
                     c.setVisible(false);
                 }
+            } else if (c instanceof pnlCreditCard) {
+                c.setVisible(false);
             }
         }
     }

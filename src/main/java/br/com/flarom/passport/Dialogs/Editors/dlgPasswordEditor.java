@@ -177,6 +177,7 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
 
         jLabel6.setText("Lenght:");
 
+        sldPassLenght.setForeground(new java.awt.Color(70, 206, 252));
         sldPassLenght.setMaximum(50);
         sldPassLenght.setMinimum(7);
         sldPassLenght.setValue(13);

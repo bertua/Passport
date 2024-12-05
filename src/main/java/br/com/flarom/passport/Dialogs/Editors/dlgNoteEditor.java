@@ -183,6 +183,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
 
         txtDocument.setBackground(new java.awt.Color(43, 43, 43));
         txtDocument.setColumns(20);
+        txtDocument.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         txtDocument.setRows(5);
         jScrollPane2.setViewportView(txtDocument);
 
