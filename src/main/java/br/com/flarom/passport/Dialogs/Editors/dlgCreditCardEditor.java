@@ -67,9 +67,14 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
         btnOk = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Credit card - Passport");
         setMinimumSize(new java.awt.Dimension(370, 440));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setForeground(java.awt.Color.white);
@@ -281,6 +286,29 @@ public class dlgCreditCardEditor extends javax.swing.JDialog {
         confirmed = false;
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if(!txtAlias.getText().isBlank()
+                || !txtIssuer.getText().isBlank()
+                || !txtNumber.getText().isBlank()
+                || !txtCVV.getText().isBlank()
+                || !txtExpirationDate.getText().equals("  /  ")
+                || !txtHolder.getText().isBlank()){
+            
+            int doClose = JOptionPane.showConfirmDialog(rootPane,
+                    "Are you sure you want to close this editor?\nAlterations will not be saved.",
+                    "Discard",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (doClose == JOptionPane.YES_OPTION) {
+                confirmed = false;
+                dispose();
+            }
+        } else {
+            confirmed = false;
+            dispose();
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

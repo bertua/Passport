@@ -26,12 +26,11 @@ br\com\flarom\passport\frmMain$14.class
 br\com\flarom\passport\Objects\pnlCreditCard$5.class
 br\com\flarom\passport\Dialogs\Misc\dlgColorInput$3.class
 br\com\flarom\passport\frmMain$5.class
+br\com\flarom\passport\Dialogs\Editors\dlgCreditCardEditor$5.class
 br\com\flarom\passport\Dialogs\Editors\dlgPasswordEditor$5.class
-br\com\flarom\passport\Dialogs\Editors\dlgAccountEditor$3$1.class
 br\com\flarom\passport\Objects\pnlPassword$2.class
 br\com\flarom\passport\Objects\pnlPassword$5.class
 br\com\flarom\passport\Dialogs\Misc\dlgTextInput.class
-br\com\flarom\passport\Dialogs\Editors\dlgCreditCardEditor$4$1.class
 br\com\flarom\passport\Dialogs\Misc\dlgDocumentView$2.class
 br\com\flarom\passport\Dialogs\Logon\dlgLock.class
 br\com\flarom\passport\Dialogs\Editors\dlgPasswordEditor$2.class
@@ -69,6 +68,7 @@ br\com\flarom\passport\Dialogs\Editors\dlgPasswordEditor$4.class
 br\com\flarom\passport\Dialogs\Logon\dlgLock$4$1.class
 br\com\flarom\passport\Helpers\MiscHelper.class
 br\com\flarom\passport\Dialogs\Logon\dlgSignup$2.class
+br\com\flarom\passport\Dialogs\Editors\dlgAccountEditor$4$1.class
 br\com\flarom\passport\Objects\Database.class
 br\com\flarom\passport\frmMain$18.class
 br\com\flarom\passport\Helpers\KeyboardHelper$3.class
@@ -78,6 +78,7 @@ br\com\flarom\passport\Objects\pnlNote$4.class
 br\com\flarom\passport\Dialogs\Editors\dlgCreditCardEditor$1.class
 br\com\flarom\passport\frmMain$7.class
 br\com\flarom\passport\Objects\pnlNote$7.class
+br\com\flarom\passport\Dialogs\Editors\dlgAccountEditor$4.class
 br\com\flarom\passport\frmMain$15.class
 br\com\flarom\passport\Objects\LoginAttempt.class
 br\com\flarom\passport\Objects\pnlCreditCard$6.class
@@ -143,6 +144,7 @@ br\com\flarom\passport\dlgSettings$6.class
 br\com\flarom\passport\Dialogs\Editors\dlgAccountEditor$3.class
 br\com\flarom\passport\Dialogs\Editors\dlgCategoryEditor.class
 br\com\flarom\passport\Objects\pnlCreditCard$4.class
+br\com\flarom\passport\Dialogs\Editors\dlgCreditCardEditor$5$1.class
 br\com\flarom\passport\Objects\pnlPassword.class
 br\com\flarom\passport\frmMain$16.class
 br\com\flarom\passport\Objects\pnlNote$5.class

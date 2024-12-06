@@ -110,12 +110,12 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         btnAddCategory = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Password - Passport");
         setMinimumSize(new java.awt.Dimension(256, 580));
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -538,12 +538,25 @@ public class dlgPasswordEditor extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        confirmed = false;
-        dispose();
-    }//GEN-LAST:event_formWindowClosed
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if(!txtServiceName.getText().isBlank()
+                || !txtUsername.getText().isBlank()
+                || !txtPassword.getText().isBlank()){
+            
+            int doClose = JOptionPane.showConfirmDialog(rootPane,
+                    "Are you sure you want to close this editor?\nAlterations will not be saved.",
+                    "Discard",
+                    JOptionPane.YES_NO_OPTION);
 
-    
+            if (doClose == JOptionPane.YES_OPTION) {
+                confirmed = false;
+                dispose();
+            }
+        } else {
+            confirmed = false;
+            dispose();
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -83,7 +83,7 @@ public class dlgNoteEditor extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Text note - Passport");
         setMinimumSize(new java.awt.Dimension(385, 500));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -369,8 +369,22 @@ public class dlgNoteEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        confirmed = false;
-        dispose();
+        if(!txtTitle.getText().isBlank()
+                || !txtDocument.getText().isBlank()){
+            
+            int doClose = JOptionPane.showConfirmDialog(rootPane,
+                    "Are you sure you want to close this editor?\nAlterations will not be saved.",
+                    "Discard",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (doClose == JOptionPane.YES_OPTION) {
+                confirmed = false;
+                dispose();
+            }
+        } else {
+            confirmed = false;
+            dispose();
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
