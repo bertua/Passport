@@ -59,6 +59,8 @@ public class dlgLock extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Passport");
+        setMaximumSize(new java.awt.Dimension(454, 210));
+        setMinimumSize(new java.awt.Dimension(454, 210));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);

@@ -57,7 +57,8 @@ public class frmMain extends javax.swing.JFrame {
     }
 
     /**
-     * Handles the login process. If no user is logged in, the application closes.
+     * Handles the login process. If no user is logged in, the application
+     * closes.
      */
     private void login() {
         dlgLogin dl = new dlgLogin(this);
@@ -82,8 +83,8 @@ public class frmMain extends javax.swing.JFrame {
     }
 
     /**
-     * Loads the user’s stored data (passwords, notes, and credit cards) 
-     * and displays it on the main screen.
+     * Loads the user’s stored data (passwords, notes, and credit cards) and
+     * displays it on the main screen.
      */
     private void loadData() {
         pnlSecrets.removeAll();
@@ -92,7 +93,7 @@ public class frmMain extends javax.swing.JFrame {
             ArrayList<Password> userPasswords = Password.ListFromUser(loggedUser.getId_user());
             ArrayList<Note> userNotes = Note.ListFromUser(loggedUser.getId_user());
             ArrayList<CreditCard> userCreditCards = CreditCard.ListFromUser(loggedUser.getId_user());
-            
+
             for (Password p : userPasswords) {
                 pnlPassword pass = new pnlPassword(p);
 
@@ -122,7 +123,8 @@ public class frmMain extends javax.swing.JFrame {
     }
 
     /**
-     * Loads the user’s categories and updates the tag menu with the loaded categories.
+     * Loads the user’s categories and updates the tag menu with the loaded
+     * categories.
      */
     private void loadCategories() {
         popTag.removeAll();
@@ -160,7 +162,7 @@ public class frmMain extends javax.swing.JFrame {
 
     /**
      * Creates a decorative icon to represent a category.
-     * 
+     *
      * @param color The color of the category.
      * @return An icon with a circular gradient representing the category.
      */
@@ -181,7 +183,8 @@ public class frmMain extends javax.swing.JFrame {
     }
 
     /**
-     * Updates the size of the scroll bar based on the number and size of the components.
+     * Updates the size of the scroll bar based on the number and size of the
+     * components.
      */
     private void updateScrollBar() {
         int objectHeight = 123;
@@ -204,14 +207,16 @@ public class frmMain extends javax.swing.JFrame {
         pnlSecrets.revalidate();
         pnlSecrets.repaint();
     }
-    
-    /** 
+
+    /**
      * Filters content based on a category search query
+     *
      * @param category the name of the category
      */
     private void Filter(String category) {
         if (category == null || category.trim().isEmpty()) {
             setTitle("Passport");
+            
             for (Component c : pnlSecrets.getComponents()) {
                 c.setVisible(true);
             }
@@ -246,7 +251,7 @@ public class frmMain extends javax.swing.JFrame {
             }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -604,18 +609,18 @@ public class frmMain extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         dlgTextInput dlg = new dlgTextInput(this);
-        String searchTerm = dlg.Show("Search", "Enter what are you looking for bellow:", "\ue11a", "Search");
+        String searchTerm = dlg.Show("Search", "Enter what are you looking for below:", "\ue11a", "Search");
 
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
             setTitle("Passport");
+            
             for (Component c : pnlSecrets.getComponents()) {
                 c.setVisible(true);
             }
             return;
         }
-        
-        searchTerm = searchTerm.toLowerCase();
 
+        searchTerm = searchTerm.toLowerCase();
         setTitle("Search results for \"" + searchTerm + "\" - Passport");
 
         for (Component c : pnlSecrets.getComponents()) {
@@ -646,10 +651,10 @@ public class frmMain extends javax.swing.JFrame {
             } else if (c instanceof pnlCreditCard) {
                 pnlCreditCard cardPanel = (pnlCreditCard) c;
                 CreditCard cc = cardPanel.getCreditCard();
-                
+
                 if (cc.getAlias().toLowerCase().startsWith(searchTerm)
                         || cc.getIssuer().toLowerCase().startsWith(searchTerm)
-                        || cc.getHolder().toLowerCase().startsWith(searchTerm)){
+                        || cc.getHolder().toLowerCase().startsWith(searchTerm)) {
                     c.setVisible(true);
                 } else {
                     c.setVisible(false);

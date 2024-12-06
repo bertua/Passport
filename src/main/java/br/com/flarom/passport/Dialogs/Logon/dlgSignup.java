@@ -68,7 +68,7 @@ public class dlgSignup extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Sign up - Passport");
-        setMinimumSize(new java.awt.Dimension(410, 461));
+        setMinimumSize(new java.awt.Dimension(180, 430));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);

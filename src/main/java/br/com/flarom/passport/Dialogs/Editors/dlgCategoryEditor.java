@@ -80,7 +80,7 @@ public class dlgCategoryEditor extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("New category - Passport");
-        setMinimumSize(new java.awt.Dimension(412, 224));
+        setMinimumSize(new java.awt.Dimension(177, 237));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTitle.setForeground(java.awt.Color.white);

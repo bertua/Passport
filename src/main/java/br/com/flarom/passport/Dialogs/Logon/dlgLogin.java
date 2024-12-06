@@ -43,7 +43,7 @@ public class dlgLogin extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Login - Passport");
-        setMinimumSize(new java.awt.Dimension(425, 224));
+        setMinimumSize(new java.awt.Dimension(180, 280));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);

@@ -57,7 +57,7 @@ public class dlgCategories extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tags - Passport");
-        setMinimumSize(new java.awt.Dimension(400, 306));
+        setMinimumSize(new java.awt.Dimension(416, 200));
 
         jLabel1.setFont(new java.awt.Font("SegoeUI", 0, 18)); // NOI18N
         jLabel1.setForeground(java.awt.Color.white);

@@ -71,6 +71,7 @@ public class dlgAccountEditor extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Edit account - Passport");
+        setMinimumSize(new java.awt.Dimension(178, 408));
 
         jLabel1.setFont(new java.awt.Font("SegoeUI", 0, 18)); // NOI18N
         jLabel1.setForeground(java.awt.Color.white);
